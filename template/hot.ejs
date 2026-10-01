@@ -1,0 +1,14 @@
+<%- include('partials/head') %><%- include('partials/topbar') %>
+<div class="hotlist">
+<% branches.forEach(function(b) { %>
+  <h2 class="hotlist-branch" id="branch-<%= b.id %>"><%= b.name %><span class="hotlist-count"><%= byBranch[b.id].length %></span></h2>
+  <ul>
+  <% byBranch[b.id].forEach(function(page) { %>
+    <li><a href="<%= b.id %>/<%= page.n %>.html"><%= page.n %> - <%= page.d %></a></li>
+  <% }); %>
+  </ul>
+<% }); %>
+</div>
+
+<%- include('partials/sitefooter') %>
+<%- include('partials/scripts') %>

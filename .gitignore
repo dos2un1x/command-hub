@@ -1,0 +1,10 @@
+node_modules/
+build/
+.DS_Store
+
+# 部署暂存:build/ 的副本与其打包产物,由 npm run package 生成
+/public/
+/public.zip
+
+# 本机工作记录(AI 辅助设计文档),不对外发布
+/docs/superpowers/

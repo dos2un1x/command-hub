@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="description" content="<%= describe.n ? describe.n + ':' : '' %><%= describe.d ? describe.d + ' - ' : '' %><%= site.slogan %>">
+    <meta name="keywords" content="<%= site.keywords %><%= describe.n ? ',' + describe.n : '' %><%= describe.d ? ',' + describe.d : '' %>">
+    <title><%= describe.n ? describe.n + ' 命令，' : '' %><%= brand %> <%= describe.n ? describe.n + ' 命令详解：' : '' %><%= describe.d ? describe.d + ' - ' : '' %>  <%= site.name %></title>
+    <link rel="shortcut icon" href="<%= relative_path %>img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="<%= relative_path %>css/index.css?v=<%= v %>">
+    <script src="<%= relative_path %>js/dark-mode.min.js"></script>
+</head>
+<body>
+<dark-mode permanent dark="Dark" light="Light" style="position: fixed;left: 10px;top: 8px; z-index: 999;"></dark-mode>

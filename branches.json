@@ -1,0 +1,26 @@
+{
+  "site": {
+    "name": "命令搜索引擎",
+    "slogan": "最专业的命令大全，内容包含命令手册、详解、学习，值得收藏的命令速查手册。",
+    "keywords": "Linux,Command,命令大全,Linux命令手册,Kubernetes,k8s,运维",
+    "sloganLegacy": "最专业的Linux命令大全，内容包含Linux命令手册、详解、学习，值得收藏的Linux命令速查手册。",
+    "repo": "https://github.com/dos2un1x/command-hub",
+    "author": "dos2un1x"
+  },
+  "branches": [
+    {
+      "id": "linux",
+      "name": "Linux",
+      "desc": "Linux 命令大全",
+      "searchPlaceholder": "搜索 Linux 命令",
+      "default": true
+    },
+    {
+      "id": "k8s",
+      "name": "Kubernetes",
+      "desc": "Kubernetes 运维手册",
+      "searchPlaceholder": "搜索 Kubernetes 命令",
+      "default": false
+    }
+  ]
+}

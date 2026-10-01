@@ -1,0 +1,11 @@
+<%- include('partials/head') %><%- include('partials/topbar') %>
+<div class="hotlist">
+  <ul>
+  <% items.forEach(function(page) { %>
+    <li><a href="<%= page.n %>.html"><%= page.n %> - <%= page.d %></a></li>
+  <% }); %>
+  </ul>
+</div>
+
+<%- include('partials/sitefooter') %>
+<%- include('partials/scripts') %>
