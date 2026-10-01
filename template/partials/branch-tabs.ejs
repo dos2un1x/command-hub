@@ -1,0 +1,1 @@
+<nav class="branches" aria-label="分支切换"><% branches.forEach(function(b) { %><a class="branch-tab<% if (currentBranch === b.id) { %> is-active<% } %>" href="<%= relative_path %><%= b.id %>/"><%= b.name %></a><% }); %><a class="branch-tab branch-all<% if (current_path === '/hot.html') { %> is-active<% } %>" href="<%= relative_path %>hot.html">全部</a></nav>

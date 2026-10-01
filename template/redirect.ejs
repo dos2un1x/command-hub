@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="robots" content="noindex">
+    <title>页面已迁移 - <%= site.name %></title>
+<% if (hasBaseUrl) { %>    <link rel="canonical" href="<%= canonical %>">
+<% } %>    <meta http-equiv="refresh" content="0; url=<%= target %>">
+    <style>body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;padding:2rem;text-align:center;color:#666}a{color:#2196f3}</style>
+</head>
+<body>
+<p>页面已迁移,正在跳转…</p>
+<p><a href="<%= target %>">如果浏览器没有自动跳转,请点这里</a></p>
+</body>
+</html>

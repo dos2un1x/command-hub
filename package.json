@@ -1,0 +1,23 @@
+{
+  "name": "command-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "多分支命令速查站(Linux / Kubernetes / ...)",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check-links": "node scripts/check-links.mjs",
+    "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",
+    "package": "npm run verify && node scripts/package.mjs",
+    "serve": "node --run build && npx --yes serve build"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "ejs": "~3.1.10",
+    "markdown-to-html-cli": "~4.0.0",
+    "uglify-js": "~3.19.0"
+  }
+}
