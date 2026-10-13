@@ -151,3 +151,16 @@ test('胜利:吃掉最后一格空格后判定通关,food=null,不死循环', ()
   assert.equal(g.food, null);
   assert.equal(g.snake.length, 4);
 });
+
+import { speedMsFor, BASE_SPEED_MS, MIN_SPEED_MS } from '../assets/js/snake-core.js';
+
+test('速度:开局 150ms,每吃满 5 个减 12ms', () => {
+  assert.equal(speedMsFor(0), BASE_SPEED_MS);          // 0 个
+  assert.equal(speedMsFor(40), BASE_SPEED_MS);         // 4 个,还没到 5
+  assert.equal(speedMsFor(50), BASE_SPEED_MS - 12);    // 5 个
+  assert.equal(speedMsFor(100), BASE_SPEED_MS - 24);   // 10 个
+});
+
+test('速度:下限 70ms,不会无限加速', () => {
+  assert.equal(speedMsFor(100000), MIN_SPEED_MS);
+});

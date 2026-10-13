@@ -21,6 +21,13 @@ export const DIRS = {
   right: { x: 1, y: 0 },
 };
 
+/** 当前 tick 间隔(ms):每吃满 FOODS_PER_SPEEDUP 个加速一次,不低于 MIN_SPEED_MS */
+export function speedMsFor(score) {
+  const eaten = Math.floor(score / POINTS_PER_FOOD);
+  const steps = Math.floor(eaten / FOODS_PER_SPEEDUP);
+  return Math.max(MIN_SPEED_MS, BASE_SPEED_MS - SPEED_STEP_MS * steps);
+}
+
 const same = (a, b) => a.x === b.x && a.y === b.y;
 const inSnake = (snake, cell) => snake.some((s) => same(s, cell));
 

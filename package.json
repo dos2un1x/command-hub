@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "test": "node --test",
     "validate": "node scripts/validate.mjs",
     "check-links": "node scripts/check-links.mjs",
     "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",
