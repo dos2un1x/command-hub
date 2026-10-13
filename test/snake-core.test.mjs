@@ -54,3 +54,39 @@ test('转向:相对「队尾方向」判定,同一帧连按 ↑← 都合法', (
   // 若按「当前方向(右)」判定,left 会被误判成掉头而丢弃
   assert.equal(turn(g, DIRS.left), true);
 });
+
+import { step, POINTS_PER_FOOD } from '../assets/js/snake-core.js';
+
+/** 手搓一个局面,只填本用例关心的字段 */
+function makeState({ snake, dir = DIRS.right, food = { x: 0, y: 0 }, cols = 20, rows = 20, score = 0 }) {
+  return { cols, rows, snake, dir, pendingDirs: [], food, score, over: false, reason: null, rng: firstCell };
+}
+
+test('推进:不吃食物时头进尾出,长度不变', () => {
+  const g = makeState({ snake: [{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }], food: { x: 0, y: 0 } });
+  const r = step(g);
+  assert.deepEqual(r, { ate: false, ended: null });
+  assert.equal(g.snake.length, 3);
+  assert.deepEqual(g.snake[0], { x: 6, y: 5 });
+  assert.deepEqual(g.snake[2], { x: 4, y: 5 });
+});
+
+test('推进:吃掉食物变长、加分,新食物不在蛇身上', () => {
+  const g = makeState({ snake: [{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }], food: { x: 6, y: 5 } });
+  const r = step(g);
+  assert.equal(r.ate, true);
+  assert.equal(g.snake.length, 4);
+  assert.equal(g.score, POINTS_PER_FOOD);
+  assert.ok(!g.snake.some((s) => s.x === g.food.x && s.y === g.food.y));
+});
+
+test('推进:同一 tick 消费一个排队方向', () => {
+  const g = makeState({ snake: [{ x: 5, y: 5 }, { x: 4, y: 5 }, { x: 3, y: 5 }] });
+  turn(g, DIRS.up);
+  turn(g, DIRS.left);
+  step(g);
+  assert.deepEqual(g.snake[0], { x: 5, y: 4 });   // 先上
+  step(g);
+  assert.deepEqual(g.snake[0], { x: 4, y: 4 });   // 再左
+  assert.deepEqual(g.pendingDirs, []);
+});

@@ -72,3 +72,27 @@ export function turn(state, dir) {
   state.pendingDirs.push({ x: dir.x, y: dir.y });
   return true;
 }
+
+/**
+ * 推进一格。返回 { ate, ended }:
+ *   ate    本 tick 是否吃到食物
+ *   ended  null | 'wall' | 'self' | 'win'(本任务只实现移动与进食,恒为 null)
+ */
+export function step(state) {
+  if (state.over) return { ate: false, ended: state.reason };
+
+  if (state.pendingDirs.length) state.dir = state.pendingDirs.shift();
+
+  const head = state.snake[0];
+  const next = { x: head.x + state.dir.x, y: head.y + state.dir.y };
+  const willEat = state.food !== null && same(next, state.food);
+
+  state.snake.unshift(next);
+  if (willEat) {
+    state.score += POINTS_PER_FOOD;
+    state.food = spawnFood(state);
+    return { ate: true, ended: null };
+  }
+  state.snake.pop();
+  return { ate: false, ended: null };
+}
