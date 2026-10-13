@@ -3,7 +3,7 @@
  *
  * 纯逻辑在 snake-core.js,本文件只做 DOM / canvas / 输入 / 存储。
  */
-import { createGame } from './snake-core.js';
+import { createGame, turn, step, speedMsFor, DIRS } from './snake-core.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -16,6 +16,9 @@ const overlayKeys = $('overlay-keys');
 const scoreEl = $('score');
 
 let game = createGame();
+let phase = 'idle';   // idle | running | paused | over
+let acc = 0;          // 时间累加器(ms)
+let last = 0;         // 上一帧时间戳
 
 /** 画布配色从 CSS 变量读,深浅色切换后重新读一次即可 */
 function readColors() {
@@ -32,6 +35,7 @@ function readColors() {
 
 let colors = readColors();
 
+// ── 渲染 ────────────────────────────────────────────────
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   const size = canvas.clientWidth || 480;
@@ -68,13 +72,118 @@ function draw() {
   }
 }
 
+// ── 状态与面板 ──────────────────────────────────────────
 function renderOverlay() {
-  overlayTitle.textContent = '贪吃蛇';
-  overlayText.textContent = '方向键控制 · 吃满 5 个提速';
-  overlayKeys.textContent = '回车(或点这里)开始 · 空格 返回首页';
+  if (phase === 'running') {
+    overlay.hidden = true;
+    return;
+  }
+  overlay.hidden = false;
+  if (phase === 'idle') {
+    overlayTitle.textContent = '贪吃蛇';
+    overlayText.textContent = '方向键控制 · 吃满 5 个提速';
+    overlayKeys.textContent = '回车(或点这里)开始 · 空格 返回首页';
+  } else if (phase === 'paused') {
+    overlayTitle.textContent = '已暂停';
+    overlayText.textContent = '';
+    overlayKeys.textContent = '回车 继续 · 空格 返回首页';
+  } else {
+    overlayTitle.textContent = game.reason === 'win' ? '通关!' : '游戏结束';
+    overlayText.textContent = `本局 ${game.score} 分`;
+    overlayKeys.textContent = '回车 再来一局 · 空格 返回首页';
+  }
 }
 
-scoreEl.textContent = String(game.score);
-renderOverlay();
-resize();
+function setPhase(next) {
+  phase = next;
+  if (next === 'running') {
+    acc = 0;
+    last = 0;   // 重置时间基准,避免暂停期间的时间被一次性补进游戏
+  }
+  renderOverlay();
+  draw();
+}
+
+function start() {
+  game = createGame();
+  scoreEl.textContent = String(game.score);
+  setPhase('running');
+}
+
+function endGame() {
+  setPhase('over');
+}
+
+function advance() {
+  const r = step(game);
+  scoreEl.textContent = String(game.score);
+  if (r.ended) endGame();
+}
+
+function confirm() {
+  if (phase === 'idle' || phase === 'over') start();
+  else if (phase === 'paused') setPhase('running');
+}
+
+function press(dir) {
+  if (phase === 'running') turn(game, dir);
+}
+
+// ── 主循环 ──────────────────────────────────────────────
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = last ? now - last : 0;
+  last = now;
+  if (phase !== 'running') {
+    acc = 0;
+    return;
+  }
+  acc += dt;
+  const interval = speedMsFor(game.score);
+  while (acc >= interval && phase === 'running') {
+    acc -= interval;
+    advance();
+  }
+  draw();
+}
+
+// ── 输入 ────────────────────────────────────────────────
+const KEY_DIRS = {
+  ArrowUp: DIRS.up,
+  ArrowDown: DIRS.down,
+  ArrowLeft: DIRS.left,
+  ArrowRight: DIRS.right,
+};
+
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;   // 不劫持浏览器快捷键
+  const dir = KEY_DIRS[e.key];
+  if (dir) {
+    e.preventDefault();
+    press(dir);
+    return;
+  }
+  if (e.key === ' ' || e.key === 'Spacebar') {
+    e.preventDefault();
+    if (e.repeat) return;
+    if (phase === 'running') setPhase('paused');
+    else location.href = 'index.html';
+    return;
+  }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (e.repeat) return;
+    confirm();
+  }
+});
+
+// 面板点击 = 回车(触屏用户的"确认")
+overlay.addEventListener('pointerdown', () => {
+  if (phase !== 'running') confirm();
+});
+
+// ── 启动 ────────────────────────────────────────────────
 window.addEventListener('resize', resize);
+resize();
+renderOverlay();
+requestAnimationFrame(frame);
