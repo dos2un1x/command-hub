@@ -1,0 +1,58 @@
+/* ===== 贪吃蛇页 =====
+   独立整屏页:不套站点顶栏/搜索框,但沿用站点的字体与深浅色机制。
+
+   配色 token 定义在 :root 上(而非 .snake-page),与站点 index.css 的做法一致,
+   这样 JS 里 getComputedStyle(document.documentElement) 才读得到。 */
+:root{
+  --snake-cell-a:#ffffff;
+  --snake-cell-b:#eef2f6;
+  --snake-body:#2196f3;
+  --snake-head:#1769aa;
+  --snake-food:#f5a623;
+  --snake-overlay:rgba(255,255,255,.78);
+  --snake-line:#d3d3d3;
+}
+[data-color-mode*='dark']{
+  --snake-cell-a:#1b1b1d;
+  --snake-cell-b:#232327;
+  --snake-body:#4aa8f0;
+  --snake-head:#8ccbf7;
+  --snake-food:#ffc857;
+  --snake-overlay:rgba(24,24,26,.72);
+  --snake-line:#3a3a3f;
+}
+
+.snake-page{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:16px;color:var(--snake-head);
+}
+
+.snake-bar{width:min(92vw,68vh,480px);display:flex;align-items:center;gap:12px;font-size:14px}
+.snake-back{color:inherit;opacity:.75;text-decoration:none;margin-right:auto}
+.snake-back:hover{opacity:1}
+.snake-back kbd{margin-left:6px;padding:1px 5px;border:1px solid var(--snake-line);border-radius:4px;font-size:11px}
+.snake-stats{display:flex;gap:14px;font-variant-numeric:tabular-nums}
+.snake-stats b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px}
+.snake-mute{border:1px solid var(--snake-line);background:transparent;border-radius:6px;padding:2px 6px;cursor:pointer;line-height:1.4}
+
+.snake-stage{position:relative;width:min(92vw,68vh,480px);aspect-ratio:1}
+#board{width:100%;height:100%;display:block;border:1px solid var(--snake-line);border-radius:10px;touch-action:none}
+
+.snake-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;border-radius:10px;background:var(--snake-overlay);text-align:center;padding:12px;
+}
+.snake-overlay[hidden]{display:none}
+.snake-overlay-title{font-size:22px;font-weight:700}
+.snake-overlay-text{font-size:14px;opacity:.85}
+.snake-overlay-keys{font-size:12px;opacity:.65}
+
+.snake-dpad{display:none;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:8px}
+.snake-dpad button{font-size:18px;border:1px solid var(--snake-line);background:transparent;color:inherit;border-radius:10px;touch-action:none;cursor:pointer}
+.snake-dpad button[data-dir='up']{grid-area:1/2}
+.snake-dpad button[data-dir='left']{grid-area:2/1}
+.snake-dpad button[data-dir='down']{grid-area:2/2}
+.snake-dpad button[data-dir='right']{grid-area:2/3}
+@media (hover:none),(pointer:coarse){.snake-dpad{display:grid}}
+
+.snake-help{font-size:12px;opacity:.6}

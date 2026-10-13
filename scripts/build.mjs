@@ -289,6 +289,17 @@ await write(
   }))
 );
 
+await write(
+  path.join(OUT_DIR, 'snake.html'),
+  await render('snake.ejs', base({
+    relative_path: '',
+    describe: { n: '贪吃蛇小游戏', d: '键盘就能玩的贪吃蛇:方向键控制,回车确认,空格返回' },
+    brand: site.name,
+    pageTitle: `贪吃蛇小游戏 - ${site.name}`,
+    extraCss: [`css/snake.css?v=${V}`],
+  }))
+);
+
 // ── 5. 分支落地页 ───────────────────────────────────────────
 for (const b of branches) {
   await write(

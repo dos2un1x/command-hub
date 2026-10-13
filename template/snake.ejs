@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<div class="snake-page">
+  <div class="snake-bar">
+    <a class="snake-back" href="index.html">← 返回首页<kbd>空格</kbd></a>
+    <div class="snake-stats">
+      <span>得分 <b id="score">0</b></span>
+      <span>最高 <b id="best">0</b></span>
+    </div>
+    <button id="mute" class="snake-mute" type="button" aria-label="静音">🔊</button>
+  </div>
+  <div class="snake-stage">
+    <canvas id="board" width="480" height="480" role="img" aria-label="贪吃蛇棋盘"></canvas>
+    <div id="overlay" class="snake-overlay">
+      <p id="overlay-title" class="snake-overlay-title"></p>
+      <p id="overlay-text" class="snake-overlay-text"></p>
+      <p id="overlay-keys" class="snake-overlay-keys"></p>
+    </div>
+  </div>
+  <div class="snake-dpad">
+    <button type="button" tabindex="-1" data-dir="up" aria-label="上">▲</button>
+    <button type="button" tabindex="-1" data-dir="left" aria-label="左">◀</button>
+    <button type="button" tabindex="-1" data-dir="down" aria-label="下">▼</button>
+    <button type="button" tabindex="-1" data-dir="right" aria-label="右">▶</button>
+  </div>
+  <p class="snake-help">方向键 控制 · 回车 确认 · 空格 返回</p>
+  <noscript><p class="snake-help">本页需要 JavaScript 才能游玩。<a href="index.html">返回首页</a></p></noscript>
+</div>
+<script type="module" src="js/snake.js?v=<%= v %>"></script>
+</body>
+</html>
