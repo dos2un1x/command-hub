@@ -22,11 +22,28 @@ command/<分支>/<slug>.md   内容源(Markdown)
 branches.json              分支注册表
 legacy-slugs.json          曾发布过的老 URL 集合(页面迁移后仍保证可访问)
 template/                  EJS 模板
+template/snake.ejs         贪吃蛇小游戏页(唯一非命令页)
 assets/                    CSS / JS / 图片源
+assets/js/snake-core.js    贪吃蛇纯逻辑(可单测)
+test/                      单测(node --test)
 scripts/                   构建与校验脚本
 build/                     构建产物(gitignore)
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
 ```
+
+## 贪吃蛇小游戏
+
+首页页脚有一个「🎮 贪吃蛇」入口,页面在 `/snake.html`。它是站内唯一的非命令页:
+不套顶栏与搜索框,由 `template/snake.ejs` + `assets/js/snake-core.js`(纯逻辑)+
+`assets/js/snake.js`(渲染/输入)组成,随 `npm run build` 一起产出。
+
+按键:方向键控制,回车确认(开始 / 继续 / 再来一局),空格返回上一级
+(未开始与结束界面直接回首页,游戏中则暂停)。触屏设备会显示四个方向按钮。
+
+> 页面是 ES module,必须经 HTTP 打开 —— 直接双击 `build/snake.html`(file://)不会运行。
+> 本地预览用 `npx serve build` 或 `python3 -m http.server -d build 8000`。
+
+`npm test` 跑核心逻辑单测(需要 Node ≥ 18)。
 
 ## 新增一个命令页
 
