@@ -54,3 +54,21 @@ export function createGame({ cols = COLS, rows = ROWS, rng = Math.random } = {})
   state.food = spawnFood(state);
   return state;
 }
+
+/**
+ * 入队一个转向。以下情况忽略:
+ *  - 与「队尾方向」(没有队列时即当前方向)相同或相反(防 180° 掉头)
+ *  - 队列已满(上限 2)
+ * 返回是否被接受。
+ */
+export function turn(state, dir) {
+  if (state.over) return false;
+  const last = state.pendingDirs.length
+    ? state.pendingDirs[state.pendingDirs.length - 1]
+    : state.dir;
+  if (same(dir, last)) return false;
+  if (last.x + dir.x === 0 && last.y + dir.y === 0) return false;
+  if (state.pendingDirs.length >= 2) return false;
+  state.pendingDirs.push({ x: dir.x, y: dir.y });
+  return true;
+}

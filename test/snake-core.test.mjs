@@ -25,3 +25,32 @@ test('初始食物落在棋盘内,且不在蛇身上', () => {
   assert.ok(g.food.y >= 0 && g.food.y < ROWS);
   assert.ok(!g.snake.some((s) => s.x === g.food.x && s.y === g.food.y));
 });
+
+import { turn } from '../assets/js/snake-core.js';
+
+test('转向:禁止 180° 掉头', () => {
+  const g = createGame({ rng: firstCell }); // 朝右
+  assert.equal(turn(g, DIRS.left), false);
+  assert.deepEqual(g.pendingDirs, []);
+});
+
+test('转向:与当前方向相同则忽略', () => {
+  const g = createGame({ rng: firstCell });
+  assert.equal(turn(g, DIRS.right), false);
+  assert.deepEqual(g.pendingDirs, []);
+});
+
+test('转向:队列上限 2,第三次被忽略(长按 auto-repeat 不会撑爆队列)', () => {
+  const g = createGame({ rng: firstCell }); // 朝右
+  assert.equal(turn(g, DIRS.up), true);
+  assert.equal(turn(g, DIRS.left), true);
+  assert.equal(turn(g, DIRS.down), false); // 队列已满
+  assert.deepEqual(g.pendingDirs, [DIRS.up, DIRS.left]);
+});
+
+test('转向:相对「队尾方向」判定,同一帧连按 ↑← 都合法', () => {
+  const g = createGame({ rng: firstCell }); // 朝右
+  assert.equal(turn(g, DIRS.up), true);
+  // 若按「当前方向(右)」判定,left 会被误判成掉头而丢弃
+  assert.equal(turn(g, DIRS.left), true);
+});
