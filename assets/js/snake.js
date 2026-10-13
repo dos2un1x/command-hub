@@ -274,6 +274,29 @@ muteBtn.addEventListener('click', () => {
   muteBtn.blur();   // 别让按钮留住焦点,否则空格会去"点击"它
 });
 
+document.querySelectorAll('[data-dir]').forEach((btn) => {
+  btn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    press(DIRS[btn.dataset.dir]);
+    btn.blur();   // 同静音按钮:不留下焦点,否则空格会去"点击"它
+  });
+});
+
+// 切走/失焦时自动暂停,别让玩家回来发现蛇已经撞死
+const autoPause = () => {
+  if (phase === 'running') setPhase('paused');
+};
+window.addEventListener('blur', autoPause);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) autoPause();
+});
+
+// <dark-mode> 会改 documentElement 的 data-color-mode;变了就重新读色并重绘
+new MutationObserver(() => {
+  colors = readColors();
+  draw();
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-color-mode'] });
+
 // ── 启动 ────────────────────────────────────────────────
 renderMute();
 bestEl.textContent = String(best);
