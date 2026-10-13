@@ -7,6 +7,27 @@ import { createGame, turn, step, speedMsFor, DIRS } from './snake-core.js';
 
 const $ = (id) => document.getElementById(id);
 
+const BEST_KEY = '_snake_best_';
+const MUTE_KEY = '_snake_mute_';
+
+// localStorage 在隐私模式/被策略禁用时会抛异常:降级为"不记忆",不影响可玩性
+const store = {
+  get(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* 忽略:存不上就算了 */
+    }
+  },
+};
+
 const canvas = $('board');
 const ctx = canvas.getContext('2d');
 const overlay = $('overlay');
@@ -15,12 +36,14 @@ const overlayText = $('overlay-text');
 const overlayKeys = $('overlay-keys');
 const scoreEl = $('score');
 const bestEl = $('best');
+const muteBtn = $('mute');
 
 let game = createGame();
 let phase = 'idle';   // idle | running | paused | over
 let acc = 0;          // 时间累加器(ms)
 let last = 0;         // 上一帧时间戳
-let best = 0;            // 内存中的最高分(Task 10 接入 localStorage)
+let best = Number(store.get(BEST_KEY)) || 0;
+let muted = store.get(MUTE_KEY) === '1';
 let newRecord = false;   // 本局是否破纪录(面板文案用)
 
 /** 画布配色从 CSS 变量读,深浅色切换后重新读一次即可 */
@@ -75,6 +98,46 @@ function draw() {
   }
 }
 
+// ── 音效(Web Audio 合成,无音频文件)────────────────────
+let audioCtx = null;
+
+function ensureAudio() {
+  if (muted) return;
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      audioCtx = new AC();
+    } catch {
+      audioCtx = null;
+      return;
+    }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+}
+
+function beep(freqs, dur = 0.08, type = 'square') {
+  if (muted || !audioCtx) return;
+  try {
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    freqs.forEach((f, i) => osc.frequency.setValueAtTime(f, t0 + dur * i));
+    gain.gain.setValueAtTime(0.06, t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur * freqs.length);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur * freqs.length);
+  } catch {
+    /* 音效失败不影响游戏 */
+  }
+}
+
+const playEat = () => beep([660, 880]);
+const playDie = () => beep([320, 200, 120], 0.12, 'sawtooth');
+
 // ── 状态与面板 ──────────────────────────────────────────
 function renderOverlay() {
   if (phase === 'running') {
@@ -120,22 +183,29 @@ function endGame() {
     best = game.score;
     newRecord = true;
     bestEl.textContent = String(best);
+    store.set(BEST_KEY, String(best));
   }
   setPhase('over');
 }
 
 function advance() {
   const r = step(game);
+  if (r.ate) playEat();
   scoreEl.textContent = String(game.score);
-  if (r.ended) endGame();
+  if (r.ended) {
+    if (r.ended !== 'win') playDie();
+    endGame();
+  }
 }
 
 function confirm() {
+  ensureAudio();
   if (phase === 'idle' || phase === 'over') start();
   else if (phase === 'paused') setPhase('running');
 }
 
 function press(dir) {
+  ensureAudio();
   if (phase === 'running') turn(game, dir);
 }
 
@@ -192,7 +262,21 @@ overlay.addEventListener('pointerdown', () => {
   if (phase !== 'running') confirm();
 });
 
+function renderMute() {
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  muteBtn.setAttribute('aria-label', muted ? '取消静音' : '静音');
+}
+
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  store.set(MUTE_KEY, muted ? '1' : '0');
+  renderMute();
+  muteBtn.blur();   // 别让按钮留住焦点,否则空格会去"点击"它
+});
+
 // ── 启动 ────────────────────────────────────────────────
+renderMute();
+bestEl.textContent = String(best);
 window.addEventListener('resize', resize);
 resize();
 renderOverlay();
