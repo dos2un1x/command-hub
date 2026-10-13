@@ -14,11 +14,14 @@ const overlayTitle = $('overlay-title');
 const overlayText = $('overlay-text');
 const overlayKeys = $('overlay-keys');
 const scoreEl = $('score');
+const bestEl = $('best');
 
 let game = createGame();
 let phase = 'idle';   // idle | running | paused | over
 let acc = 0;          // 时间累加器(ms)
 let last = 0;         // 上一帧时间戳
+let best = 0;            // 内存中的最高分(Task 10 接入 localStorage)
+let newRecord = false;   // 本局是否破纪录(面板文案用)
 
 /** 画布配色从 CSS 变量读,深浅色切换后重新读一次即可 */
 function readColors() {
@@ -88,8 +91,8 @@ function renderOverlay() {
     overlayText.textContent = '';
     overlayKeys.textContent = '回车 继续 · 空格 返回首页';
   } else {
-    overlayTitle.textContent = game.reason === 'win' ? '通关!' : '游戏结束';
-    overlayText.textContent = `本局 ${game.score} 分`;
+    overlayTitle.textContent = game.reason === 'win' ? '通关!' : newRecord ? '新纪录!' : '游戏结束';
+    overlayText.textContent = `本局 ${game.score} 分 · 最高 ${best} 分`;
     overlayKeys.textContent = '回车 再来一局 · 空格 返回首页';
   }
 }
@@ -106,11 +109,18 @@ function setPhase(next) {
 
 function start() {
   game = createGame();
+  newRecord = false;
   scoreEl.textContent = String(game.score);
+  bestEl.textContent = String(best);
   setPhase('running');
 }
 
 function endGame() {
+  if (game.score > best) {
+    best = game.score;
+    newRecord = true;
+    bestEl.textContent = String(best);
+  }
   setPhase('over');
 }
 
