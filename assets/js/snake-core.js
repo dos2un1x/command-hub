@@ -76,7 +76,7 @@ export function turn(state, dir) {
 /**
  * 推进一格。返回 { ate, ended }:
  *   ate    本 tick 是否吃到食物
- *   ended  null | 'wall' | 'self' | 'win'(本任务只实现移动与进食,恒为 null)
+ *   ended  null | 'wall' | 'self' | 'win'
  */
 export function step(state) {
   if (state.over) return { ate: false, ended: state.reason };
@@ -85,12 +85,32 @@ export function step(state) {
 
   const head = state.snake[0];
   const next = { x: head.x + state.dir.x, y: head.y + state.dir.y };
+
+  if (next.x < 0 || next.y < 0 || next.x >= state.cols || next.y >= state.rows) {
+    state.over = true;
+    state.reason = 'wall';
+    return { ate: false, ended: 'wall' };
+  }
+
   const willEat = state.food !== null && same(next, state.food);
+  // 尾巴豁免:本 tick 不吃食物时尾格会移走,头进入不算碰撞
+  const body = willEat ? state.snake : state.snake.slice(0, -1);
+  if (inSnake(body, next)) {
+    state.over = true;
+    state.reason = 'self';
+    return { ate: false, ended: 'self' };
+  }
 
   state.snake.unshift(next);
   if (willEat) {
     state.score += POINTS_PER_FOOD;
     state.food = spawnFood(state);
+    if (state.food === null) {
+      // 没有空格可放食物 = 蛇占满全盘
+      state.over = true;
+      state.reason = 'win';
+      return { ate: true, ended: 'win' };
+    }
     return { ate: true, ended: null };
   }
   state.snake.pop();

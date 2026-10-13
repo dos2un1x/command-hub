@@ -90,3 +90,64 @@ test('推进:同一 tick 消费一个排队方向', () => {
   assert.deepEqual(g.snake[0], { x: 4, y: 4 });   // 再左
   assert.deepEqual(g.pendingDirs, []);
 });
+
+test('推进:尾巴豁免 —— 不吃食物时头进入原尾格不算碰撞', () => {
+  // 2×2 的回环:头 (1,1) 向右进 (2,1),而 (2,1) 正是尾格,本 tick 会移走
+  const g = makeState({
+    snake: [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 2, y: 1 }],
+    dir: DIRS.right,
+    food: { x: 0, y: 0 },
+  });
+  const r = step(g);
+  assert.deepEqual(r, { ate: false, ended: null });
+  assert.deepEqual(g.snake[0], { x: 2, y: 1 });
+  assert.equal(g.over, false);
+});
+
+test('结束:撞墙 —— 出界即结束、不移动、reason=wall', () => {
+  const g = makeState({ snake: [{ x: 19, y: 10 }, { x: 18, y: 10 }, { x: 17, y: 10 }] });
+  const r = step(g);
+  assert.deepEqual(r, { ate: false, ended: 'wall' });
+  assert.equal(g.over, true);
+  assert.equal(g.reason, 'wall');
+  assert.deepEqual(g.snake[0], { x: 19, y: 10 });
+});
+
+test('结束:撞自己 —— reason=self', () => {
+  // 头 (5,5) 向下进 (5,6),而 (5,6) 是身体第二格(不是尾巴,不会移走)
+  const g = makeState({
+    snake: [{ x: 5, y: 5 }, { x: 5, y: 6 }, { x: 6, y: 6 }, { x: 6, y: 5 }, { x: 7, y: 5 }],
+    dir: DIRS.down,
+    food: { x: 0, y: 0 },
+  });
+  const r = step(g);
+  assert.deepEqual(r, { ate: false, ended: 'self' });
+  assert.equal(g.over, true);
+  assert.equal(g.reason, 'self');
+});
+
+test('结束:结束后再 step 不改变局面', () => {
+  const g = makeState({ snake: [{ x: 19, y: 10 }, { x: 18, y: 10 }, { x: 17, y: 10 }] });
+  step(g);
+  const before = JSON.stringify(g.snake);
+  const r = step(g);
+  assert.deepEqual(r, { ate: false, ended: 'wall' });
+  assert.equal(JSON.stringify(g.snake), before);
+});
+
+test('胜利:吃掉最后一格空格后判定通关,food=null,不死循环', () => {
+  // 2×2 棋盘:蛇占 3 格,唯一空格 (1,0) 放食物 → 吃掉即满盘
+  const g = makeState({
+    cols: 2,
+    rows: 2,
+    snake: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }],
+    dir: DIRS.right,
+    food: { x: 1, y: 0 },
+  });
+  const r = step(g);
+  assert.deepEqual(r, { ate: true, ended: 'win' });
+  assert.equal(g.over, true);
+  assert.equal(g.reason, 'win');
+  assert.equal(g.food, null);
+  assert.equal(g.snake.length, 4);
+});
