@@ -212,14 +212,16 @@ function press(dir) {
 // ── 主循环 ──────────────────────────────────────────────
 function frame(now) {
   requestAnimationFrame(frame);
-  const dt = last ? now - last : 0;
+  const interval = speedMsFor(game.score);
+  // dt 上限一帧一步:窗口被挂起(休眠/锁屏/后台)而 blur 与 visibilitychange 都没触发时,
+  // 唤醒后的第一帧会带上整段挂起时长;不设上限就会在"一帧内"把蛇一路送到墙上撞死。
+  const dt = Math.min(last ? now - last : 0, interval);
   last = now;
   if (phase !== 'running') {
     acc = 0;
     return;
   }
   acc += dt;
-  const interval = speedMsFor(game.score);
   while (acc >= interval && phase === 'running') {
     acc -= interval;
     advance();
@@ -237,6 +239,16 @@ const KEY_DIRS = {
 
 document.addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;   // 不劫持浏览器快捷键
+
+  // 焦点在原生控件上时,把「激活键」让给控件自己:链接用回车、按钮用回车与空格。
+  // 否则下面的 preventDefault 会取消它们的激活行为 —— 键盘/读屏用户既打不开
+  // 「← 返回首页」(回车会变成开局),也按不动静音开关。
+  const el = e.target instanceof Element ? e.target : null;
+  const onLink = el && el.closest('a[href]');
+  const onButton = el && el.closest('button');
+  if ((onLink || onButton) && e.key === 'Enter') return;
+  if (onButton && (e.key === ' ' || e.key === 'Spacebar')) return;
+
   const dir = KEY_DIRS[e.key];
   if (dir) {
     e.preventDefault();
