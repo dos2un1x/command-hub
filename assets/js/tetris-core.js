@@ -143,6 +143,7 @@ export function move(state, dx) {
   const c = state.current;
   if (collides(state, c.type, c.rot, c.x + dx, c.y)) return false;
   c.x += dx;
+  resetLockIfGrounded(state);
   return true;
 }
 
@@ -157,6 +158,7 @@ export function rotate(state, dir) {
       c.rot = to;
       c.x += ox;
       c.y += oy;
+      resetLockIfGrounded(state);
       return true;
     }
   }
@@ -168,6 +170,7 @@ function place(state, type) {
   state.gravityAcc = 0;
   state.lockTimer = 0;
   state.lockResets = 0;
+  if (collides(state, type, 0, SPAWN_X, 0)) state.phase = 'over';   // 顶出
 }
 
 function spawn(state) {
@@ -198,6 +201,24 @@ export function softDropStep(state) {
   return true;
 }
 
+/** 着地状态下成功移动/旋转会重置锁定计时,累计上限 15 次 */
+function resetLockIfGrounded(state) {
+  if (!canMoveDown(state) && state.lockResets < LOCK_RESET_LIMIT) {
+    state.lockTimer = 0;
+    state.lockResets += 1;
+  }
+}
+
+function lockNow(state) {
+  const { type, rot, x, y } = state.current;
+  for (const [cx, cy] of PIECES[type][rot]) state.grid[y + cy][x + cx] = type;
+  state.current = null;
+  state.gravityAcc = 0;
+  state.lockTimer = 0;
+  state.lockResets = 0;
+  spawn(state);
+}
+
 export function tick(state, dtMs) {
   if (state.phase === 'over') return {};
   const interval = state.softDrop ? SOFT_DROP_MS : gravityMsFor(state.level);
@@ -210,6 +231,15 @@ export function tick(state, dtMs) {
     } else {
       state.gravityAcc = 0;   // 到底:不把时间存起来
       break;
+    }
+  }
+  if (canMoveDown(state)) {
+    state.lockTimer = 0;
+  } else {
+    state.lockTimer += dtMs;
+    if (state.lockTimer >= LOCK_DELAY_MS) {
+      lockNow(state);
+      return { locked: true, over: state.phase === 'over' };
     }
   }
   return {};

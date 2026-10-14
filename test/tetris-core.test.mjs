@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   createGame, nextType, move, rotate,
   gravityMsFor, softDropStep, tick,
-  COLS, ROWS, TYPES, PIECES, MAX_LEVEL, MIN_GRAVITY_MS,
+  COLS, ROWS, TYPES, PIECES, MAX_LEVEL, MIN_GRAVITY_MS, LOCK_RESET_LIMIT,
 } from '../assets/js/tetris-core.js';
 
 /** 确定性 rng(用于 7-bag 等需要可复现的测试) */
@@ -166,7 +166,64 @@ test('软降步进与到底停止', () => {
   assert.equal(softDropStep(g), false);             // 不能再落
   assert.equal(g.score, 1);
   g.softDrop = true;
-  tick(g, 5000);                                    // 已到底:不累加、不扣分
+  tick(g, 100);                                     // 已到底:重力时间清零(不足锁定延迟,不会锁)
   assert.equal(g.current.y, 18);
   assert.equal(g.score, 1);
+  assert.equal(g.gravityAcc, 0);
+});
+
+test('锁定延迟:落地 500ms 才锁,锁后写入棋盘并生成下一块', () => {
+  const g = createGame({ rng: seededRng(13) });
+  const next = g.queue[0];
+  g.current = { type: 'T', rot: 0, x: 3, y: 18 };   // 已贴底
+  tick(g, 499);
+  assert.equal(g.grid[19][4], 0);                    // 未锁
+  assert.ok(g.current);
+  tick(g, 1);
+  assert.equal(g.grid[19][4], 'T');                  // 锁定写入 (4,19)
+  assert.equal(g.grid[19][3], 'T');
+  assert.equal(g.grid[19][5], 'T');
+  assert.equal(g.grid[18][4], 'T');
+  assert.equal(g.current.type, next);                // 下一块已生成
+  assert.deepEqual({ x: g.current.x, y: g.current.y, rot: g.current.rot }, { x: 3, y: 0, rot: 0 });
+});
+
+test('锁定重置:着地后移动会重置计时,上限 15 次', () => {
+  const g = createGame({ rng: seededRng(14) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 18 };
+  tick(g, 300);
+  assert.equal(move(g, -1), true);
+  assert.equal(g.lockTimer, 0);                      // 被重置
+  assert.equal(g.lockResets, 1);
+  tick(g, 300);
+  assert.equal(g.grid[19][3], 0);                    // 未锁
+  // 用满 15 次重置
+  while (g.lockResets < LOCK_RESET_LIMIT) {
+    const dx = g.lockResets % 2 ? 1 : -1;
+    assert.equal(move(g, dx), true);
+  }
+  tick(g, 400);
+  assert.equal(move(g, 1) === true || move(g, -1) === true, true);   // 移动仍可
+  assert.equal(g.lockTimer, 400);                    // 但不再重置
+  tick(g, 100);
+  assert.ok(g.grid[19].includes('T'));               // 已锁定
+});
+
+test('顶出:生成位置被占 → over,之后一切操作无效', () => {
+  const g = createGame({ rng: seededRng(15) });
+  // 顶两行铺满但留出第 0 列:满行会变成"消行"而非"顶出",必须避免
+  for (let x = 1; x < COLS; x++) {
+    g.grid[0][x] = 'I';
+    g.grid[1][x] = 'I';
+  }
+  g.current = { type: 'T', rot: 0, x: 3, y: 18 };
+  tick(g, 500);
+  assert.equal(g.phase, 'over');
+  const snapshot = JSON.stringify({ grid: g.grid, cur: g.current });
+  assert.equal(move(g, -1), false);
+  assert.equal(rotate(g, 1), false);
+  assert.equal(softDropStep(g), false);
+  assert.deepEqual(tick(g, 1000), {});
+  assert.equal(g.phase, 'over');
+  assert.equal(JSON.stringify({ grid: g.grid, cur: g.current }), snapshot);
 });
