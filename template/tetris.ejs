@@ -1,0 +1,49 @@
+<%- include('partials/head') %>
+<div class="tetris-page">
+  <div class="tetris-bar">
+    <a class="tetris-back" href="index.html">← 返回首页<kbd>空格</kbd></a>
+    <div class="tetris-stats">
+      <span>得分 <b id="score">0</b></span>
+      <span>最高 <b id="best">0</b></span>
+      <span>等级 <b id="level">1</b></span>
+      <span>消行 <b id="lines">0</b></span>
+    </div>
+    <button id="mute" class="tetris-mute" type="button" aria-label="静音">🔊</button>
+  </div>
+  <div class="tetris-stage">
+    <div class="tetris-side">
+      <div class="tetris-box">
+        <span class="tetris-box-label">暂存</span>
+        <canvas id="hold" width="80" height="80" role="img" aria-label="暂存方块"></canvas>
+      </div>
+      <div class="tetris-box">
+        <span class="tetris-box-label">下一块</span>
+        <canvas id="next" width="80" height="80" role="img" aria-label="下一个方块"></canvas>
+      </div>
+    </div>
+    <div class="tetris-boardwrap">
+      <canvas id="board" width="300" height="600" role="img" aria-label="俄罗斯方块棋盘"></canvas>
+      <div id="overlay" class="tetris-overlay">
+        <p id="overlay-title" class="tetris-overlay-title"></p>
+        <p id="overlay-text" class="tetris-overlay-text"></p>
+        <p id="overlay-keys" class="tetris-overlay-keys"></p>
+      </div>
+    </div>
+  </div>
+  <div class="tetris-dpad">
+    <div class="tetris-dpad-group">
+      <button type="button" tabindex="-1" data-act="left" aria-label="左移">◀</button>
+      <button type="button" tabindex="-1" data-act="right" aria-label="右移">▶</button>
+    </div>
+    <div class="tetris-dpad-group">
+      <button type="button" tabindex="-1" data-act="hold" aria-label="暂存">存</button>
+      <button type="button" tabindex="-1" data-act="rotate" aria-label="旋转">↻</button>
+      <button type="button" tabindex="-1" data-act="down" aria-label="下落">▼</button>
+    </div>
+  </div>
+  <p class="tetris-help">←→ 移动 · ↑ 旋转 · ↓ 软降 · 回车 硬降 · C 暂存 · 空格 暂停/返回</p>
+  <noscript><p class="tetris-help">本页需要 JavaScript 才能游玩。<a href="index.html">返回首页</a></p></noscript>
+</div>
+<script type="module" src="js/tetris.js?v=<%= v %>"></script>
+</body>
+</html>

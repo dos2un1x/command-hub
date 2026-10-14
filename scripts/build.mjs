@@ -300,6 +300,17 @@ await write(
   }))
 );
 
+await write(
+  path.join(OUT_DIR, 'tetris.html'),
+  await render('tetris.ejs', base({
+    relative_path: '',
+    describe: { n: '俄罗斯方块小游戏', d: '键盘就能玩的俄罗斯方块:方向键移动旋转,回车落底,空格返回' },
+    brand: site.name,
+    pageTitle: `俄罗斯方块小游戏 - ${site.name}`,
+    extraCss: [`css/tetris.css?v=${V}`],
+  }))
+);
+
 // ── 5. 分支落地页 ───────────────────────────────────────────
 for (const b of branches) {
   await write(
