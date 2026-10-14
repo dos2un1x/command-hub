@@ -22,9 +22,11 @@ command/<分支>/<slug>.md   内容源(Markdown)
 branches.json              分支注册表
 legacy-slugs.json          曾发布过的老 URL 集合(页面迁移后仍保证可访问)
 template/                  EJS 模板
-template/snake.ejs         贪吃蛇小游戏页(唯一非命令页)
+template/snake.ejs         贪吃蛇小游戏页(非命令页)
+template/tetris.ejs        俄罗斯方块小游戏页(非命令页)
 assets/                    CSS / JS / 图片源
 assets/js/snake-core.js    贪吃蛇纯逻辑(可单测)
+assets/js/tetris-core.js   俄罗斯方块纯逻辑(可单测)
 test/                      单测(node --test)
 scripts/                   构建与校验脚本
 build/                     构建产物(gitignore)
@@ -33,17 +35,29 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 贪吃蛇小游戏
 
-首页页脚有一个「🎮 贪吃蛇」入口,页面在 `/snake.html`。它是站内唯一的非命令页:
+首页页脚有一个「🎮 贪吃蛇」入口,页面在 `/snake.html`。与俄罗斯方块同为站内的非命令页:
 不套顶栏与搜索框,由 `template/snake.ejs` + `assets/js/snake-core.js`(纯逻辑)+
 `assets/js/snake.js`(渲染/输入)组成,随 `npm run build` 一起产出。
 
 按键:方向键控制,回车确认(开始 / 继续 / 再来一局),空格返回上一级
 (未开始与结束界面直接回首页,游戏中则暂停)。触屏设备会显示四个方向按钮。
 
-> 页面是 ES module,必须经 HTTP 打开 —— 直接双击 `build/snake.html`(file://)不会运行。
+## 俄罗斯方块小游戏
+
+首页页脚另一个入口「🧱 俄罗斯方块」,页面在 `/tetris.html`。与贪吃蛇同构:
+`template/tetris.ejs` + `assets/js/tetris-core.js`(纯逻辑)+ `assets/js/tetris.js`(渲染/输入)。
+
+按键:`←→` 移动(按住连发)、`↑`/`X` 顺时针、`Z` 逆时针、按住 `↓` 软降、`回车` 硬降、
+`C` 暂存、`空格` 暂停或返回(与贪吃蛇一致)。触屏底部五个按钮,`▼` 轻点软降一格、
+长按 0.25 秒硬降。
+
+规则:7-bag 随机、SRS 踢墙、500ms 锁定延迟、幽灵落点、下一块预览、暂存(每块限一次)、
+消行闪烁;单/双/三/四行计 100/300/500/800 分 × 等级,每 10 行升级。
+
+> 两个游戏页都是 ES module,必须经 HTTP 打开 —— 直接双击 `build/*.html`(file://)不会运行。
 > 本地预览用 `npx serve build` 或 `python3 -m http.server -d build 8000`。
 
-`npm test` 跑核心逻辑单测(需要 Node ≥ 18)。
+`npm test` 跑两个游戏的核心逻辑单测(需要 Node ≥ 18)。
 
 ## 新增一个命令页
 
