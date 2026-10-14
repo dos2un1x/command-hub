@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  createGame, nextType, move, rotate, COLS, ROWS, TYPES, PIECES,
+  createGame, nextType, move, rotate,
+  gravityMsFor, softDropStep, tick,
+  COLS, ROWS, TYPES, PIECES, MAX_LEVEL, MIN_GRAVITY_MS,
 } from '../assets/js/tetris-core.js';
 
 /** 确定性 rng(用于 7-bag 等需要可复现的测试) */
@@ -118,4 +120,53 @@ test('旋转:所有踢法都撞时返回 false 且状态不变', () => {
   g.grid[3][1] = 'I';
   assert.equal(rotate(g, 1), false);
   assert.deepEqual(g.current, { type: 'T', rot: 0, x: 0, y: 0 });
+});
+
+test('速度曲线:1 级 1000ms、递减、下限 60ms', () => {
+  assert.equal(gravityMsFor(1), 1000);
+  assert.ok(Math.abs(gravityMsFor(2) - 793) < 1);
+  let prev = Infinity;
+  for (let l = 1; l <= MAX_LEVEL; l++) {
+    const gm = gravityMsFor(l);
+    assert.ok(gm <= prev, `等级 ${l} 不慢于上一级`);
+    assert.ok(gm >= MIN_GRAVITY_MS);
+    prev = gm;
+  }
+  assert.equal(gravityMsFor(MAX_LEVEL), MIN_GRAVITY_MS);
+});
+
+test('重力:按等级间隔下落,不足不动', () => {
+  const g = createGame({ rng: seededRng(10) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 0 };
+  tick(g, 400);
+  tick(g, 400);
+  assert.equal(g.current.y, 0);      // 共 800ms 不足 1000ms
+  tick(g, 200);
+  assert.equal(g.current.y, 1);      // 累计 1000ms
+});
+
+test('软降:40ms/格并且每格 +1 分', () => {
+  const g = createGame({ rng: seededRng(11) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 0 };
+  g.softDrop = true;
+  tick(g, 40);
+  assert.equal(g.current.y, 1);
+  assert.equal(g.score, 1);
+  tick(g, 40);
+  assert.equal(g.current.y, 2);
+  assert.equal(g.score, 2);
+});
+
+test('软降步进与到底停止', () => {
+  const g = createGame({ rng: seededRng(12) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 17 };   // 初始态占两行,y=17 时底边到 18
+  assert.equal(softDropStep(g), true);
+  assert.equal(g.current.y, 18);                    // 到底
+  assert.equal(g.score, 1);
+  assert.equal(softDropStep(g), false);             // 不能再落
+  assert.equal(g.score, 1);
+  g.softDrop = true;
+  tick(g, 5000);                                    // 已到底:不累加、不扣分
+  assert.equal(g.current.y, 18);
+  assert.equal(g.score, 1);
 });

@@ -175,3 +175,42 @@ function spawn(state) {
   place(state, state.queue.shift());
   state.queue.push(nextType(state));
 }
+
+/** 官方重力公式:每格毫秒数,下限 60 */
+export function gravityMsFor(level) {
+  const l = Math.max(1, Math.min(MAX_LEVEL, level));
+  const sec = Math.pow(0.8 - (l - 1) * 0.007, l - 1);
+  return Math.max(MIN_GRAVITY_MS, sec * 1000);
+}
+
+function canMoveDown(state) {
+  const c = state.current;
+  return !collides(state, c.type, c.rot, c.x, c.y + 1);
+}
+
+/** 软降一格(触屏 ▼ 轻点);成功 +1 分 */
+export function softDropStep(state) {
+  if (state.phase !== 'playing' || !state.current) return false;
+  if (!canMoveDown(state)) return false;
+  state.current.y += 1;
+  state.score += 1;
+  state.gravityAcc = 0;
+  return true;
+}
+
+export function tick(state, dtMs) {
+  if (state.phase === 'over') return {};
+  const interval = state.softDrop ? SOFT_DROP_MS : gravityMsFor(state.level);
+  state.gravityAcc += dtMs;
+  while (state.gravityAcc >= interval) {
+    state.gravityAcc -= interval;
+    if (canMoveDown(state)) {
+      state.current.y += 1;
+      if (state.softDrop) state.score += 1;
+    } else {
+      state.gravityAcc = 0;   // 到底:不把时间存起来
+      break;
+    }
+  }
+  return {};
+}
