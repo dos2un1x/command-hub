@@ -105,6 +105,29 @@ export function nextType(state) {
   return state.bag.pop();
 }
 
+/** SRS 踢墙偏移(屏幕坐标,y 向下),键为 "起态>止态" */
+export const KICKS_JLSTZ = {
+  '0>1': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
+  '1>0': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+  '1>2': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+  '2>1': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
+  '2>3': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
+  '3>2': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+  '3>0': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+  '0>3': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
+};
+
+export const KICKS_I = {
+  '0>1': [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+  '1>0': [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+  '1>2': [[0, 0], [-1, 0], [2, 0], [-1, -2], [2, 1]],
+  '2>1': [[0, 0], [1, 0], [-2, 0], [1, 2], [-2, -1]],
+  '2>3': [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+  '3>2': [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+  '3>0': [[0, 0], [1, 0], [-2, 0], [1, 2], [-2, -1]],
+  '0>3': [[0, 0], [-1, 0], [2, 0], [-1, -2], [2, 1]],
+};
+
 function collides(state, type, rot, x, y) {
   for (const [cx, cy] of PIECES[type][rot]) {
     const gx = x + cx;
@@ -121,6 +144,23 @@ export function move(state, dx) {
   if (collides(state, c.type, c.rot, c.x + dx, c.y)) return false;
   c.x += dx;
   return true;
+}
+
+export function rotate(state, dir) {
+  if (state.phase !== 'playing' || !state.current) return false;
+  const c = state.current;
+  const from = c.rot;
+  const to = (from + dir + 4) % 4;
+  const table = c.type === 'I' ? KICKS_I : KICKS_JLSTZ;
+  for (const [ox, oy] of table[`${from}>${to}`]) {
+    if (!collides(state, c.type, to, c.x + ox, c.y + oy)) {
+      c.rot = to;
+      c.x += ox;
+      c.y += oy;
+      return true;
+    }
+  }
+  return false;
 }
 
 function place(state, type) {
