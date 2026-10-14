@@ -227,3 +227,100 @@ test('顶出:生成位置被占 → over,之后一切操作无效', () => {
   assert.equal(g.phase, 'over');
   assert.equal(JSON.stringify({ grid: g.grid, cur: g.current }), snapshot);
 });
+
+/** 把某行填满,跳过 exceptCols 指定的列 */
+function fillRow(g, y, exceptCols = []) {
+  for (let x = 0; x < COLS; x++) if (!exceptCols.includes(x)) g.grid[y][x] = 'J';
+}
+
+test('消行:单行移除,上方整体下移', () => {
+  const g = createGame({ rng: seededRng(16) });
+  fillRow(g, 19, [5]);
+  g.grid[18][3] = 'L';                              // 记号:应随下移落到 19 行
+  g.current = { type: 'I', rot: 1, x: 3, y: 16 };   // 竖直 I,占第 5 列 16..19 行
+  tick(g, 500);                                     // 锁定 → 满行 → clearing
+  assert.equal(g.phase, 'clearing');
+  assert.deepEqual(g.clearRows, [19]);
+  tick(g, 60);
+  assert.equal(g.phase, 'clearing');                // 120ms 未到
+  tick(g, 60);
+  assert.equal(g.phase, 'playing');
+  assert.equal(g.lines, 1);
+  assert.equal(g.score, 100);
+  assert.equal(g.grid[19][3], 'L');                 // 记号下移一行
+  assert.equal(g.grid[19][5], 'I');                 // 原 18 行的 I 也下移一行
+  assert.equal(g.grid[18][5], 'I');                 // 原 17 行 → 18 行
+});
+
+test('消行:四行(tetris)一次清 800 分', () => {
+  const g = createGame({ rng: seededRng(17) });
+  for (let y = 16; y <= 19; y++) fillRow(g, y, [5]);
+  g.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g, 500);
+  assert.deepEqual(g.clearRows, [16, 17, 18, 19]);
+  tick(g, 120);
+  assert.equal(g.lines, 4);
+  assert.equal(g.score, 800);
+  assert.equal(g.level, 1);
+});
+
+test('消行:多行清除时中间夹非满行正确下移', () => {
+  const g = createGame({ rng: seededRng(18) });
+  fillRow(g, 17, [5]);
+  fillRow(g, 19, [5]);
+  g.grid[18][2] = 'S';                              // 17 与 19 被清,18 行下移
+  g.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g, 500);
+  assert.deepEqual(g.clearRows, [17, 19]);
+  tick(g, 120);
+  assert.equal(g.lines, 2);
+  assert.equal(g.score, 300);
+  assert.equal(g.grid[19][2], 'S');                 // 原 18 行 → 19 行
+});
+
+test('消行:计分乘当前等级;每 10 行升级、上限 20', () => {
+  const g = createGame({ rng: seededRng(19) });
+  g.level = 3;
+  fillRow(g, 19, [5]);
+  g.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g, 500);
+  tick(g, 120);
+  assert.equal(g.score, 300);                       // 100 × 3
+
+  const g2 = createGame({ rng: seededRng(20) });
+  g2.lines = 9;
+  fillRow(g2, 19, [5]);
+  g2.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g2, 500);
+  const ev = tick(g2, 120);
+  assert.equal(g2.lines, 10);
+  assert.equal(g2.level, 2);
+  assert.equal(ev.levelUp, true);
+
+  const g3 = createGame({ rng: seededRng(21) });
+  g3.lines = 195;
+  g3.level = 20;
+  for (let y = 16; y <= 19; y++) fillRow(g3, y, [5]);
+  g3.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g3, 500);
+  tick(g3, 120);
+  assert.equal(g3.lines, 199);
+  assert.equal(g3.level, 20);                       // 不越上限
+});
+
+test('闪烁阶段:输入无效,到期才消除并生成下一块', () => {
+  const g = createGame({ rng: seededRng(22) });
+  const next = g.queue[0];
+  fillRow(g, 19, [5]);
+  g.current = { type: 'I', rot: 1, x: 3, y: 16 };
+  tick(g, 500);
+  assert.equal(g.phase, 'clearing');
+  assert.equal(g.current, null);
+  assert.equal(move(g, -1), false);
+  assert.equal(rotate(g, 1), false);
+  assert.equal(softDropStep(g), false);
+  tick(g, 120);
+  assert.equal(g.phase, 'playing');
+  assert.equal(g.current.type, next);
+  assert.equal(g.queue.length, 2);
+});

@@ -216,11 +216,41 @@ function lockNow(state) {
   state.gravityAcc = 0;
   state.lockTimer = 0;
   state.lockResets = 0;
+  const full = [];
+  for (let row = 0; row < state.rows; row++) {
+    if (state.grid[row].every((c) => c !== 0)) full.push(row);
+  }
+  if (full.length) {
+    state.phase = 'clearing';
+    state.clearRows = full;
+    state.clearTimer = CLEAR_FLASH_MS;
+    return;
+  }
   spawn(state);
+}
+
+function resolveClear(state) {
+  const n = state.clearRows.length;
+  state.grid = state.grid.filter((_, y) => !state.clearRows.includes(y));
+  for (let i = 0; i < n; i++) state.grid.unshift(Array(state.cols).fill(0));
+  state.clearRows = [];
+  state.phase = 'playing';
+  state.lines += n;
+  state.score += LINE_SCORES[n] * state.level;      // 按消除时的等级结算
+  const level = Math.min(MAX_LEVEL, 1 + Math.floor(state.lines / LINES_PER_LEVEL));
+  const levelUp = level > state.level;
+  state.level = level;
+  spawn(state);
+  return { cleared: n, levelUp, over: state.phase === 'over' };
 }
 
 export function tick(state, dtMs) {
   if (state.phase === 'over') return {};
+  if (state.phase === 'clearing') {
+    state.clearTimer -= dtMs;
+    if (state.clearTimer > 0) return {};
+    return resolveClear(state);
+  }
   const interval = state.softDrop ? SOFT_DROP_MS : gravityMsFor(state.level);
   state.gravityAcc += dtMs;
   while (state.gravityAcc >= interval) {
