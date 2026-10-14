@@ -118,3 +118,11 @@
   .tetris-box canvas { width: 56px; height: 56px; }
   #board { height: min(58vh, 520px); }
 }
+@media (max-width: 726px) {
+  /* 窄屏:顶栏让开左上角 fixed 的站点主题开关(z-index 999),否则「← 返回首页」
+     的可点区被它盖住、点到会切主题(评审 I2);顺带把顶栏折成两行避免链接被挤断 */
+  .tetris-page { padding-top: 38px; }
+  .tetris-bar { flex-wrap: wrap; row-gap: 6px; }
+  .tetris-back { white-space: nowrap; }
+  .tetris-stats { order: 3; width: 100%; justify-content: center; }
+}

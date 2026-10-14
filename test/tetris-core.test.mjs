@@ -83,6 +83,26 @@ test('旋转:同向转 4 次回原位(T/I/O)', () => {
   }
 });
 
+test('几何不变量:每个旋转态 = 上一态绕包围盒中心顺时针 90°(O 恒定)', () => {
+  const rotCW = (cells, n) => cells.map(([x, y]) => [n - 1 - y, x]);
+  const norm = (cells) => cells.map((c) => c.join(',')).sort();
+  for (const type of TYPES) {
+    if (type === 'O') {
+      const first = norm(PIECES.O[0]);
+      for (let r = 1; r < 4; r++) assert.deepEqual(norm(PIECES.O[r]), first, 'O 的旋转态应恒定');
+      continue;
+    }
+    const n = type === 'I' ? 4 : 3;   // SRS 包围盒:I 为 4×4,JLSTZ 为 3×3
+    for (let r = 0; r < 4; r++) {
+      assert.deepEqual(
+        norm(PIECES[type][(r + 1) % 4]),
+        norm(rotCW(PIECES[type][r], n)),
+        `${type} 状态 ${r} → ${(r + 1) % 4} 不是绕包围盒中心 90° 顺时针旋转`
+      );
+    }
+  }
+});
+
 test('SRS:贴左墙的 T 逆时针旋转被踢回(x -1 → 0)', () => {
   const g = createGame({ rng: seededRng(6) });
   g.current = { type: 'T', rot: 1, x: -1, y: 5 };   // 竖直态、贴左墙

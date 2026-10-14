@@ -361,7 +361,9 @@ document.querySelectorAll('[data-act]').forEach((btn) => {
     if (kind === 'left' || kind === 'right') beginHeld(kind === 'left' ? -1 : 1);
     else if (kind === 'rotate') act(() => rotate(game, 1));
     else if (kind === 'hold') act(() => holdPiece(game));
-    else if (kind === 'down') {
+    // ▼ 只在「进行中且核心在玩」时排长按定时器:否则未开始/暂停时碰一下 ▼,
+    // 250ms 内开局会让这个定时器在新局里硬降掉第一块(评审 I1)
+    else if (kind === 'down' && phase === 'running' && game.phase === 'playing') {
       act(() => softDropStep(game));            // 按下先软降一格
       if (downPressTimer) clearTimeout(downPressTimer);
       downPressTimer = setTimeout(() => {       // 按住满 250ms 升级为硬降
