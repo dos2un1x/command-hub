@@ -274,3 +274,21 @@ export function tick(state, dtMs) {
   }
   return {};
 }
+
+/** 当前方块的最终落点行(硬降与幽灵预览共用) */
+export function ghostY(state) {
+  if (!state.current) return 0;
+  const c = state.current;
+  let y = c.y;
+  while (!collides(state, c.type, c.rot, c.x, y + 1)) y += 1;
+  return y;
+}
+
+export function hardDrop(state) {
+  if (state.phase !== 'playing' || !state.current) return false;
+  const drop = ghostY(state) - state.current.y;
+  state.score += drop * 2;
+  state.current.y = ghostY(state);
+  lockNow(state);
+  return true;
+}

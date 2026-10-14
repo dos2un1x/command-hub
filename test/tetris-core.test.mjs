@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createGame, nextType, move, rotate,
-  gravityMsFor, softDropStep, tick,
+  gravityMsFor, softDropStep, tick, ghostY, hardDrop,
   COLS, ROWS, TYPES, PIECES, MAX_LEVEL, MIN_GRAVITY_MS, LOCK_RESET_LIMIT,
 } from '../assets/js/tetris-core.js';
 
@@ -323,4 +323,31 @@ test('闪烁阶段:输入无效,到期才消除并生成下一块', () => {
   assert.equal(g.phase, 'playing');
   assert.equal(g.current.type, next);
   assert.equal(g.queue.length, 2);
+});
+
+test('幽灵落点 = 硬降落点,且硬降立即锁定并 +2 分/格', () => {
+  const g = createGame({ rng: seededRng(23) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 0 };
+  assert.equal(ghostY(g), 18);
+  assert.equal(hardDrop(g), true);
+  assert.equal(g.grid[19][4], 'T');                 // 落在底部
+  assert.equal(g.score, 36);                        // 18 格 × 2
+  assert.ok(g.current);                             // 已生成下一块(立即锁定)
+  assert.equal(g.current.y, 0);
+});
+
+test('幽灵落点:堆叠上方正确停住', () => {
+  const g = createGame({ rng: seededRng(24) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 0 };
+  g.grid[19][4] = 'I';                              // 挡住中间列
+  assert.equal(ghostY(g), 17);
+  assert.equal(hardDrop(g), true);
+  assert.equal(g.grid[18][4], 'T');
+  assert.equal(g.score, 34);                        // 17 格 × 2
+});
+
+test('硬降:结束后无效', () => {
+  const g = createGame({ rng: seededRng(25) });
+  g.phase = 'over';
+  assert.equal(hardDrop(g), false);
 });
