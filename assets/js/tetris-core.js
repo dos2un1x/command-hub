@@ -292,3 +292,19 @@ export function hardDrop(state) {
   lockNow(state);
   return true;
 }
+
+export function holdPiece(state) {
+  if (state.phase !== 'playing' || !state.current || state.holdUsed) return false;
+  state.holdUsed = true;
+  const cur = state.current.type;
+  if (state.hold) {
+    const swap = state.hold;
+    state.hold = cur;
+    place(state, swap);
+  } else {
+    state.hold = cur;
+    place(state, state.queue.shift());
+    state.queue.push(nextType(state));
+  }
+  return true;
+}

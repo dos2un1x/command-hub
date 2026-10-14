@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createGame, nextType, move, rotate,
-  gravityMsFor, softDropStep, tick, ghostY, hardDrop,
+  gravityMsFor, softDropStep, tick, ghostY, hardDrop, holdPiece,
   COLS, ROWS, TYPES, PIECES, MAX_LEVEL, MIN_GRAVITY_MS, LOCK_RESET_LIMIT,
 } from '../assets/js/tetris-core.js';
 
@@ -350,4 +350,38 @@ test('硬降:结束后无效', () => {
   const g = createGame({ rng: seededRng(25) });
   g.phase = 'over';
   assert.equal(hardDrop(g), false);
+});
+
+test('暂存:空暂存位取队首;每块限一次;交换回来', () => {
+  const g = createGame({ rng: seededRng(26) });
+  const first = g.current.type;
+  const next = g.queue[0];
+  assert.equal(holdPiece(g), true);
+  assert.equal(g.hold, first);
+  assert.equal(g.current.type, next);               // 从队列补位
+  assert.deepEqual({ x: g.current.x, y: g.current.y, rot: g.current.rot }, { x: 3, y: 0, rot: 0 });
+  assert.equal(g.queue.length, 2);
+  assert.equal(holdPiece(g), false);                // 每块限一次
+  assert.equal(g.hold, first);
+});
+
+test('暂存:锁定后重置可用,可与暂存块交换', () => {
+  const g = createGame({ rng: seededRng(27) });
+  const first = g.current.type;
+  holdPiece(g);
+  g.current = { type: 'O', rot: 0, x: 3, y: 18 };   // 直接摆到贴底
+  tick(g, 500);                                     // 锁定 → holdUsed 重置,换上新块
+  assert.equal(g.holdUsed, false);
+  const spawned = g.current.type;                   // 锁定后新生成的那块
+  assert.equal(holdPiece(g), true);
+  assert.equal(g.current.type, first);              // 暂存位那块换回场上
+  assert.equal(g.hold, spawned);                    // 场上那块进暂存位
+});
+
+test('暂存:clearing 与 over 期间无效', () => {
+  const g = createGame({ rng: seededRng(28) });
+  g.phase = 'clearing';
+  assert.equal(holdPiece(g), false);
+  g.phase = 'over';
+  assert.equal(holdPiece(g), false);
 });
