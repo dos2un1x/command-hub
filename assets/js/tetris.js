@@ -15,6 +15,27 @@ const DAS_REPEAT_MS = 50;
 const LONG_PRESS_MS = 250;
 const DT_CLAMP_MS = 100;   // 挂起唤醒后首帧可能带整段挂起时长,不设上限会瞬移/秒锁
 
+const BEST_KEY = '_tetris_best_';
+const MUTE_KEY = '_tetris_mute_';
+
+// localStorage 在隐私模式/被策略禁用时会抛异常:降级为"不记忆",不影响可玩性
+const store = {
+  get(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* 忽略:存不上就算了 */
+    }
+  },
+};
+
 const boardCanvas = $('board');
 const bctx = boardCanvas.getContext('2d');
 const nextCanvas = $('next');
@@ -38,7 +59,8 @@ let heldDir = 0;        // -1 | 0 | 1(键盘与触屏共用)
 let dasTimer = 0;
 let dasNext = DAS_DELAY_MS;
 let downPressTimer = null;   // 触屏 ▼ 的长按判定
-let best = 0;                // Task 12 接 localStorage
+let best = Number(store.get(BEST_KEY)) || 0;
+let muted = store.get(MUTE_KEY) === '1';
 let newRecord = false;
 
 /** 画布配色从 CSS 变量读,深浅色切换后重新读一次即可 */
@@ -196,6 +218,7 @@ function syncStats() {
 }
 
 function start() {
+  ensureAudio();
   game = createGame();
   newRecord = false;
   setPhase('running');
@@ -203,23 +226,33 @@ function start() {
 }
 
 function endGame() {
-  if (game.score > best) { best = game.score; newRecord = true; }   // Task 12:写 localStorage
+  if (game.score > best) {
+    best = game.score;
+    newRecord = true;
+    store.set(BEST_KEY, String(best));   // 新纪录立即落盘
+  }
+  syncStats();   // 最高分可能刚更新,顶栏立即跟上(帧循环在非进行中时不再同步)
   setPhase('over');
 }
 
 /** 每次操作/每帧后调用:核心判负则收尾 */
 function checkOver() {
-  if (phase === 'running' && game.phase === 'over') endGame();
+  if (phase === 'running' && game.phase === 'over') {
+    playOver();
+    endGame();
+  }
 }
 
 /** 输入动作的统一入口:只在"进行中"生效 */
 function act(fn) {
   if (phase !== 'running') return;
+  ensureAudio();
   fn();
   checkOver();
 }
 
 function confirm() {
+  ensureAudio();
   if (phase === 'idle' || phase === 'over') start();
   else if (phase === 'paused') setPhase('running');
   else if (game.phase === 'playing') act(() => hardDrop(game));
@@ -227,6 +260,7 @@ function confirm() {
 
 function beginHeld(dir) {
   if (phase !== 'running' || game.phase !== 'playing') return;
+  ensureAudio();
   heldDir = dir;
   dasTimer = 0;
   dasNext = DAS_DELAY_MS;
@@ -347,6 +381,52 @@ document.querySelectorAll('[data-act]').forEach((btn) => {
   btn.addEventListener('pointerleave', endPress);
 });
 
+// ── 音效(Web Audio 合成,无音频文件)────────────────────
+let audioCtx = null;
+
+function ensureAudio() {
+  if (muted) return;
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      audioCtx = new AC();
+    } catch {
+      audioCtx = null;
+      return;
+    }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+}
+
+function beep(freqs, dur = 0.08, type = 'square') {
+  if (muted || !audioCtx) return;
+  try {
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    freqs.forEach((f, i) => osc.frequency.setValueAtTime(f, t0 + dur * i));
+    gain.gain.setValueAtTime(0.06, t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur * freqs.length);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur * freqs.length);
+  } catch {
+    /* 音效失败不影响游戏 */
+  }
+}
+
+function playClear(lines) {
+  const scale = [523, 659, 784, 1047];
+  beep(scale.slice(0, Math.max(1, lines)));
+}
+
+function playOver() {
+  beep([330, 247, 165], 0.12, 'sawtooth');
+}
+
 // ── 杂项 ────────────────────────────────────────────────
 const autoPause = () => {
   if (phase === 'running') setPhase('paused');
@@ -363,8 +443,20 @@ new MutationObserver(() => {
 
 window.addEventListener('resize', resize);
 
+function renderMute() {
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  muteBtn.setAttribute('aria-label', muted ? '取消静音' : '静音');
+}
+
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  store.set(MUTE_KEY, muted ? '1' : '0');
+  renderMute();
+  muteBtn.blur();   // 别让按钮留住焦点,否则空格会去"点击"它
+});
+
 // ── 启动 ────────────────────────────────────────────────
-function playClear() {}   // Task 12 接音效
+renderMute();
 resize();
 syncStats();
 renderOverlay();
