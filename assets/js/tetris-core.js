@@ -105,6 +105,24 @@ export function nextType(state) {
   return state.bag.pop();
 }
 
+function collides(state, type, rot, x, y) {
+  for (const [cx, cy] of PIECES[type][rot]) {
+    const gx = x + cx;
+    const gy = y + cy;
+    if (gx < 0 || gx >= state.cols || gy < 0 || gy >= state.rows) return true;
+    if (state.grid[gy][gx]) return true;
+  }
+  return false;
+}
+
+export function move(state, dx) {
+  if (state.phase !== 'playing' || !state.current) return false;
+  const c = state.current;
+  if (collides(state, c.type, c.rot, c.x + dx, c.y)) return false;
+  c.x += dx;
+  return true;
+}
+
 function place(state, type) {
   state.current = { type, rot: 0, x: SPAWN_X, y: 0 };
   state.gravityAcc = 0;

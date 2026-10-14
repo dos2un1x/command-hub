@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  createGame, nextType, COLS, ROWS, TYPES, PIECES,
+  createGame, nextType, move, COLS, ROWS, TYPES, PIECES,
 } from '../assets/js/tetris-core.js';
 
 /** 确定性 rng(用于 7-bag 等需要可复现的测试) */
@@ -47,4 +47,25 @@ test('生成位置:所有方块初始态都落在 3..6 列、0..1 行', () => {
       assert.ok(cy >= 0 && cy <= 1, `${type} 行越界`);
     }
   }
+});
+
+test('move:左右移动成功,撞墙失败且不改状态', () => {
+  const g = createGame({ rng: seededRng(3) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 5 };
+  assert.equal(move(g, -1), true);
+  assert.equal(g.current.x, 2);
+  assert.equal(move(g, 1), true);
+  assert.equal(g.current.x, 3);
+  while (move(g, -1)) { /* 一直移到不能移 */ }
+  assert.equal(g.current.x, 0);
+  assert.equal(move(g, -1), false);
+  assert.equal(g.current.x, 0);
+});
+
+test('move:撞到已固定方块失败', () => {
+  const g = createGame({ rng: seededRng(4) });
+  g.current = { type: 'T', rot: 0, x: 3, y: 5 };
+  g.grid[6][2] = 'I';       // T 左移一格后 (2,6) 被占
+  assert.equal(move(g, -1), false);
+  assert.equal(g.current.x, 3);
 });
