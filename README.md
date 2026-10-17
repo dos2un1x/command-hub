@@ -175,7 +175,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 888 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 902 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -183,23 +183,28 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-## Kubernetes 二级分类
+## 二级分类(Linux / Kubernetes)
 
-`command/k8s/categories.json` 定义 K8s 分支的二级分类:
+`command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
+当前有两份:
+
+- `command/linux/categories.json`:14 个分类、618 条
+- `command/k8s/categories.json`:12 个分类、254 条
+
 构建时会校验:
 
-- 每个 `command/k8s/*.md` 必须出现在 `assignments` 里
+- 每个 `command/<branch>/*.md` 必须出现在 `assignments` 里
 - `assignments` 里的 slug 必须有对应页面
 - 每个分类至少有 1 个页面
 
-分类页自动生成到 `/k8s/category/<id>/`,并加入 `sitemap.xml`(priority 0.7)。
-`npm run category-map` 会重新生成 `docs/seo/k8s-category-map.md` 供人工审阅。
+分类页自动生成到 `/<branch>/category/<id>/`,并加入 `sitemap.xml`(priority 0.7)。
+`npm run category-map` 会重新生成 `docs/seo/<branch>-category-map.md` 供人工审阅。
 
-新增 K8s 页面时,先在 `categories.json` 的 `assignments` 里归类,否则构建失败。
+新增页面时,先在对应 `categories.json` 的 `assignments` 里归类,否则构建失败。
 
 ## 百度主动推送
 
