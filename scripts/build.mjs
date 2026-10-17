@@ -4,8 +4,6 @@
  * 输入:command/<branch>/<slug>.md + branches.json + template/ + assets/
  * 输出:build/  (根页面、<branch>/ 页面、js/css/img)
  *      deploy/nginx/legacy-redirects.conf  (老 URL 301 规则,不进 build/)
- *
- * 与上游 build.mjs 的差异见 docs/superpowers/specs/2026-09-18-branch-architecture-design.md
  */
 import FS from 'node:fs/promises';
 import path from 'node:path';
