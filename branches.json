@@ -1,6 +1,7 @@
 {
   "site": {
     "name": "命令搜索引擎",
+    "baseUrl": "https://www.dos2unix.cn",
     "slogan": "最专业的命令大全，内容包含命令手册、详解、学习，值得收藏的命令速查手册。",
     "keywords": "Linux,Command,命令大全,Linux命令手册,Kubernetes,k8s,运维",
     "sloganLegacy": "最专业的Linux命令大全，内容包含Linux命令手册、详解、学习，值得收藏的Linux命令速查手册。",

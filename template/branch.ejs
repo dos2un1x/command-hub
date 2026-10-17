@@ -1,5 +1,14 @@
 <%- include('partials/head') %><%- include('partials/topbar') %>
 <div class="hotlist">
+  <h1 class="hotlist-title"><%= branchH1 %></h1>
+  <p class="hotlist-desc"><%= branchIntro %></p>
+<% if (typeof categoryNav !== 'undefined' && categoryNav.length) { %>
+  <nav class="category-links" aria-label="<%= brand %> 分类">
+  <% categoryNav.forEach(function (c) { %>
+    <a class="category-chip" href="category/<%= c.id %>/"><%= c.name %><span><%= c.count %></span></a>
+  <% }); %>
+  </nav>
+<% } %>
   <ul>
   <% items.forEach(function(page) { %>
     <li><a href="<%= page.n %>.html"><%= page.n %> - <%= page.d %></a></li>

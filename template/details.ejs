@@ -3,10 +3,37 @@
 
 <div class="markdown-body">
 
+<nav class="breadcrumb" aria-label="面包屑">
+  <a href="<%= relative_path %>index.html">首页</a>
+  <span class="sep">›</span>
+  <a href="index.html"><%= brand %></a>
+<% if (typeof category !== 'undefined' && category) { %>
+  <span class="sep">›</span>
+  <a href="category/<%= category.id %>/"><%= category.name %></a>
+<% } %>
+  <span class="sep">›</span>
+  <span class="current"><%= describe.n %></span>
+</nav>
+
 <%- mdhtml %>
 
+<% if (related && related.length) { %>
+<nav class="related-commands" aria-label="相关命令">
+  <h2>相关命令</h2>
+  <ul>
+  <% related.forEach(function (page) { %>
+    <li><a href="<%= relative_path %><%= page.b %>/<%= page.n %>.html"><%= page.n %></a> - <%= page.d %></li>
+  <% }); %>
+  </ul>
+</nav>
+<% } %>
+<% if (prevItem || nextItem) { %>
+<nav class="prev-next" aria-label="上一条与下一条">
+  <% if (prevItem) { %><a class="prev" href="<%= relative_path %><%= prevItem.b %>/<%= prevItem.n %>.html">← <%= prevItem.n %></a><% } %>
+  <% if (nextItem) { %><a class="next" href="<%= relative_path %><%= nextItem.b %>/<%= nextItem.n %>.html"><%= nextItem.n %> →</a><% } %>
+</nav>
+<% } %>
+
 </div>
-<div class="footer">
-<%- include('partials/credit') %>
-</div>
+<%- include('partials/sitefooter') %>
 <%- include('partials/scripts') %>

@@ -1,0 +1,25 @@
+<%- include('partials/head') %><%- include('partials/topbar') %>
+<div class="hotlist category-page">
+  <nav class="breadcrumb" aria-label="面包屑">
+    <a href="<%= relative_path %>index.html">首页</a>
+    <span class="sep">›</span>
+    <a href="<%= branchPrefix %>"><%= branchName %></a>
+    <span class="sep">›</span>
+    <span class="current"><%= category.name %></span>
+  </nav>
+  <h1 class="hotlist-title"><%= branchName %> <%= category.name %></h1>
+  <p class="hotlist-desc"><%= categoryIntro %></p>
+  <nav class="category-links" aria-label="<%= branchName %> 分类">
+  <% categoryNav.forEach(function (c) { %>
+    <a class="category-chip<% if (c.id === category.id) { %> is-active<% } %>" href="../<%= c.id %>/"><%= c.name %><span><%= c.count %></span></a>
+  <% }); %>
+  </nav>
+  <ul>
+  <% items.forEach(function (page) { %>
+    <li><a href="<%= branchPrefix %><%= page.n %>.html"><%= page.n %> - <%= page.d %></a></li>
+  <% }); %>
+  </ul>
+</div>
+
+<%- include('partials/sitefooter') %>
+<%- include('partials/scripts') %>

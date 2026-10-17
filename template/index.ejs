@@ -1,5 +1,16 @@
-<%- include('partials/head') %><div class="warpper">
+<%- include('partials/head') %><div class="warpper home-page">
 <%- include('partials/topbar') %>
+<section class="home-intro">
+  <h1>Linux 与 Kubernetes 命令速查</h1>
+  <p class="home-lead">本站收录 <%= total %> 个 Linux 与 Kubernetes 命令，提供语法、常用参数与使用示例。输入命令名即可快速查找，也可以从下面的热门命令开始。</p>
+  <h2>热门命令</h2>
+  <ul class="hot-commands">
+  <% hotCommands.forEach(function (page) { %>
+    <li><a href="<%= page.b %>/<%= page.n %>.html"><%= page.n %></a></li>
+  <% }); %>
+  </ul>
+  <p class="home-more"><a href="hot.html">查看全部 <%= total %> 个命令 →</a></p>
+</section>
 <%- include('partials/sitefooter') %>
 </div>
 <%- include('partials/scripts') %>

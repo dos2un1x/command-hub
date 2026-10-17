@@ -96,4 +96,14 @@
 它是**关于历史的事实,与页面现在归属哪个分支无关** —— 把页面在分支间迁移后,
 老 URL 依然有效,不需要改这个文件。
 
+构建会把这份清单转成 `deploy/nginx/legacy-redirects.conf` 里的 301 规则,
+不再生成 HTML 跳转页。有 nginx 配置权限时,在站点 `server {}` 内 include 该文件;
+没有权限时可以忽略,旧 `/c/<slug>.html` 会返回 404。
+
 同名跨分支时(如 `pv`、`service`),老 URL 指向**默认分支**的那个。
+
+## 新增 K8s 页面
+
+`command/k8s/` 下的页面必须在 `command/k8s/categories.json` 的 `assignments`
+里归类。漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
+新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。

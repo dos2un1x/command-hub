@@ -1,15 +1,13 @@
 <div class="header<% if (isHome) { %> home<% } else { %> header_list<% } %>">
   <div class="header_inner">
       <div class="logo">
-          <a href="<%= relative_path %>index.html" title="命令搜索引擎">
+          <a href="<%= relative_path %>index.html" title="命令搜索引擎" aria-label="命令搜索引擎首页">
             <%- logo %>
           </a>
       </div>
       <%- include('branch-tabs') %>
       <div class="search">
-          <ul class="search-list" id="result">
-            <!-- <li><a href="#"><strong>find</strong> - 指定目录下查找文件。</a></li> -->
-          </ul>
+          <ul class="search-list" id="result"></ul>
           <input type="text" class="query" id="query" autocomplete="off" autofocus="autofocus" placeholder="<%= placeholder %>"/>
           <div class="enter-input">
               <input type="hidden" id="current_path" value="<%= current_path %>">

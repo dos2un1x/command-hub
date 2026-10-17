@@ -6,6 +6,12 @@ build/
 /public/
 /public.zip
 
+# 老 URL 301 配置,由 npm run build 生成,随 nginx 配置单独部署
+/deploy/
+
+# 百度推送 token,只保存在本机
+/.baidu-token
+
 # 本机工作记录(AI 辅助设计文档),不对外发布
 /docs/superpowers/
 

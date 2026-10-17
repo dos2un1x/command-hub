@@ -20,7 +20,7 @@ npx serve build     # 或 python3 -m http.server -d build 8000
 ```
 command/<分支>/<slug>.md   内容源(Markdown)
 branches.json              分支注册表
-legacy-slugs.json          曾发布过的老 URL 集合(页面迁移后仍保证可访问)
+legacy-slugs.json          老 URL 集合(构建时生成 nginx 301 规则)
 template/                  EJS 模板
 template/snake.ejs         贪吃蛇小游戏页(非命令页)
 template/tetris.ejs        俄罗斯方块小游戏页(非命令页)
@@ -30,6 +30,7 @@ assets/js/tetris-core.js   俄罗斯方块纯逻辑(可单测)
 test/                      单测(node --test)
 scripts/                   构建与校验脚本
 build/                     构建产物(gitignore)
+deploy/nginx/              老 URL 301 配置(gitignore,由 npm run build 生成)
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
 ```
 
@@ -120,13 +121,37 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 `id` 必须与目录名一致。`"default": true` 只能有一个。
 
-### 老 URL 跳转(`legacy-slugs.json`)
+### 老 URL 301(`legacy-slugs.json`)
 
-曾经发布过的 `/c/<slug>.html` 老 URL 固化在这个文件里,构建时按 slug 查当前页面并生成跳转 stub。**这是关于历史的事实,与页面现在归属哪个分支无关** —— 把页面迁到别的分支后,老 URL 依然有效,不需要改这里。
+曾经发布过的 `/c/<slug>.html` 老 URL 固化在这个文件里。构建时按 slug 查当前页面,
+生成 `deploy/nginx/legacy-redirects.conf`,每条形如:
+
+```nginx
+location = /c/ls.html { return 301 https://www.dos2unix.cn/linux/ls.html; }
+```
+
+**不再生成 HTML 跳转 stub。** 这是关于历史的事实,与页面现在归属哪个分支无关 ——
+把页面迁到别的分支后,老 URL 依然有效,不需要改这里。若存在找不到目标页的 slug,
+构建会直接失败,避免出现指向 404 的 301。
 
 `aliases` 用于同一页面曾以多个名字发布的特殊情况(如 `pullgcc` 与 `gcc`)。
 
 同名跨分支时(如 `pv`、`service` 在两个分支都有),老 URL 指向**默认分支**的那个;其余情况按 slug 直接匹配。构建日志会打印实际解析结果。
+
+**部署(可选)**:有 nginx 配置权限时,把 `deploy/nginx/legacy-redirects.conf`
+上传到服务器(例如 `/etc/nginx/snippets/dos2unix-legacy.conf`),在站点
+`server {}` 内加一行:
+
+```nginx
+include /etc/nginx/snippets/dos2unix-legacy.conf;
+```
+
+然后 `nginx -t && nginx -s reload`。**先上 nginx 配置,再发布不含 `/c/` 的新产物**,
+避免旧 URL 出现 404 窗口。
+
+没有 nginx 配置权限时可以忽略该文件:旧 `/c/<slug>.html` 会返回 404。
+基于当前索引状态(百度只收录了 2 个首页,Bing/Google 没有 `/c/` 结果),
+这个损失可以接受;如果以后发现某个旧 URL 有外链,再用托管平台的重定向功能处理。
 
 ## 校验与发布
 
@@ -144,6 +169,52 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 
 > 保真度校验(`fidelity.mjs`)已在迁移完成后退役:它的比对基线是旧站产物 `public/c/*.html`,
 > 该目录已于 2026-10-01 随新站上线清理。历史实现见 commit `96d0bfa`。
+
+## SEO 产物
+
+构建会自动产出:
+
+- `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 888 条)
+- 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
+- `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
+- `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
+
+标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
+`list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
+
+## Kubernetes 二级分类
+
+`command/k8s/categories.json` 定义 K8s 分支的二级分类:
+
+- `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
+- `assignments`: 每个页面 slug → 分类 id
+
+构建时会校验:
+
+- 每个 `command/k8s/*.md` 必须出现在 `assignments` 里
+- `assignments` 里的 slug 必须有对应页面
+- 每个分类至少有 1 个页面
+
+分类页自动生成到 `/k8s/category/<id>/`,并加入 `sitemap.xml`(priority 0.7)。
+`npm run category-map` 会重新生成 `docs/seo/k8s-category-map.md` 供人工审阅。
+
+新增 K8s 页面时,先在 `categories.json` 的 `assignments` 里归类,否则构建失败。
+
+## 百度主动推送
+
+```bash
+npm run build              # 先生成 sitemap.xml
+npm run baidu:push         # 默认推送 www 域名,最多 100 条新增/变更
+npm run baidu:push -- --limit=50
+npm run baidu:push -- --all
+npm run baidu:push -- --site=dos2unix.cn   # 推送裸域版本
+npm run baidu:push -- --dry-run
+```
+
+Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文件(gitignore)。
+已推送状态记录在 `deploy/baidu-pushed.json`,只有内容变化才会再次推送。
+**先部署新版本,再执行推送**——否则百度抓到的是旧页面。
 
 ## 架构说明
 

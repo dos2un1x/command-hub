@@ -1,5 +1,7 @@
 <%- include('partials/head') %><%- include('partials/topbar') %>
 <div class="hotlist">
+  <h1 class="hotlist-title">全部命令列表</h1>
+  <p class="hotlist-desc">共 <%= total %> 个命令，覆盖 <%= branchCount %> 个分支，按分支和字母排序。</p>
 <% branches.forEach(function(b) { %>
   <h2 class="hotlist-branch" id="branch-<%= b.id %>"><%= b.name %><span class="hotlist-count"><%= byBranch[b.id].length %></span></h2>
   <ul>
