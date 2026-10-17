@@ -31,7 +31,6 @@ test/                      单测(node --test)
 scripts/                   构建与校验脚本
 build/                     构建产物(gitignore)
 deploy/nginx/              老 URL 301 配置(gitignore,由 npm run build 生成)
-docs/seo/                  SEO 计划、分类映射表与百度统计方案
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
 ```
 
@@ -190,11 +189,6 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
 当前构建规模:978 个 HTML、944 个命令页、sitemap 974 条、站内链接 23,482 条(校验零 404)。
-详细计划与数据在 `docs/seo/`:
-
-- `p2-content-plan.md`:P2 内容差异化计划与完成记录
-- `linux-category-map.md` / `k8s-category-map.md`:逐条分类映射表(供人工审阅)
-- `baidu-analytics-plan.md`:百度统计方案(已评估,暂未实施)
 
 ## 二级分类(Linux / Kubernetes)
 
@@ -215,7 +209,6 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - 每个分类至少有 1 个页面
 
 分类页自动生成到 `/<branch>/category/<id>/`,并加入 `sitemap.xml`(priority 0.7)。
-`npm run category-map` 会重新生成 `docs/seo/<branch>-category-map.md` 供人工审阅。
 
 新增页面时,先在对应 `categories.json` 的 `assignments` 里归类,否则构建失败。
 
@@ -243,8 +236,6 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 ```
 
 `p` 是**完整路径**(含分支),因此链接拼接是 `${站点根}${p}.html`。这也是构建脚本能直接从 `p` 反推源文件路径(`command/linux/helm.md`)的原因。
-
-分支架构的完整设计文档是本地工作记录(`docs/superpowers/`,未纳入版本库);对外以本 README 为准。
 
 ## 内容覆盖
 
