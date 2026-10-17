@@ -350,6 +350,8 @@ await write(path.join(OUT_DIR, 'js', 'dt.js'), dt);
 // ── 3. 公共渲染参数 ─────────────────────────────────────────
 const total = items.length;
 const branchCount = branches.length;
+const categoryCount = [...categoriesByBranch.values()]
+  .reduce((sum, c) => sum + c.list.length, 0);
 
 const BRANCH_SEO = {
   linux: {
@@ -402,6 +404,7 @@ function base(extra) {
     v: V,
     total,
     branchCount,
+    categoryCount,
     ...extra,
   };
 }

@@ -1,16 +1,31 @@
 <%- include('partials/head') %><div class="warpper home-page">
 <%- include('partials/topbar') %>
-<section class="home-intro">
-  <h1>Linux 与 Kubernetes 命令速查</h1>
+<main class="home-intro">
+  <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>面向运维与开发的命令速查</p>
+  <h1>Linux 与 Kubernetes <span class="home-title-accent">命令速查</span></h1>
   <p class="home-lead">本站收录 <%= total %> 个 Linux 与 Kubernetes 命令，提供语法、常用参数与使用示例。输入命令名即可快速查找，也可以从下面的热门命令开始。</p>
-  <h2>热门命令</h2>
-  <ul class="hot-commands">
-  <% hotCommands.forEach(function (page) { %>
-    <li><a href="<%= page.b %>/<%= page.n %>.html"><%= page.n %></a></li>
-  <% }); %>
+  <ul class="home-stats" aria-label="站点内容统计">
+    <li><strong><%= total %></strong><span>命令</span></li>
+    <li><strong><%= branchCount %></strong><span>分支</span></li>
+    <li><strong><%= categoryCount %></strong><span>分类</span></li>
   </ul>
-  <p class="home-more"><a href="hot.html">查看全部 <%= total %> 个命令 →</a></p>
-</section>
+  <nav class="home-games" aria-label="站内小游戏">
+    <span class="home-games-label">小彩蛋</span>
+    <a href="snake.html">🎮 贪吃蛇</a>
+    <a href="tetris.html">🧱 俄罗斯方块</a>
+  </nav>
+  <section class="home-hot" aria-labelledby="hot-title">
+    <div class="home-section-head">
+      <h2 id="hot-title">热门命令</h2>
+      <a class="home-more" href="hot.html">查看全部 <%= total %> 个 →</a>
+    </div>
+    <ul class="hot-commands">
+    <% hotCommands.forEach(function (page) { %>
+      <li><a href="<%= page.b %>/<%= page.n %>.html"><%= page.n %></a></li>
+    <% }); %>
+    </ul>
+  </section>
+</main>
 <%- include('partials/sitefooter') %>
 </div>
 <%- include('partials/scripts') %>

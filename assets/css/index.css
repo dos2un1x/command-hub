@@ -71,24 +71,107 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 /* ===== 首页正文(SEO P0:让百度有正文可摘,也给用户直达入口) ===== */
 /* 原布局靠 flex 居中 + footer 底部 280px 撑出"搜索框居中"的效果。
    加入正文后内容会超过一屏,居中会导致顶部被裁,故首页改为顶部对齐。 */
-.warpper.home-page{justify-content:flex-start;padding-top:7vh}
-.warpper.home-page .footer{padding-top:16px;padding-bottom:60px}
-.home-intro{max-width:920px;margin:0 auto;padding:24px 27px 20px;text-align:center}
-.home-intro h1{margin:0 0 12px;font-size:26px;line-height:1.35;font-weight:700}
-.home-lead{max-width:720px;margin:0 auto 30px;font-size:14px;line-height:1.9;color:#666}
+.warpper.home-page{
+  position:relative;
+  justify-content:flex-start;
+  padding-top:5vh;
+  background:
+    radial-gradient(1000px 560px at 50% -180px, rgba(33,150,243,.16), transparent 70%),
+    radial-gradient(720px 440px at 88% 4%, rgba(124,58,237,.10), transparent 70%);
+}
+[data-color-mode*='dark'] .warpper.home-page{
+  background:
+    radial-gradient(1000px 560px at 50% -180px, rgba(59,130,246,.24), transparent 70%),
+    radial-gradient(720px 440px at 88% 4%, rgba(139,92,246,.16), transparent 70%);
+}
+.warpper.home-page::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:620px;
+  pointer-events:none;
+  background-image:radial-gradient(rgba(120,120,120,.16) 1px, transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 85%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 85%);
+  opacity:.35;
+}
+.home-page .header.home{width:min(640px,100%)}
+.home-page .header.home .logo{min-height:112px}
+.home-page .header.home .branches{margin:12px 0 18px;padding:4px;border:1px solid var(--color-header-border);border-radius:999px;background:rgba(127,127,127,.05)}
+.home-page .branch-tab{padding:6px 16px;border:0;border-radius:999px;font-size:13px;opacity:.62}
+.home-page .branch-tab:hover{background:var(--color-hover);opacity:1}
+.home-page .branch-tab.is-active{background:linear-gradient(135deg,#2196f3,#6366f1);box-shadow:0 6px 18px rgba(33,150,243,.28);opacity:1}
+.home-page .header.home .search{width:100%;min-width:0}
+.home-page .header .search .query{height:52px;padding:0 18px;font-size:15px;font-weight:500;border-radius:14px 0 0 14px;background:rgba(127,127,127,.06);border-color:var(--color-header-border)}
+.home-page .header .search .query:focus{border-color:#2196f3;box-shadow:0 0 0 4px rgba(33,150,243,.16)}
+.home-page .header .search .enter-input button{height:52px;padding:0 26px;font-size:15px;font-weight:600;color:#fff;border:1px solid transparent;border-radius:0 14px 14px 0;background:linear-gradient(135deg,#2196f3,#6366f1)}
+.home-page .header .search .enter-input button:hover{background:linear-gradient(135deg,#1d86e0,#5457e5);border-color:transparent}
+.home-page .header .search .search-list{top:52px;border-radius:12px;overflow:hidden}
+
+.home-intro{max-width:920px;margin:0 auto;padding:20px 27px 20px;text-align:center}
+.home-eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:5px 13px;border:1px solid var(--color-header-border);border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.04em;color:#777;background:rgba(127,127,127,.06)}
+[data-color-mode*='dark'] .home-eyebrow{color:#aaa}
+.home-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.14)}
+.home-intro h1{margin:0 0 14px;font-size:clamp(28px,4vw,42px);line-height:1.2;font-weight:800;letter-spacing:-.02em}
+.home-title-accent{background:linear-gradient(120deg,#2196f3 10%,#7c3aed 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+[data-color-mode*='dark'] .home-title-accent{background-image:linear-gradient(120deg,#60a5fa 10%,#a78bfa 90%)}
+.home-lead{max-width:680px;margin:0 auto;font-size:14px;line-height:1.9;color:#666}
 [data-color-mode*='dark'] .home-lead{color:#aaa}
-.home-intro h2{margin:0 0 14px;font-size:16px;font-weight:700}
+.home-stats{display:flex;max-width:520px;margin:26px auto 18px;padding:15px 0;border-top:1px solid var(--color-header-border);border-bottom:1px solid var(--color-header-border);list-style:none}
+.home-stats li{position:relative;flex:1;min-width:0;list-style:none}
+.home-stats li+li::before{content:"";position:absolute;left:0;top:50%;width:1px;height:26px;transform:translateY(-50%);background:var(--color-header-border)}
+.home-stats strong{display:block;font-size:22px;line-height:1.15;font-weight:800;font-variant-numeric:tabular-nums}
+.home-stats span{display:block;margin-top:4px;font-size:12px;color:#888}
+.home-games{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 24px;font-size:12px;color:#888}
+[data-color-mode*='dark'] .home-games{color:#aaa}
+.home-games-label{letter-spacing:.08em;opacity:.75}
+.home-games a{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--color-header-border);border-radius:999px;color:inherit;opacity:.82;background:rgba(127,127,127,.04);transition:transform .16s ease,border-color .16s ease,background .16s ease,opacity .16s ease}
+.home-games a:hover{transform:translateY(-1px);border-color:rgba(33,150,243,.5);background:rgba(33,150,243,.08);opacity:1}
+.home-games a:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
+
+.home-hot{max-width:820px;margin:0 auto;padding:20px 22px 22px;border:1px solid var(--color-header-border);border-radius:20px;background:rgba(127,127,127,.035);box-shadow:0 14px 40px rgba(15,23,42,.05);text-align:left}
+[data-color-mode*='dark'] .home-hot{background:rgba(255,255,255,.03);box-shadow:0 14px 40px rgba(0,0,0,.18)}
+.home-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 14px}
+.home-section-head h2{margin:0;font-size:16px;font-weight:700;letter-spacing:.01em}
+.home-section-head h2::before{content:"";display:inline-block;width:4px;height:14px;margin-right:8px;border-radius:2px;background:linear-gradient(180deg,#2196f3,#7c3aed);vertical-align:-2px}
+.home-more{font-size:13px;white-space:nowrap;color:#2196f3}
+.home-more:hover{text-decoration:underline}
 .hot-commands{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0;padding:0;list-style:none}
 .hot-commands li{list-style:none}
 .hot-commands a{display:inline-block;padding:6px 13px;border:1px solid var(--color-header-border);border-radius:16px;font-size:13px;line-height:1.5;color:inherit;opacity:.78;transition:background .15s,opacity .15s}
 .hot-commands a:hover{background:var(--color-hover);opacity:1}
-.home-more{margin:22px 0 0;font-size:13px}
-.home-more a{color:#2196f3}
+.home-page .hot-commands{justify-content:flex-start}
+.home-page .hot-commands a{padding:7px 14px;border-radius:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:1;background:rgba(127,127,127,.05);transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease}
+.home-page .hot-commands a:hover{transform:translateY(-2px);border-color:rgba(33,150,243,.55);background:rgba(33,150,243,.08);box-shadow:0 8px 20px rgba(33,150,243,.14)}
+.home-page .hot-commands a:focus-visible,.home-more:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
+.warpper.home-page .footer{max-width:820px;width:100%;margin:0 auto;padding-top:18px;padding-bottom:56px;border-top:1px solid var(--color-header-border)}
+
+@media (prefers-reduced-motion: reduce){
+  .home-page .hot-commands a{transition:none}
+}
+@media screen and (max-width:840px){
+  .home-intro{padding:16px 20px 18px}
+  .home-hot{padding:16px 16px 18px;border-radius:16px}
+  .home-page .header .search .enter-input button{padding:0 20px}
+}
 @media screen and (max-width:479px){
   .warpper.home-page{padding-top:24px}
+  .home-page .header.home .logo{min-height:92px}
+  .home-page .header.home .branches{margin:10px 0 14px}
+  .home-page .header .search .query,.home-page .header .search .enter-input button{height:48px}
+  .home-page .header .search .search-list{top:48px}
+  .home-page .header .search .enter-input button{padding:0 18px}
   .home-intro{padding:16px 15px 16px}
-  .home-intro h1{font-size:21px}
-  .home-lead{font-size:13px}
+  .home-intro h1{font-size:26px}
+  .home-lead{font-size:13px;line-height:1.8}
+  .home-stats{margin:20px auto 16px;padding:12px 0}
+  .home-stats strong{font-size:19px}
+  .home-games{flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .home-games a{padding:4px 10px}
+  .home-section-head{flex-wrap:wrap;gap:6px 12px}
+  .home-hot{padding:14px 14px 16px}
+  .home-page .hot-commands a{padding:6px 11px;font-size:12px}
 }
 
 /* ===== 分支二级分类 ===== */
