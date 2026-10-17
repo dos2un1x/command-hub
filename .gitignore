@@ -13,7 +13,7 @@ build/
 /.baidu-token
 
 # 本机工作记录(AI 辅助设计文档),不对外发布
-/docs/superpowers/
+/docs/
 
 # 浏览器自动化测试的临时产物(截图、console 日志),不对外发布
 /.playwright-mcp/
