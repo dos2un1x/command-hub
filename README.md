@@ -31,6 +31,7 @@ test/                      单测(node --test)
 scripts/                   构建与校验脚本
 build/                     构建产物(gitignore)
 deploy/nginx/              老 URL 301 配置(gitignore,由 npm run build 生成)
+docs/seo/                  SEO 计划、分类映射表与百度统计方案
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
 ```
 
@@ -93,7 +94,12 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - [标题](https://example.com)
 ```
 
-**两条硬性规则:**
+页面有两种写法,按分支沿用现有风格:
+
+- **Linux(紧凑速查)**:描述之后写 `## 补充说明`,示例用 `### 常用示例`,坑点用 `## 易错点与排错`。存量页多在 20–120 行(中位约 56 行),不强制完整四段式。
+- **Kubernetes(完整条目)**:180–280 行(中位约 244 行),包含 `## 补充说明`、`### 语法`、`### 注意`、`### 相关命令`、`### 参考链接`。
+
+**两条硬性规则(两种写法都适用):**
 
 1. **第一行必须与文件名(去掉 `.md`)完全一致。** 产物文件名取标题,而链接取文件名 —— 二者不一致必然 404。构建会拦截并报错。
 2. **文件名必须是 ASCII slug**(`pod`、`kube-proxy`),不能有空格或中文。中文只能出现在描述与正文里。
@@ -150,7 +156,7 @@ include /etc/nginx/snippets/dos2unix-legacy.conf;
 避免旧 URL 出现 404 窗口。
 
 没有 nginx 配置权限时可以忽略该文件:旧 `/c/<slug>.html` 会返回 404。
-基于当前索引状态(百度只收录了 2 个首页,Bing/Google 没有 `/c/` 结果),
+基于 2026-10 初的索引状态(百度只收录了 2 个首页,Bing/Google 没有 `/c/` 结果),
 这个损失可以接受;如果以后发现某个旧 URL 有外链,再用托管平台的重定向功能处理。
 
 ## 校验与发布
@@ -175,13 +181,20 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 974 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(974 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
 
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
+
+当前构建规模:978 个 HTML、944 个命令页、sitemap 974 条、站内链接 23,482 条(校验零 404)。
+详细计划与数据在 `docs/seo/`:
+
+- `p2-content-plan.md`:P2 内容差异化计划与完成记录
+- `linux-category-map.md` / `k8s-category-map.md`:逐条分类映射表(供人工审阅)
+- `baidu-analytics-plan.md`:百度统计方案(已评估,暂未实施)
 
 ## 二级分类(Linux / Kubernetes)
 
@@ -231,7 +244,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 `p` 是**完整路径**(含分支),因此链接拼接是 `${站点根}${p}.html`。这也是构建脚本能直接从 `p` 反推源文件路径(`command/linux/helm.md`)的原因。
 
-完整设计文档见 `docs/superpowers/specs/2026-09-18-branch-architecture-design.md`。
+分支架构的完整设计文档是本地工作记录(`docs/superpowers/`,未纳入版本库);对外以本 README 为准。
 
 ## 内容覆盖
 
@@ -266,7 +279,7 @@ Operator     crd operator kubebuilder operator-sdk olm controller-runtime aggreg
 
 ## 内容来源与许可
 
-`command/linux/` 下的全部页面,以及 `command/k8s/` 中的 `kubectl`、`helm`、`docker` 三页,取自 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT),是其 `command/*.md` 的内容,合计 621 页。本仓库在此之上加入了分支架构,以及 Kubernetes 分支其余的 251 页内容。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 72 个现代/冷门工具页面(Linux 现为 690 页),补写了 Linux 长尾页的“易错点与排错”,并撰写了 Kubernetes 分支其余 251 页内容。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 
