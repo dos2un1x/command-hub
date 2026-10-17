@@ -34,9 +34,15 @@ deploy/nginx/              老 URL 301 配置(gitignore,由 npm run build 生成
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
 ```
 
+## 首页
+
+`template/index.ejs` 渲染单页入口,包含渐变背景、分支切换、全局搜索、内容统计(命令 / 分支 / 分类)、热门命令卡片,以及“小彩蛋”行里的两个游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分类总数由构建参数 `categoryCount` 注入。
+
+游戏入口位于首屏统计条下方,不再放在页脚;页脚只保留“命令列表”、收藏提示、备案号与署名。
+
 ## 贪吃蛇小游戏
 
-首页页脚有一个「🎮 贪吃蛇」入口,页面在 `/snake.html`。与俄罗斯方块同为站内的非命令页:
+首页“小彩蛋”行有一个「🎮 贪吃蛇」入口,页面在 `/snake.html`。与俄罗斯方块同为站内的非命令页:
 不套顶栏与搜索框,由 `template/snake.ejs` + `assets/js/snake-core.js`(纯逻辑)+
 `assets/js/snake.js`(渲染/输入)组成,随 `npm run build` 一起产出。
 
@@ -45,7 +51,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 俄罗斯方块小游戏
 
-首页页脚另一个入口「🧱 俄罗斯方块」,页面在 `/tetris.html`。与贪吃蛇同构:
+首页“小彩蛋”行另一个入口「🧱 俄罗斯方块」,页面在 `/tetris.html`。与贪吃蛇同构:
 `template/tetris.ejs` + `assets/js/tetris-core.js`(纯逻辑)+ `assets/js/tetris.js`(渲染/输入)。
 
 按键:`←→` 移动(按住连发)、`↑`/`X` 顺时针、`Z` 逆时针、按住 `↓` 软降、`回车` 硬降、
