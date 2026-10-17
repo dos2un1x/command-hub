@@ -175,7 +175,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 914 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(约 926 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -192,7 +192,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 
 当前有两份:
 
-- `command/linux/categories.json`:14 个分类、630 条
+- `command/linux/categories.json`:14 个分类、642 条
 - `command/k8s/categories.json`:12 个分类、254 条
 
 构建时会校验:
@@ -237,7 +237,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 630 | 上游命令集 + 现代 CLI/诊断工具(rg/fd/bat/fzf/yq/perf/bpftrace 等) |
+| Linux | 642 | 上游命令集 + 现代 CLI/诊断/开发工具(rg/fd/bat/fzf/yq/perf/bpftrace/hyperfine/just 等) |
 | Kubernetes | 254 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版等 |
 
 Kubernetes 分支按方向划分:
