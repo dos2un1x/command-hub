@@ -117,10 +117,6 @@
     },
     {
       "b": "linux",
-      "s": "awk"
-    },
-    {
-      "b": "linux",
       "s": "axel"
     },
     {
@@ -221,10 +217,6 @@
     },
     {
       "b": "linux",
-      "s": "cat"
-    },
-    {
-      "b": "linux",
       "s": "cd"
     },
     {
@@ -254,14 +246,6 @@
     {
       "b": "linux",
       "s": "chkconfig"
-    },
-    {
-      "b": "linux",
-      "s": "chmod"
-    },
-    {
-      "b": "linux",
-      "s": "chown"
     },
     {
       "b": "linux",
@@ -333,19 +317,11 @@
     },
     {
       "b": "linux",
-      "s": "cp"
-    },
-    {
-      "b": "linux",
       "s": "cpio"
     },
     {
       "b": "linux",
       "s": "createrepo"
-    },
-    {
-      "b": "linux",
-      "s": "crontab"
     },
     {
       "b": "linux",
@@ -362,10 +338,6 @@
     {
       "b": "linux",
       "s": "cupsenable"
-    },
-    {
-      "b": "linux",
-      "s": "curl"
     },
     {
       "b": "linux",
@@ -393,10 +365,6 @@
     },
     {
       "b": "linux",
-      "s": "df"
-    },
-    {
-      "b": "linux",
       "s": "dhclient"
     },
     {
@@ -421,10 +389,6 @@
     },
     {
       "b": "linux",
-      "s": "dig"
-    },
-    {
-      "b": "linux",
       "s": "dircolors"
     },
     {
@@ -438,10 +402,6 @@
     {
       "b": "linux",
       "s": "disown"
-    },
-    {
-      "b": "linux",
-      "s": "dmesg"
     },
     {
       "b": "linux",
@@ -506,10 +466,6 @@
     {
       "b": "linux",
       "s": "dstat"
-    },
-    {
-      "b": "linux",
-      "s": "du"
     },
     {
       "b": "linux",
@@ -625,19 +581,11 @@
     },
     {
       "b": "linux",
-      "s": "find"
-    },
-    {
-      "b": "linux",
       "s": "findfs"
     },
     {
       "b": "linux",
       "s": "finger"
-    },
-    {
-      "b": "linux",
-      "s": "firewall-cmd"
     },
     {
       "b": "linux",
@@ -658,10 +606,6 @@
     {
       "b": "linux",
       "s": "fping"
-    },
-    {
-      "b": "linux",
-      "s": "free"
     },
     {
       "b": "linux",
@@ -729,10 +673,6 @@
     },
     {
       "b": "linux",
-      "s": "git"
-    },
-    {
-      "b": "linux",
       "s": "gpasswd"
     },
     {
@@ -742,10 +682,6 @@
     {
       "b": "linux",
       "s": "gpm"
-    },
-    {
-      "b": "linux",
-      "s": "grep"
     },
     {
       "b": "linux",
@@ -925,15 +861,7 @@
     },
     {
       "b": "linux",
-      "s": "iostat"
-    },
-    {
-      "b": "linux",
       "s": "iotop"
-    },
-    {
-      "b": "linux",
-      "s": "ip"
     },
     {
       "b": "linux",
@@ -962,10 +890,6 @@
     {
       "b": "linux",
       "s": "iperf"
-    },
-    {
-      "b": "linux",
-      "s": "iptables"
     },
     {
       "b": "linux",
@@ -1009,10 +933,6 @@
     },
     {
       "b": "linux",
-      "s": "journalctl"
-    },
-    {
-      "b": "linux",
       "s": "jq"
     },
     {
@@ -1026,10 +946,6 @@
     {
       "b": "linux",
       "s": "kexec"
-    },
-    {
-      "b": "linux",
-      "s": "kill"
     },
     {
       "b": "linux",
@@ -1086,10 +1002,6 @@
     {
       "b": "linux",
       "s": "lilo"
-    },
-    {
-      "b": "linux",
-      "s": "ln"
     },
     {
       "b": "linux",
@@ -1169,10 +1081,6 @@
     },
     {
       "b": "linux",
-      "s": "ls"
-    },
-    {
-      "b": "linux",
       "s": "lsattr"
     },
     {
@@ -1190,10 +1098,6 @@
     {
       "b": "linux",
       "s": "lsmod"
-    },
-    {
-      "b": "linux",
-      "s": "lsof"
     },
     {
       "b": "linux",
@@ -1285,10 +1189,6 @@
     },
     {
       "b": "linux",
-      "s": "mkdir"
-    },
-    {
-      "b": "linux",
       "s": "mke2fs"
     },
     {
@@ -1333,10 +1233,6 @@
     },
     {
       "b": "linux",
-      "s": "mount"
-    },
-    {
-      "b": "linux",
       "s": "mpstat"
     },
     {
@@ -1346,10 +1242,6 @@
     {
       "b": "linux",
       "s": "mtr"
-    },
-    {
-      "b": "linux",
-      "s": "mv"
     },
     {
       "b": "linux",
@@ -1377,10 +1269,6 @@
     },
     {
       "b": "linux",
-      "s": "nano"
-    },
-    {
-      "b": "linux",
       "s": "nc"
     },
     {
@@ -1398,10 +1286,6 @@
     {
       "b": "linux",
       "s": "nethogs"
-    },
-    {
-      "b": "linux",
-      "s": "netstat"
     },
     {
       "b": "linux",
@@ -1497,10 +1381,6 @@
     },
     {
       "b": "linux",
-      "s": "passwd"
-    },
-    {
-      "b": "linux",
       "s": "paste"
     },
     {
@@ -1561,10 +1441,6 @@
     },
     {
       "b": "linux",
-      "s": "pkill"
-    },
-    {
-      "b": "linux",
       "s": "pmap"
     },
     {
@@ -1594,10 +1470,6 @@
     {
       "b": "linux",
       "s": "prtstat"
-    },
-    {
-      "b": "linux",
-      "s": "ps"
     },
     {
       "b": "linux",
@@ -1761,19 +1633,11 @@
     },
     {
       "b": "linux",
-      "s": "rm"
-    },
-    {
-      "b": "linux",
       "s": "rmdir"
     },
     {
       "b": "linux",
       "s": "rmmod"
-    },
-    {
-      "b": "linux",
-      "s": "route"
     },
     {
       "b": "linux",
@@ -1809,19 +1673,11 @@
     },
     {
       "b": "linux",
-      "s": "rsync"
-    },
-    {
-      "b": "linux",
       "s": "runlevel"
     },
     {
       "b": "linux",
       "s": "sar"
-    },
-    {
-      "b": "linux",
-      "s": "scp"
     },
     {
       "b": "linux",
@@ -1834,10 +1690,6 @@
     {
       "b": "linux",
       "s": "scriptreplay"
-    },
-    {
-      "b": "linux",
-      "s": "sed"
     },
     {
       "b": "linux",
@@ -1981,14 +1833,6 @@
     },
     {
       "b": "linux",
-      "s": "ss"
-    },
-    {
-      "b": "linux",
-      "s": "ssh"
-    },
-    {
-      "b": "linux",
       "s": "ssh-add"
     },
     {
@@ -2025,23 +1869,11 @@
     },
     {
       "b": "linux",
-      "s": "strace"
-    },
-    {
-      "b": "linux",
       "s": "strings"
     },
     {
       "b": "linux",
       "s": "stty"
-    },
-    {
-      "b": "linux",
-      "s": "su"
-    },
-    {
-      "b": "linux",
-      "s": "sudo"
     },
     {
       "b": "linux",
@@ -2077,10 +1909,6 @@
     },
     {
       "b": "linux",
-      "s": "systemctl"
-    },
-    {
-      "b": "linux",
       "s": "systool"
     },
     {
@@ -2089,19 +1917,11 @@
     },
     {
       "b": "linux",
-      "s": "tail"
-    },
-    {
-      "b": "linux",
       "s": "tailf"
     },
     {
       "b": "linux",
       "s": "talk"
-    },
-    {
-      "b": "linux",
-      "s": "tar"
     },
     {
       "b": "linux",
@@ -2150,14 +1970,6 @@
     {
       "b": "linux",
       "s": "tload"
-    },
-    {
-      "b": "linux",
-      "s": "tmux"
-    },
-    {
-      "b": "linux",
-      "s": "top"
     },
     {
       "b": "linux",
@@ -2269,15 +2081,7 @@
     },
     {
       "b": "linux",
-      "s": "useradd"
-    },
-    {
-      "b": "linux",
       "s": "userdel"
-    },
-    {
-      "b": "linux",
-      "s": "usermod"
     },
     {
       "b": "linux",
@@ -2342,10 +2146,6 @@
     {
       "b": "linux",
       "s": "vi"
-    },
-    {
-      "b": "linux",
-      "s": "vmstat"
     },
     {
       "b": "linux",
@@ -2492,6 +2292,207 @@
       "s": "kubectl"
     }
   ],
-  "rewritten_pages": [],
+  "rewritten_pages": [
+    {
+      "b": "linux",
+      "s": "iptables"
+    },
+    {
+      "b": "linux",
+      "s": "firewall-cmd"
+    },
+    {
+      "b": "linux",
+      "s": "useradd"
+    },
+    {
+      "b": "linux",
+      "s": "usermod"
+    },
+    {
+      "b": "linux",
+      "s": "passwd"
+    },
+    {
+      "b": "linux",
+      "s": "su"
+    },
+    {
+      "b": "linux",
+      "s": "sudo"
+    },
+    {
+      "b": "linux",
+      "s": "rsync"
+    },
+    {
+      "b": "linux",
+      "s": "scp"
+    },
+    {
+      "b": "linux",
+      "s": "tmux"
+    },
+    {
+      "b": "linux",
+      "s": "strace"
+    },
+    {
+      "b": "linux",
+      "s": "tail"
+    },
+    {
+      "b": "linux",
+      "s": "nano"
+    },
+    {
+      "b": "linux",
+      "s": "kill"
+    },
+    {
+      "b": "linux",
+      "s": "pkill"
+    },
+    {
+      "b": "linux",
+      "s": "free"
+    },
+    {
+      "b": "linux",
+      "s": "vmstat"
+    },
+    {
+      "b": "linux",
+      "s": "iostat"
+    },
+    {
+      "b": "linux",
+      "s": "netstat"
+    },
+    {
+      "b": "linux",
+      "s": "route"
+    },
+    {
+      "b": "linux",
+      "s": "rm"
+    },
+    {
+      "b": "linux",
+      "s": "mkdir"
+    },
+    {
+      "b": "linux",
+      "s": "ln"
+    },
+    {
+      "b": "linux",
+      "s": "mount"
+    },
+    {
+      "b": "linux",
+      "s": "ip"
+    },
+    {
+      "b": "linux",
+      "s": "ss"
+    },
+    {
+      "b": "linux",
+      "s": "dig"
+    },
+    {
+      "b": "linux",
+      "s": "crontab"
+    },
+    {
+      "b": "linux",
+      "s": "dmesg"
+    },
+    {
+      "b": "linux",
+      "s": "lsof"
+    },
+    {
+      "b": "linux",
+      "s": "ls"
+    },
+    {
+      "b": "linux",
+      "s": "grep"
+    },
+    {
+      "b": "linux",
+      "s": "find"
+    },
+    {
+      "b": "linux",
+      "s": "awk"
+    },
+    {
+      "b": "linux",
+      "s": "sed"
+    },
+    {
+      "b": "linux",
+      "s": "tar"
+    },
+    {
+      "b": "linux",
+      "s": "cat"
+    },
+    {
+      "b": "linux",
+      "s": "chmod"
+    },
+    {
+      "b": "linux",
+      "s": "chown"
+    },
+    {
+      "b": "linux",
+      "s": "ps"
+    },
+    {
+      "b": "linux",
+      "s": "top"
+    },
+    {
+      "b": "linux",
+      "s": "df"
+    },
+    {
+      "b": "linux",
+      "s": "du"
+    },
+    {
+      "b": "linux",
+      "s": "ssh"
+    },
+    {
+      "b": "linux",
+      "s": "curl"
+    },
+    {
+      "b": "linux",
+      "s": "systemctl"
+    },
+    {
+      "b": "linux",
+      "s": "journalctl"
+    },
+    {
+      "b": "linux",
+      "s": "git"
+    },
+    {
+      "b": "linux",
+      "s": "cp"
+    },
+    {
+      "b": "linux",
+      "s": "mv"
+    }
+  ],
   "last_updated": "2026-10-18"
 }

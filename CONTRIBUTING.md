@@ -147,7 +147,7 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 ## 内容来源与 PROVENANCE
 
-新增页面默认属于本站自有内容。`command/linux/` 下有 618 个页面、`command/k8s/` 下有 3 个页面来自 MIT 上游,完整清单、固定 commit 与自有内容边界见仓库根目录的 [PROVENANCE.md](PROVENANCE.md);重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),进度见 [provenance.json](provenance.json)。
+新增页面默认属于本站自有内容。原始基线中 `command/linux/` 有 618 个页面、`command/k8s/` 有 3 个页面来自 MIT 上游;截至 2026-10-18 已重写 50 页,剩余 Linux 568 页 + K8s 3 页。完整清单、固定 commit 与自有内容边界见仓库根目录的 [PROVENANCE.md](PROVENANCE.md);重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),进度见 [provenance.json](provenance.json)。
 
 - **修改上游页面仍是衍生作品**,不能从清单移除,也不能删除 `LICENSE` 中的上游 MIT 段。
 - 只有从 man page、`--help`、官方文档独立重写并通过相似度检查,才能把 slug 从上游清单移入自有内容。

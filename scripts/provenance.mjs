@@ -18,9 +18,24 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const MANIFEST = path.join(ROOT, 'provenance.json');
 
 const args = process.argv.slice(2);
-const upstreamArg = args.includes('--upstream') ? args[args.indexOf('--upstream') + 1] : '';
+const upstreamIdx = args.indexOf('--upstream');
+const upstreamArg = upstreamIdx >= 0 ? args[upstreamIdx + 1] : '';
 const markArgs = args.includes('--mark') ? args.slice(args.indexOf('--mark') + 1) : [];
-const wanted = args.filter((a) => a !== '--upstream' && a !== upstreamArg && a !== '--mark');
+if (upstreamIdx >= 0 && (!upstreamArg || upstreamArg.startsWith('--'))) {
+  throw new Error('--upstream 需要一个已检出的 linux-command 目录');
+}
+const unknown = [];
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--upstream') {
+    i++;
+    continue;
+  }
+  if (args[i] === '--mark') {
+    while (i + 1 < args.length && !args[i + 1].startsWith('--')) i++;
+    continue;
+  }
+  unknown.push(args[i]);
+}
 
 const keyOf = (p) => `${p.b}/${p.s}`;
 const exists = async (p) => {
@@ -168,5 +183,5 @@ if (errors.length) {
   if (errors.length > 60) console.log(`  … 另有 ${errors.length - 60} 个`);
   process.exit(1);
 }
-if (wanted.length) console.log(`(忽略未知参数: ${wanted.join(' ')})`);
+if (unknown.length) console.log(`(忽略未知参数: ${unknown.join(' ')})`);
 console.log('\n✓ provenance 清单与相似度检查通过');

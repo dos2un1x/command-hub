@@ -27,7 +27,7 @@ SOFTWARE.
 以下内容取自 jaywcjlove/linux-command
 (https://github.com/jaywcjlove/linux-command),按下方 MIT 许可分发:
 
-  · command/linux/ 下源自上游的 618 个页面
+  · command/linux/ 下源自上游、尚未重写的 568 个页面
   · command/k8s/ 下的 kubectl、helm、docker 三页(自上游迁入本分支)
 
 上述页面无论是否经过本站修改,均属于上游内容的衍生作品,继续按下方 MIT 许可分发。

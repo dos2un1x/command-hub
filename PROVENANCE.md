@@ -4,7 +4,7 @@
 
 - 机器可读清单：[provenance.json](provenance.json)（重写进度以其中的 `rewritten_pages` 为准）
 - 执行计划：[UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md)
-- 当前进度：仍属上游 621 页，已重写 0 页（每批完成后更新）
+- 当前进度：仍属上游 571 页（Linux 568 + K8s 3），已重写 50 页（每批完成后更新）
 
 ## 上游来源
 
@@ -15,7 +15,9 @@
 
 截至 2026-10-18 对比，`command/linux/` 下 618 个页面来自上游，其中 480 个与上述 commit 逐字节相同，138 个经过本站修改；`command/k8s/` 下另有 3 个页面来自上游。**修改过的页面仍然是上游内容的衍生作品，不能因为改过就移出本清单。**
 
-## 上游内容清单（621 页）
+## 原始上游清单（621 页，历史基线）
+
+本清单是重写前的固定基线，用于审计。某页通过重写验收后，会从 `provenance.json` 的 `original_pages` 移入 `rewritten_pages`；本清单仍保留该 slug 作为历史记录。当前仍属上游的页面以 `provenance.json` 为准。
 
 ### command/linux/（618 页）
 
@@ -682,11 +684,11 @@ kubectl
 - 验收标准：除命令语法与专有名词外，不出现与上游连续相同的长句；页面结构、描述、自测和站内链接通过 `npm run verify`。
 - 每批产出一份记录：slug、参考的官方文档 URL、重写日期、审核结论。
 
-### 阶段 2：高频 50 页
+### 阶段 2：高频 50 页（已完成 2026-10-18）
 
-优先重写搜索量和操作风险最高的页面，例如 ls、grep、find、awk、sed、tar、chmod、chown、ps、top、df、du、ssh、curl、systemctl、journalctl、git、cp、mv、rm、mkdir、ln、mount、ip、ss、dig、crontab、dmesg、lsof、strace、vim、nano、kill、pkill、free、vmstat、iostat、netstat、route、iptables、firewall-cmd、useradd、usermod、passwd、su、sudo、rsync、scp、screen、tmux。
+优先重写搜索量和操作风险最高的页面：ls、grep、find、awk、sed、tar、cat、chmod、chown、ps、top、df、du、ssh、curl、systemctl、journalctl、git、cp、mv、rm、mkdir、ln、mount、ip、ss、dig、crontab、dmesg、lsof、strace、tail、nano、kill、pkill、free、vmstat、iostat、netstat、route、iptables、firewall-cmd、useradd、usermod、passwd、su、sudo、rsync、scp、tmux。
 
-每批 15–20 页，建议 3 批完成。完成后从上游清单移除这 50 个 slug，更新数量，保留其余页面的 MIT 声明。
+已分 5 批完成，50 页全部通过 16-gram/8-gram 相似度检查（0 页命中），并从 `provenance.json` 的上游清单移入 `rewritten_pages`。剩余 568 个 Linux 页与 3 个 K8s 页。
 
 ### 阶段 3：中频 150 页
 

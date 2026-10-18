@@ -20,7 +20,7 @@
 
 ## 二、页面模板
 
-```text
+~~~~text
 <slug>
 ===
 
@@ -45,11 +45,11 @@ command ...
 ## 参考链接
 
 - [官方文档](https://...)
-```
+~~~~
 
 有自测的页面追加：
 
-```text
+~~~~text
 ## 读完自测
 
 合上页面，先回答，再展开对照。
@@ -66,7 +66,7 @@ command ...
 3. ...
 
 </details>
-```
+~~~~
 
 篇幅建议：高频页 50–80 行，中频页 35–60 行，长尾页 25–45 行。
 
@@ -78,15 +78,17 @@ command ...
 - `scripts/provenance.mjs`：清单校验、相似度检查、标记重写完成。
 - `npm run provenance`：默认只读检查；`--upstream <dir>` 对比固定上游；`--mark` 迁移清单。
 
-### 阶段 2：高频 50 页（5 批）
+### 阶段 2：高频 50 页（已完成 2026-10-18）
 
-| 批次 | 页面 |
-|---|---|
-| 1 | ls, grep, find, awk, sed, tar, cat, chmod, chown, ps |
-| 2 | top, df, du, ssh, curl, systemctl, journalctl, git, cp, mv |
-| 3 | rm, mkdir, ln, mount, ip, ss, dig, crontab, dmesg, lsof |
-| 4 | strace, tail, nano, kill, pkill, free, vmstat, iostat, netstat, route |
-| 5 | iptables, firewall-cmd, useradd, usermod, passwd, su, sudo, rsync, scp, tmux |
+| 批次 | 页面 | 状态 |
+|---|---|---|
+| 1 | ls, grep, find, awk, sed, tar, cat, chmod, chown, ps | 已完成 |
+| 2 | top, df, du, ssh, curl, systemctl, journalctl, git, cp, mv | 已完成 |
+| 3 | rm, mkdir, ln, mount, ip, ss, dig, crontab, dmesg, lsof | 已完成 |
+| 4 | strace, tail, nano, kill, pkill, free, vmstat, iostat, netstat, route | 已完成 |
+| 5 | iptables, firewall-cmd, useradd, usermod, passwd, su, sudo, rsync, scp, tmux | 已完成 |
+
+50 页全部通过 `scripts/provenance.mjs --upstream` 的 16-gram/8-gram 相似度检查（0 页命中），并已从 `provenance.json` 的上游清单移入 `rewritten_pages`。
 
 其中 26 页需要保留自测：awk, cat, chmod, chown, crontab, curl, df, dig, dmesg, du, find, git, grep, ip, journalctl, ls, lsof, mount, ps, sed, ss, ssh, strace, systemctl, tar, top。
 
