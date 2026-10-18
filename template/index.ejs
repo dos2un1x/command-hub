@@ -3,7 +3,7 @@
 <main class="home-intro">
   <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>面向运维与开发的八分支速查</p>
   <h1>从命令到排障，<span class="home-title-accent">一套速查</span></h1>
-  <p class="home-lead">本站收录 <%= total %> 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程与 AI/MLOps。按命令查语法，按报错找原因，按场景做选择。</p>
+  <p class="home-lead">本站收录 <%= total %> 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程与 AI/MLOps。先按目的选入口，再按分支深入；按命令查语法，按报错找原因，按场景做选择。</p>
   <ul class="home-stats" aria-label="站点内容统计">
     <li><strong><%= total %></strong><span>条目</span></li>
     <li><strong><%= branchCount %></strong><span>分支</span></li>
@@ -14,6 +14,42 @@
     <a href="snake.html">🎮 贪吃蛇</a>
     <a href="tetris.html">🧱 俄罗斯方块</a>
   </nav>
+  <section class="home-scenarios" aria-labelledby="scenarios-title">
+    <div class="home-section-head">
+      <h2 id="scenarios-title">我想…</h2>
+      <span class="home-branch-note">按目的进入</span>
+    </div>
+    <ul class="home-scenario-grid">
+      <li class="home-scenario-card">
+        <a href="hot.html">
+          <span class="home-scenario-kicker">查</span>
+          <span class="home-scenario-title">查一个命令</span>
+          <span class="home-scenario-desc">按名字、报错或工具直接定位</span>
+        </a>
+      </li>
+      <li class="home-scenario-card">
+        <a href="guide/k8s-learning-path.html">
+          <span class="home-scenario-kicker">学</span>
+          <span class="home-scenario-title">学一个领域</span>
+          <span class="home-scenario-desc">Kubernetes 学习路径：从心智模型到生产</span>
+        </a>
+      </li>
+      <li class="home-scenario-card">
+        <a href="troubleshoot/">
+          <span class="home-scenario-kicker">排</span>
+          <span class="home-scenario-title">排一个故障</span>
+          <span class="home-scenario-desc">按现象、根因、修复组织</span>
+        </a>
+      </li>
+      <li class="home-scenario-card">
+        <a href="tutorial/">
+          <span class="home-scenario-kicker">做</span>
+          <span class="home-scenario-title">上线一个服务</span>
+          <span class="home-scenario-desc">迁移、搭建与升级的完整步骤</span>
+        </a>
+      </li>
+    </ul>
+  </section>
   <section class="home-branches" aria-labelledby="branches-title">
     <div class="home-section-head">
       <h2 id="branches-title">八分支入口</h2>

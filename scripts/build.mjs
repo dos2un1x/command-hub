@@ -161,6 +161,14 @@ const brandTitle = (head) => `${head} - ${site.name}`;
 /** 详情页标题:优先「命令名 命令详解:描述」,过长时降级,保证标题不会过长 */
 function detailTitle(it, dTitle) {
   const suffix = ` - ${site.name}`;
+  if (CONTENT_BRANCHES.has(it.b)) {
+    // 指南/教程不是命令页,标题用描述里冒号前的短语,避免只显示英文 slug。
+    const head = sentenceText(it.d).split(/[：:]/)[0];
+    const chars = Array.from(head);
+    const phrase = chars.length <= 24 ? head : chars.slice(0, 23).join('') + '…';
+    const title = `${phrase}${suffix}`;
+    return Array.from(title).length <= 42 ? title : `${it.n}${suffix}`;
+  }
   const withDesc = dTitle ? `${it.n} 命令详解：${dTitle}${suffix}` : '';
   if (withDesc && Array.from(withDesc).length <= 36) return withDesc;
   const noDesc = `${it.n} 命令详解${suffix}`;
@@ -172,6 +180,10 @@ if (branches.filter((b) => b.default).length !== 1) {
   throw new Error('branches.json 中必须且只能有一个分支标记 "default": true');
 }
 const defaultBranch = branches.find((b) => b.default);
+/** 非命令型分支:详情页标题与描述按“内容页”组织,不套用“命令详解”。 */
+const CONTENT_BRANCHES = new Set(['guide', 'tutorial']);
+/** 详情页页脚的量词:指南/教程/排障/AI 不是“命令”。 */
+const branchUnit = (id) => (['guide', 'tutorial', 'troubleshoot', 'ai'].includes(id) ? '条目' : '命令');
 
 const items = await readSources(branches);
 const logo = await FS.readFile(path.join(TEMPLATE_DIR, 'partials', 'logo-inline.svg'), 'utf8');
@@ -592,6 +604,7 @@ for (const b of branches) {
       ogType: 'website',
       branchH1: seo.label,
       branchIntro: seo.intro(count),
+      learningPath: b.learningPath || null,
       categoryNav: categoryNavFor(b.id),
       items: byBranch[b.id],
       footerCount: count,
@@ -611,6 +624,18 @@ await pmap(items, 8, async (it) => {
   const nextItem = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
   const dText = sentenceText(it.d).replace(/^(是|用于|用来|可以|主要)+/, '');
   const dTitle = titlePhrase(it.d);
+  const isContent = CONTENT_BRANCHES.has(it.b);
+  let mdhtml = await markdownToHTML(it.md);
+  if (isContent) {
+    // 指南/教程的首行是 ASCII slug;正文 H1 用中文描述,避免页面标题只剩 slug。
+    mdhtml = mdhtml
+      .replace(
+        /<h1[^>]*>[\s\S]*?<\/h1>/,
+        `<h1 id="${esc(it.n)}">${esc(sentenceText(it.d))}</h1>`
+      )
+      // H1 已经用了描述,去掉紧跟其后的重复描述段落。
+      .replace(/(<h1[^>]*>[\s\S]*?<\/h1>\s*)<p>[\s\S]*?<\/p>/, '$1');
+  }
   const cats = categoriesByBranch.get(it.b);
   const category = cats ? cats.list.find((c) => c.id === it.cat) || null : null;
   const html = await render('details.ejs', base({
@@ -620,19 +645,24 @@ await pmap(items, 8, async (it) => {
     placeholder: b.searchPlaceholder || '搜索命令',
     isHome: false,
     describe: { n: it.n, d: it.d },
+    displayName: isContent ? sentenceText(it.d).split(/[：:]/)[0] : it.n,
     brand: b.name,
     pageTitle: detailTitle(it, dTitle),
-    metaDescription: `${it.n} 命令：${clipText(dText, 40)}。本页提供 ${it.n} 的语法、常用选项、使用示例与相关命令，支持在线速查。`,
-    metaKeywords: `${it.n},${it.n}命令,${b.name}命令,命令速查`,
+    metaDescription: isContent
+      ? `${clipText(dText, 50)}。本页提供操作步骤、注意事项与相关条目，支持在线速查。`
+      : `${it.n} 命令：${clipText(dText, 40)}。本页提供 ${it.n} 的语法、常用选项、使用示例与相关命令，支持在线速查。`,
+    metaKeywords: isContent
+      ? `${it.n},${b.name},${site.name},速查`
+      : `${it.n},${it.n}命令,${b.name}命令,命令速查`,
     canonicalUrl: `${baseUrl}/${it.b}/${it.n}.html`,
     ogType: 'article',
     category,
     related,
     prevItem,
     nextItem,
-    mdhtml: await markdownToHTML(it.md),
+    mdhtml,
     footerCount: list.length,
-    footerLabel: `个${b.name}命令`,
+    footerLabel: `个${b.name}${branchUnit(it.b)}`,
   }));
   await write(path.join(OUT_DIR, it.b, `${it.n}.html`), html);
 });

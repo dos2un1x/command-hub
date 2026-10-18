@@ -2,6 +2,16 @@
 <div class="hotlist">
   <h1 class="hotlist-title"><%= branchH1 %></h1>
   <p class="hotlist-desc"><%= branchIntro %></p>
+<% if (typeof learningPath !== 'undefined' && learningPath) { %>
+  <a class="branch-learning" href="../<%= learningPath.branch %>/<%= learningPath.slug %>.html">
+    <span class="branch-learning-kicker">学习路径</span>
+    <span class="branch-learning-body">
+      <strong><%= learningPath.title %></strong>
+      <span class="branch-learning-desc"><%= learningPath.desc %></span>
+    </span>
+    <span class="branch-learning-cta">按顺序开始 →</span>
+  </a>
+<% } %>
 <% if (typeof categoryNav !== 'undefined' && categoryNav.length) { %>
   <nav class="category-links" aria-label="<%= brand %> 分类">
   <% categoryNav.forEach(function (c) { %>

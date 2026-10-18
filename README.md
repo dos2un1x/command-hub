@@ -36,7 +36,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染八分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入。
+`template/index.ejs` 渲染八分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务)四张场景卡、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,K8s 分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
 
 首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为八个并列入口;页脚只保留“全部条目”、收藏提示、备案号与署名。
 
@@ -194,7 +194,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1665 个 HTML、1589 个命令页、sitemap 1661 条、站内链接 50,087 条(校验零 404)。
+当前构建规模:1667 个 HTML、1590 个命令页、sitemap 1663 条、站内链接 50,190 条(校验零 404)。
 
 ## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -209,7 +209,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:9 个分类、82 条
 - `command/troubleshoot/categories.json`:6 个分类、119 条
-- `command/guide/categories.json`:3 个分类、90 条
+- `command/guide/categories.json`:4 个分类、91 条
 - `command/middleware/categories.json`:10 个分类、63 条
 - `command/tutorial/categories.json`:2 个分类、55 条
 - `command/ai/categories.json`:5 个分类、54 条
@@ -257,7 +257,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | Kubernetes | 274 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版,以及 Crossplane/Karpenter/Tetragon/Kueue/YuniKorn/Gateway API/External Secrets 等现代平台工具 |
 | DevOps | 82 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage 等 |
 | 排障 | 119 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题 |
-| 指南 | 90 | 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| 指南 | 91 | 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 1 条学习路径,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 63 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB 等现代中间件 |
 | 教程 | 55 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)与搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等) |
 | AI 与 MLOps | 54 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性 |
@@ -325,7 +325,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支分三类(共 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单):
+指南分支分四类(共 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 1 条学习路径):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
@@ -354,6 +354,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            migration-readiness-checklist cost-optimization-checklist
            incident-response-playbook ai-infra-roadmap rag-production-checklist
            gpu-cluster-checklist platform-engineering-roadmap k8s-upgrade-checklist
+学习路径   k8s-learning-path
 ```
 
 中间件分支按服务划分:
@@ -423,7 +424,7 @@ RAG 与应用   langchain llamaindex ragflow dify fastgpt docling
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1589 页,在上游 621 页之外新增 968 页:Linux 234 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks、OpenSCAP/SSSD/PAM 与性能剖析),Kubernetes 271 页,DevOps 82 页,排障 119 页,指南 90 页,中间件 63 页,教程 55 页,AI 与 MLOps 54 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1590 页,在上游 621 页之外新增 969 页:Linux 234 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM 与性能剖析),Kubernetes 271 页,DevOps 82 页,排障 119 页,指南 91 页,中间件 63 页,教程 55 页,AI 与 MLOps 54 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 

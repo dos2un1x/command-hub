@@ -21,7 +21,13 @@
       "name": "Kubernetes",
       "desc": "Kubernetes 运维手册",
       "searchPlaceholder": "搜索 Kubernetes 命令",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "k8s-learning-path",
+        "title": "Kubernetes 学习路径",
+        "desc": "四个阶段：心智模型 → 独立部署 → 故障定位 → 生产运维"
+      }
     },
     {
       "id": "devops",

@@ -12,7 +12,7 @@
   <a href="category/<%= category.id %>/"><%= category.name %></a>
 <% } %>
   <span class="sep">›</span>
-  <span class="current"><%= describe.n %></span>
+  <span class="current"><%= typeof displayName !== 'undefined' && displayName ? displayName : describe.n %></span>
 </nav>
 
 <%- mdhtml %>
