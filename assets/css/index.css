@@ -399,3 +399,7 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
   .header_list .logo{padding-right:0}
   .hotlist,.search_list,.markdown-body{padding-top:24px}
 }
+/* 宽屏时分支标签在整行居中；窄屏内容放不下，保持左对齐横向滚动。 */
+@media screen and (min-width:760px){
+  .header_list .branches{justify-content:center}
+}
