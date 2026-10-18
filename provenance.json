@@ -9,23 +9,11 @@
   "original_pages": [
     {
       "b": "linux",
-      "s": "7z"
-    },
-    {
-      "b": "linux",
       "s": "ab"
     },
     {
       "b": "linux",
       "s": "accept"
-    },
-    {
-      "b": "linux",
-      "s": "ack"
-    },
-    {
-      "b": "linux",
-      "s": "ag"
     },
     {
       "b": "linux",
@@ -65,15 +53,7 @@
     },
     {
       "b": "linux",
-      "s": "ar"
-    },
-    {
-      "b": "linux",
       "s": "arch"
-    },
-    {
-      "b": "linux",
-      "s": "arj"
     },
     {
       "b": "linux",
@@ -105,10 +85,6 @@
     },
     {
       "b": "linux",
-      "s": "atop"
-    },
-    {
-      "b": "linux",
       "s": "atq"
     },
     {
@@ -125,14 +101,6 @@
     },
     {
       "b": "linux",
-      "s": "base64"
-    },
-    {
-      "b": "linux",
-      "s": "basename"
-    },
-    {
-      "b": "linux",
       "s": "batch"
     },
     {
@@ -142,10 +110,6 @@
     {
       "b": "linux",
       "s": "beep"
-    },
-    {
-      "b": "linux",
-      "s": "bg"
     },
     {
       "b": "linux",
@@ -169,43 +133,7 @@
     },
     {
       "b": "linux",
-      "s": "bunzip2"
-    },
-    {
-      "b": "linux",
       "s": "bye"
-    },
-    {
-      "b": "linux",
-      "s": "bzcat"
-    },
-    {
-      "b": "linux",
-      "s": "bzcmp"
-    },
-    {
-      "b": "linux",
-      "s": "bzdiff"
-    },
-    {
-      "b": "linux",
-      "s": "bzgrep"
-    },
-    {
-      "b": "linux",
-      "s": "bzip2"
-    },
-    {
-      "b": "linux",
-      "s": "bzip2recover"
-    },
-    {
-      "b": "linux",
-      "s": "bzless"
-    },
-    {
-      "b": "linux",
-      "s": "bzmore"
     },
     {
       "b": "linux",
@@ -217,19 +145,7 @@
     },
     {
       "b": "linux",
-      "s": "cd"
-    },
-    {
-      "b": "linux",
       "s": "cdrecord"
-    },
-    {
-      "b": "linux",
-      "s": "chage"
-    },
-    {
-      "b": "linux",
-      "s": "chattr"
     },
     {
       "b": "linux",
@@ -237,31 +153,11 @@
     },
     {
       "b": "linux",
-      "s": "chfn"
-    },
-    {
-      "b": "linux",
-      "s": "chgrp"
-    },
-    {
-      "b": "linux",
       "s": "chkconfig"
     },
     {
       "b": "linux",
-      "s": "chpasswd"
-    },
-    {
-      "b": "linux",
       "s": "chroot"
-    },
-    {
-      "b": "linux",
-      "s": "chsh"
-    },
-    {
-      "b": "linux",
-      "s": "cksum"
     },
     {
       "b": "linux",
@@ -277,31 +173,7 @@
     },
     {
       "b": "linux",
-      "s": "cmp"
-    },
-    {
-      "b": "linux",
-      "s": "col"
-    },
-    {
-      "b": "linux",
-      "s": "colrm"
-    },
-    {
-      "b": "linux",
-      "s": "column"
-    },
-    {
-      "b": "linux",
-      "s": "comm"
-    },
-    {
-      "b": "linux",
       "s": "command"
-    },
-    {
-      "b": "linux",
-      "s": "compress"
     },
     {
       "b": "linux",
@@ -317,15 +189,7 @@
     },
     {
       "b": "linux",
-      "s": "cpio"
-    },
-    {
-      "b": "linux",
       "s": "createrepo"
-    },
-    {
-      "b": "linux",
-      "s": "csplit"
     },
     {
       "b": "linux",
@@ -338,10 +202,6 @@
     {
       "b": "linux",
       "s": "cupsenable"
-    },
-    {
-      "b": "linux",
-      "s": "cut"
     },
     {
       "b": "linux",
@@ -377,31 +237,11 @@
     },
     {
       "b": "linux",
-      "s": "diff"
-    },
-    {
-      "b": "linux",
-      "s": "diff3"
-    },
-    {
-      "b": "linux",
-      "s": "diffstat"
-    },
-    {
-      "b": "linux",
       "s": "dircolors"
     },
     {
       "b": "linux",
-      "s": "dirname"
-    },
-    {
-      "b": "linux",
       "s": "dirs"
-    },
-    {
-      "b": "linux",
-      "s": "disown"
     },
     {
       "b": "linux",
@@ -418,10 +258,6 @@
     {
       "b": "linux",
       "s": "domainname"
-    },
-    {
-      "b": "linux",
-      "s": "dos2unix"
     },
     {
       "b": "linux",
@@ -493,10 +329,6 @@
     },
     {
       "b": "linux",
-      "s": "egrep"
-    },
-    {
-      "b": "linux",
       "s": "eject"
     },
     {
@@ -537,10 +369,6 @@
     },
     {
       "b": "linux",
-      "s": "expand"
-    },
-    {
-      "b": "linux",
       "s": "export"
     },
     {
@@ -565,27 +393,11 @@
     },
     {
       "b": "linux",
-      "s": "fg"
-    },
-    {
-      "b": "linux",
-      "s": "fgrep"
-    },
-    {
-      "b": "linux",
       "s": "figlet"
     },
     {
       "b": "linux",
-      "s": "file"
-    },
-    {
-      "b": "linux",
       "s": "findfs"
-    },
-    {
-      "b": "linux",
-      "s": "finger"
     },
     {
       "b": "linux",
@@ -594,14 +406,6 @@
     {
       "b": "linux",
       "s": "fishshell"
-    },
-    {
-      "b": "linux",
-      "s": "fmt"
-    },
-    {
-      "b": "linux",
-      "s": "fold"
     },
     {
       "b": "linux",
@@ -633,10 +437,6 @@
     },
     {
       "b": "linux",
-      "s": "fuser"
-    },
-    {
-      "b": "linux",
       "s": "gcc"
     },
     {
@@ -665,15 +465,7 @@
     },
     {
       "b": "linux",
-      "s": "getfacl"
-    },
-    {
-      "b": "linux",
       "s": "getsebool"
-    },
-    {
-      "b": "linux",
-      "s": "gpasswd"
     },
     {
       "b": "linux",
@@ -682,38 +474,6 @@
     {
       "b": "linux",
       "s": "gpm"
-    },
-    {
-      "b": "linux",
-      "s": "groupadd"
-    },
-    {
-      "b": "linux",
-      "s": "groupdel"
-    },
-    {
-      "b": "linux",
-      "s": "groupmems"
-    },
-    {
-      "b": "linux",
-      "s": "groupmod"
-    },
-    {
-      "b": "linux",
-      "s": "groups"
-    },
-    {
-      "b": "linux",
-      "s": "grpck"
-    },
-    {
-      "b": "linux",
-      "s": "grpconv"
-    },
-    {
-      "b": "linux",
-      "s": "grpunconv"
     },
     {
       "b": "linux",
@@ -729,18 +489,6 @@
     },
     {
       "b": "linux",
-      "s": "gunzip"
-    },
-    {
-      "b": "linux",
-      "s": "gzexe"
-    },
-    {
-      "b": "linux",
-      "s": "gzip"
-    },
-    {
-      "b": "linux",
       "s": "halt"
     },
     {
@@ -753,15 +501,7 @@
     },
     {
       "b": "linux",
-      "s": "head"
-    },
-    {
-      "b": "linux",
       "s": "help"
-    },
-    {
-      "b": "linux",
-      "s": "hexdump"
     },
     {
       "b": "linux",
@@ -793,23 +533,11 @@
     },
     {
       "b": "linux",
-      "s": "htop"
-    },
-    {
-      "b": "linux",
       "s": "htpasswd"
     },
     {
       "b": "linux",
       "s": "hwclock"
-    },
-    {
-      "b": "linux",
-      "s": "iconv"
-    },
-    {
-      "b": "linux",
-      "s": "id"
     },
     {
       "b": "linux",
@@ -837,10 +565,6 @@
     },
     {
       "b": "linux",
-      "s": "indent"
-    },
-    {
-      "b": "linux",
       "s": "info"
     },
     {
@@ -849,19 +573,7 @@
     },
     {
       "b": "linux",
-      "s": "inotifywait"
-    },
-    {
-      "b": "linux",
       "s": "insmod"
-    },
-    {
-      "b": "linux",
-      "s": "install"
-    },
-    {
-      "b": "linux",
-      "s": "iotop"
     },
     {
       "b": "linux",
@@ -913,27 +625,11 @@
     },
     {
       "b": "linux",
-      "s": "ispell"
-    },
-    {
-      "b": "linux",
       "s": "jed"
     },
     {
       "b": "linux",
-      "s": "jobs"
-    },
-    {
-      "b": "linux",
       "s": "joe"
-    },
-    {
-      "b": "linux",
-      "s": "join"
-    },
-    {
-      "b": "linux",
-      "s": "jq"
     },
     {
       "b": "linux",
@@ -949,23 +645,7 @@
     },
     {
       "b": "linux",
-      "s": "killall"
-    },
-    {
-      "b": "linux",
       "s": "l2ping"
-    },
-    {
-      "b": "linux",
-      "s": "last"
-    },
-    {
-      "b": "linux",
-      "s": "lastb"
-    },
-    {
-      "b": "linux",
-      "s": "lastlog"
     },
     {
       "b": "linux",
@@ -981,10 +661,6 @@
     },
     {
       "b": "linux",
-      "s": "less"
-    },
-    {
-      "b": "linux",
       "s": "let"
     },
     {
@@ -997,10 +673,6 @@
     },
     {
       "b": "linux",
-      "s": "lha"
-    },
-    {
-      "b": "linux",
       "s": "lilo"
     },
     {
@@ -1010,10 +682,6 @@
     {
       "b": "linux",
       "s": "local"
-    },
-    {
-      "b": "linux",
-      "s": "locate"
     },
     {
       "b": "linux",
@@ -1042,10 +710,6 @@
     {
       "b": "linux",
       "s": "logwatch"
-    },
-    {
-      "b": "linux",
-      "s": "look"
     },
     {
       "b": "linux",
@@ -1081,10 +745,6 @@
     },
     {
       "b": "linux",
-      "s": "lsattr"
-    },
-    {
-      "b": "linux",
       "s": "lsb_release"
     },
     {
@@ -1106,10 +766,6 @@
     {
       "b": "linux",
       "s": "lsusb"
-    },
-    {
-      "b": "linux",
-      "s": "ltrace"
     },
     {
       "b": "linux",
@@ -1169,10 +825,6 @@
     },
     {
       "b": "linux",
-      "s": "md5sum"
-    },
-    {
-      "b": "linux",
       "s": "mesg"
     },
     {
@@ -1205,15 +857,7 @@
     },
     {
       "b": "linux",
-      "s": "mknod"
-    },
-    {
-      "b": "linux",
       "s": "mkswap"
-    },
-    {
-      "b": "linux",
-      "s": "mktemp"
     },
     {
       "b": "linux",
@@ -1226,10 +870,6 @@
     {
       "b": "linux",
       "s": "modprobe"
-    },
-    {
-      "b": "linux",
-      "s": "more"
     },
     {
       "b": "linux",
@@ -1289,10 +929,6 @@
     },
     {
       "b": "linux",
-      "s": "newusers"
-    },
-    {
-      "b": "linux",
       "s": "nfsstat"
     },
     {
@@ -1301,15 +937,7 @@
     },
     {
       "b": "linux",
-      "s": "nice"
-    },
-    {
-      "b": "linux",
       "s": "nisdomainname"
-    },
-    {
-      "b": "linux",
-      "s": "nl"
     },
     {
       "b": "linux",
@@ -1326,10 +954,6 @@
     {
       "b": "linux",
       "s": "nmtui"
-    },
-    {
-      "b": "linux",
-      "s": "nohup"
     },
     {
       "b": "linux",
@@ -1361,10 +985,6 @@
     },
     {
       "b": "linux",
-      "s": "od"
-    },
-    {
-      "b": "linux",
       "s": "openssl"
     },
     {
@@ -1381,18 +1001,6 @@
     },
     {
       "b": "linux",
-      "s": "paste"
-    },
-    {
-      "b": "linux",
-      "s": "patch"
-    },
-    {
-      "b": "linux",
-      "s": "pathchk"
-    },
-    {
-      "b": "linux",
       "s": "perl"
     },
     {
@@ -1401,27 +1009,11 @@
     },
     {
       "b": "linux",
-      "s": "pgrep"
-    },
-    {
-      "b": "linux",
       "s": "php"
     },
     {
       "b": "linux",
       "s": "pico"
-    },
-    {
-      "b": "linux",
-      "s": "pidof"
-    },
-    {
-      "b": "linux",
-      "s": "pidstat"
-    },
-    {
-      "b": "linux",
-      "s": "pigz"
     },
     {
       "b": "linux",
@@ -1437,14 +1029,6 @@
     },
     {
       "b": "linux",
-      "s": "pkexec"
-    },
-    {
-      "b": "linux",
-      "s": "pmap"
-    },
-    {
-      "b": "linux",
       "s": "popd"
     },
     {
@@ -1457,10 +1041,6 @@
     },
     {
       "b": "linux",
-      "s": "pr"
-    },
-    {
-      "b": "linux",
       "s": "printf"
     },
     {
@@ -1469,19 +1049,7 @@
     },
     {
       "b": "linux",
-      "s": "prtstat"
-    },
-    {
-      "b": "linux",
       "s": "pssh"
-    },
-    {
-      "b": "linux",
-      "s": "pstack"
-    },
-    {
-      "b": "linux",
-      "s": "pstree"
     },
     {
       "b": "linux",
@@ -1521,26 +1089,6 @@
     },
     {
       "b": "linux",
-      "s": "pwck"
-    },
-    {
-      "b": "linux",
-      "s": "pwconv"
-    },
-    {
-      "b": "linux",
-      "s": "pwd"
-    },
-    {
-      "b": "linux",
-      "s": "pwdx"
-    },
-    {
-      "b": "linux",
-      "s": "pwunconv"
-    },
-    {
-      "b": "linux",
       "s": "quota"
     },
     {
@@ -1577,23 +1125,11 @@
     },
     {
       "b": "linux",
-      "s": "realpath"
-    },
-    {
-      "b": "linux",
       "s": "reboot"
     },
     {
       "b": "linux",
       "s": "reject"
-    },
-    {
-      "b": "linux",
-      "s": "rename"
-    },
-    {
-      "b": "linux",
-      "s": "renice"
     },
     {
       "b": "linux",
@@ -1621,19 +1157,11 @@
     },
     {
       "b": "linux",
-      "s": "rev"
-    },
-    {
-      "b": "linux",
       "s": "rexec"
     },
     {
       "b": "linux",
       "s": "rlogin"
-    },
-    {
-      "b": "linux",
-      "s": "rmdir"
     },
     {
       "b": "linux",
@@ -1681,10 +1209,6 @@
     },
     {
       "b": "linux",
-      "s": "screen"
-    },
-    {
-      "b": "linux",
       "s": "script"
     },
     {
@@ -1721,19 +1245,11 @@
     },
     {
       "b": "linux",
-      "s": "setfacl"
-    },
-    {
-      "b": "linux",
       "s": "setpci"
     },
     {
       "b": "linux",
       "s": "setsebool"
-    },
-    {
-      "b": "linux",
-      "s": "setsid"
     },
     {
       "b": "linux",
@@ -1749,10 +1265,6 @@
     },
     {
       "b": "linux",
-      "s": "sha256sum"
-    },
-    {
-      "b": "linux",
       "s": "shift"
     },
     {
@@ -1765,15 +1277,7 @@
     },
     {
       "b": "linux",
-      "s": "shuf"
-    },
-    {
-      "b": "linux",
       "s": "shutdown"
-    },
-    {
-      "b": "linux",
-      "s": "skill"
     },
     {
       "b": "linux",
@@ -1782,10 +1286,6 @@
     {
       "b": "linux",
       "s": "sleep"
-    },
-    {
-      "b": "linux",
-      "s": "slocate"
     },
     {
       "b": "linux",
@@ -1801,10 +1301,6 @@
     },
     {
       "b": "linux",
-      "s": "sort"
-    },
-    {
-      "b": "linux",
       "s": "sosreport"
     },
     {
@@ -1814,14 +1310,6 @@
     {
       "b": "linux",
       "s": "speedtest-cli"
-    },
-    {
-      "b": "linux",
-      "s": "spell"
-    },
-    {
-      "b": "linux",
-      "s": "split"
     },
     {
       "b": "linux",
@@ -1865,19 +1353,7 @@
     },
     {
       "b": "linux",
-      "s": "stat"
-    },
-    {
-      "b": "linux",
-      "s": "strings"
-    },
-    {
-      "b": "linux",
       "s": "stty"
-    },
-    {
-      "b": "linux",
-      "s": "sum"
     },
     {
       "b": "linux",
@@ -1913,14 +1389,6 @@
     },
     {
       "b": "linux",
-      "s": "tac"
-    },
-    {
-      "b": "linux",
-      "s": "tailf"
-    },
-    {
-      "b": "linux",
       "s": "talk"
     },
     {
@@ -1933,19 +1401,11 @@
     },
     {
       "b": "linux",
-      "s": "tee"
-    },
-    {
-      "b": "linux",
       "s": "telinit"
     },
     {
       "b": "linux",
       "s": "telnet"
-    },
-    {
-      "b": "linux",
-      "s": "tempfile"
     },
     {
       "b": "linux",
@@ -1973,15 +1433,7 @@
     },
     {
       "b": "linux",
-      "s": "touch"
-    },
-    {
-      "b": "linux",
       "s": "tput"
-    },
-    {
-      "b": "linux",
-      "s": "tr"
     },
     {
       "b": "linux",
@@ -1994,10 +1446,6 @@
     {
       "b": "linux",
       "s": "trap"
-    },
-    {
-      "b": "linux",
-      "s": "tree"
     },
     {
       "b": "linux",
@@ -2021,10 +1469,6 @@
     },
     {
       "b": "linux",
-      "s": "umask"
-    },
-    {
-      "b": "linux",
       "s": "umount"
     },
     {
@@ -2037,31 +1481,7 @@
     },
     {
       "b": "linux",
-      "s": "unarj"
-    },
-    {
-      "b": "linux",
-      "s": "uncompress"
-    },
-    {
-      "b": "linux",
-      "s": "unexpand"
-    },
-    {
-      "b": "linux",
-      "s": "uniq"
-    },
-    {
-      "b": "linux",
-      "s": "unlink"
-    },
-    {
-      "b": "linux",
       "s": "unprotoize"
-    },
-    {
-      "b": "linux",
-      "s": "unrar"
     },
     {
       "b": "linux",
@@ -2069,27 +1489,11 @@
     },
     {
       "b": "linux",
-      "s": "unzip"
-    },
-    {
-      "b": "linux",
-      "s": "updatedb"
-    },
-    {
-      "b": "linux",
       "s": "uptime"
     },
     {
       "b": "linux",
-      "s": "userdel"
-    },
-    {
-      "b": "linux",
       "s": "usernetctl"
-    },
-    {
-      "b": "linux",
-      "s": "users"
     },
     {
       "b": "linux",
@@ -2153,10 +1557,6 @@
     },
     {
       "b": "linux",
-      "s": "w"
-    },
-    {
-      "b": "linux",
       "s": "wait"
     },
     {
@@ -2166,10 +1566,6 @@
     {
       "b": "linux",
       "s": "watch"
-    },
-    {
-      "b": "linux",
-      "s": "wc"
     },
     {
       "b": "linux",
@@ -2186,14 +1582,6 @@
     {
       "b": "linux",
       "s": "which"
-    },
-    {
-      "b": "linux",
-      "s": "who"
-    },
-    {
-      "b": "linux",
-      "s": "whoami"
     },
     {
       "b": "linux",
@@ -2241,10 +1629,6 @@
     },
     {
       "b": "linux",
-      "s": "xz"
-    },
-    {
-      "b": "linux",
       "s": "yes"
     },
     {
@@ -2254,30 +1638,6 @@
     {
       "b": "linux",
       "s": "yum"
-    },
-    {
-      "b": "linux",
-      "s": "zcat"
-    },
-    {
-      "b": "linux",
-      "s": "zfore"
-    },
-    {
-      "b": "linux",
-      "s": "zip"
-    },
-    {
-      "b": "linux",
-      "s": "zipinfo"
-    },
-    {
-      "b": "linux",
-      "s": "zipsplit"
-    },
-    {
-      "b": "linux",
-      "s": "znew"
     },
     {
       "b": "k8s",
@@ -2492,6 +1852,646 @@
     {
       "b": "linux",
       "s": "mv"
+    },
+    {
+      "b": "linux",
+      "s": "unlink"
+    },
+    {
+      "b": "linux",
+      "s": "updatedb"
+    },
+    {
+      "b": "linux",
+      "s": "ack"
+    },
+    {
+      "b": "linux",
+      "s": "ag"
+    },
+    {
+      "b": "linux",
+      "s": "base64"
+    },
+    {
+      "b": "linux",
+      "s": "cksum"
+    },
+    {
+      "b": "linux",
+      "s": "cmp"
+    },
+    {
+      "b": "linux",
+      "s": "col"
+    },
+    {
+      "b": "linux",
+      "s": "colrm"
+    },
+    {
+      "b": "linux",
+      "s": "column"
+    },
+    {
+      "b": "linux",
+      "s": "comm"
+    },
+    {
+      "b": "linux",
+      "s": "csplit"
+    },
+    {
+      "b": "linux",
+      "s": "cut"
+    },
+    {
+      "b": "linux",
+      "s": "diff"
+    },
+    {
+      "b": "linux",
+      "s": "diff3"
+    },
+    {
+      "b": "linux",
+      "s": "diffstat"
+    },
+    {
+      "b": "linux",
+      "s": "dos2unix"
+    },
+    {
+      "b": "linux",
+      "s": "egrep"
+    },
+    {
+      "b": "linux",
+      "s": "expand"
+    },
+    {
+      "b": "linux",
+      "s": "fgrep"
+    },
+    {
+      "b": "linux",
+      "s": "bzgrep"
+    },
+    {
+      "b": "linux",
+      "s": "bzip2"
+    },
+    {
+      "b": "linux",
+      "s": "bzip2recover"
+    },
+    {
+      "b": "linux",
+      "s": "bzless"
+    },
+    {
+      "b": "linux",
+      "s": "bzmore"
+    },
+    {
+      "b": "linux",
+      "s": "compress"
+    },
+    {
+      "b": "linux",
+      "s": "cpio"
+    },
+    {
+      "b": "linux",
+      "s": "gunzip"
+    },
+    {
+      "b": "linux",
+      "s": "gzexe"
+    },
+    {
+      "b": "linux",
+      "s": "gzip"
+    },
+    {
+      "b": "linux",
+      "s": "lha"
+    },
+    {
+      "b": "linux",
+      "s": "pigz"
+    },
+    {
+      "b": "linux",
+      "s": "unarj"
+    },
+    {
+      "b": "linux",
+      "s": "uncompress"
+    },
+    {
+      "b": "linux",
+      "s": "unrar"
+    },
+    {
+      "b": "linux",
+      "s": "unzip"
+    },
+    {
+      "b": "linux",
+      "s": "xz"
+    },
+    {
+      "b": "linux",
+      "s": "zcat"
+    },
+    {
+      "b": "linux",
+      "s": "zfore"
+    },
+    {
+      "b": "linux",
+      "s": "zip"
+    },
+    {
+      "b": "linux",
+      "s": "basename"
+    },
+    {
+      "b": "linux",
+      "s": "cd"
+    },
+    {
+      "b": "linux",
+      "s": "chattr"
+    },
+    {
+      "b": "linux",
+      "s": "dirname"
+    },
+    {
+      "b": "linux",
+      "s": "file"
+    },
+    {
+      "b": "linux",
+      "s": "install"
+    },
+    {
+      "b": "linux",
+      "s": "locate"
+    },
+    {
+      "b": "linux",
+      "s": "lsattr"
+    },
+    {
+      "b": "linux",
+      "s": "mknod"
+    },
+    {
+      "b": "linux",
+      "s": "mktemp"
+    },
+    {
+      "b": "linux",
+      "s": "pathchk"
+    },
+    {
+      "b": "linux",
+      "s": "pwd"
+    },
+    {
+      "b": "linux",
+      "s": "realpath"
+    },
+    {
+      "b": "linux",
+      "s": "rename"
+    },
+    {
+      "b": "linux",
+      "s": "rmdir"
+    },
+    {
+      "b": "linux",
+      "s": "slocate"
+    },
+    {
+      "b": "linux",
+      "s": "stat"
+    },
+    {
+      "b": "linux",
+      "s": "tempfile"
+    },
+    {
+      "b": "linux",
+      "s": "touch"
+    },
+    {
+      "b": "linux",
+      "s": "tree"
+    },
+    {
+      "b": "linux",
+      "s": "shuf"
+    },
+    {
+      "b": "linux",
+      "s": "sort"
+    },
+    {
+      "b": "linux",
+      "s": "spell"
+    },
+    {
+      "b": "linux",
+      "s": "split"
+    },
+    {
+      "b": "linux",
+      "s": "strings"
+    },
+    {
+      "b": "linux",
+      "s": "sum"
+    },
+    {
+      "b": "linux",
+      "s": "tac"
+    },
+    {
+      "b": "linux",
+      "s": "tailf"
+    },
+    {
+      "b": "linux",
+      "s": "tee"
+    },
+    {
+      "b": "linux",
+      "s": "tr"
+    },
+    {
+      "b": "linux",
+      "s": "unexpand"
+    },
+    {
+      "b": "linux",
+      "s": "uniq"
+    },
+    {
+      "b": "linux",
+      "s": "wc"
+    },
+    {
+      "b": "linux",
+      "s": "7z"
+    },
+    {
+      "b": "linux",
+      "s": "ar"
+    },
+    {
+      "b": "linux",
+      "s": "arj"
+    },
+    {
+      "b": "linux",
+      "s": "bunzip2"
+    },
+    {
+      "b": "linux",
+      "s": "bzcat"
+    },
+    {
+      "b": "linux",
+      "s": "bzcmp"
+    },
+    {
+      "b": "linux",
+      "s": "bzdiff"
+    },
+    {
+      "b": "linux",
+      "s": "zipinfo"
+    },
+    {
+      "b": "linux",
+      "s": "zipsplit"
+    },
+    {
+      "b": "linux",
+      "s": "znew"
+    },
+    {
+      "b": "linux",
+      "s": "chage"
+    },
+    {
+      "b": "linux",
+      "s": "chfn"
+    },
+    {
+      "b": "linux",
+      "s": "chgrp"
+    },
+    {
+      "b": "linux",
+      "s": "chpasswd"
+    },
+    {
+      "b": "linux",
+      "s": "chsh"
+    },
+    {
+      "b": "linux",
+      "s": "finger"
+    },
+    {
+      "b": "linux",
+      "s": "getfacl"
+    },
+    {
+      "b": "linux",
+      "s": "gpasswd"
+    },
+    {
+      "b": "linux",
+      "s": "groupadd"
+    },
+    {
+      "b": "linux",
+      "s": "groupdel"
+    },
+    {
+      "b": "linux",
+      "s": "groupmems"
+    },
+    {
+      "b": "linux",
+      "s": "groupmod"
+    },
+    {
+      "b": "linux",
+      "s": "groups"
+    },
+    {
+      "b": "linux",
+      "s": "grpck"
+    },
+    {
+      "b": "linux",
+      "s": "grpconv"
+    },
+    {
+      "b": "linux",
+      "s": "grpunconv"
+    },
+    {
+      "b": "linux",
+      "s": "id"
+    },
+    {
+      "b": "linux",
+      "s": "last"
+    },
+    {
+      "b": "linux",
+      "s": "lastb"
+    },
+    {
+      "b": "linux",
+      "s": "lastlog"
+    },
+    {
+      "b": "linux",
+      "s": "newusers"
+    },
+    {
+      "b": "linux",
+      "s": "pkexec"
+    },
+    {
+      "b": "linux",
+      "s": "pwck"
+    },
+    {
+      "b": "linux",
+      "s": "pwconv"
+    },
+    {
+      "b": "linux",
+      "s": "pwunconv"
+    },
+    {
+      "b": "linux",
+      "s": "setfacl"
+    },
+    {
+      "b": "linux",
+      "s": "umask"
+    },
+    {
+      "b": "linux",
+      "s": "userdel"
+    },
+    {
+      "b": "linux",
+      "s": "users"
+    },
+    {
+      "b": "linux",
+      "s": "w"
+    },
+    {
+      "b": "linux",
+      "s": "who"
+    },
+    {
+      "b": "linux",
+      "s": "whoami"
+    },
+    {
+      "b": "linux",
+      "s": "atop"
+    },
+    {
+      "b": "linux",
+      "s": "bg"
+    },
+    {
+      "b": "linux",
+      "s": "disown"
+    },
+    {
+      "b": "linux",
+      "s": "fg"
+    },
+    {
+      "b": "linux",
+      "s": "fuser"
+    },
+    {
+      "b": "linux",
+      "s": "fmt"
+    },
+    {
+      "b": "linux",
+      "s": "fold"
+    },
+    {
+      "b": "linux",
+      "s": "head"
+    },
+    {
+      "b": "linux",
+      "s": "hexdump"
+    },
+    {
+      "b": "linux",
+      "s": "iconv"
+    },
+    {
+      "b": "linux",
+      "s": "indent"
+    },
+    {
+      "b": "linux",
+      "s": "ispell"
+    },
+    {
+      "b": "linux",
+      "s": "join"
+    },
+    {
+      "b": "linux",
+      "s": "jq"
+    },
+    {
+      "b": "linux",
+      "s": "less"
+    },
+    {
+      "b": "linux",
+      "s": "look"
+    },
+    {
+      "b": "linux",
+      "s": "md5sum"
+    },
+    {
+      "b": "linux",
+      "s": "more"
+    },
+    {
+      "b": "linux",
+      "s": "nl"
+    },
+    {
+      "b": "linux",
+      "s": "od"
+    },
+    {
+      "b": "linux",
+      "s": "paste"
+    },
+    {
+      "b": "linux",
+      "s": "patch"
+    },
+    {
+      "b": "linux",
+      "s": "pr"
+    },
+    {
+      "b": "linux",
+      "s": "rev"
+    },
+    {
+      "b": "linux",
+      "s": "sha256sum"
+    },
+    {
+      "b": "linux",
+      "s": "htop"
+    },
+    {
+      "b": "linux",
+      "s": "inotifywait"
+    },
+    {
+      "b": "linux",
+      "s": "iotop"
+    },
+    {
+      "b": "linux",
+      "s": "jobs"
+    },
+    {
+      "b": "linux",
+      "s": "killall"
+    },
+    {
+      "b": "linux",
+      "s": "ltrace"
+    },
+    {
+      "b": "linux",
+      "s": "nice"
+    },
+    {
+      "b": "linux",
+      "s": "nohup"
+    },
+    {
+      "b": "linux",
+      "s": "pgrep"
+    },
+    {
+      "b": "linux",
+      "s": "pidof"
+    },
+    {
+      "b": "linux",
+      "s": "pidstat"
+    },
+    {
+      "b": "linux",
+      "s": "pmap"
+    },
+    {
+      "b": "linux",
+      "s": "prtstat"
+    },
+    {
+      "b": "linux",
+      "s": "pstack"
+    },
+    {
+      "b": "linux",
+      "s": "pstree"
+    },
+    {
+      "b": "linux",
+      "s": "pwdx"
+    },
+    {
+      "b": "linux",
+      "s": "renice"
+    },
+    {
+      "b": "linux",
+      "s": "screen"
+    },
+    {
+      "b": "linux",
+      "s": "setsid"
+    },
+    {
+      "b": "linux",
+      "s": "skill"
     }
   ],
   "last_updated": "2026-10-18"
