@@ -89,6 +89,7 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 | 代码围栏 | **一律用 ` ```shell `** —— YAML 清单、PromQL、rego、Go 片段都用它 |
 | 坑点小节 | 写**真实易踩的坑**,不写泛泛的最佳实践 |
 | 参考资料 | 指向官方文档,不用第三方博客 |
+| 站内链接 | 指南/路线图优先用真实 Markdown 链接;站内绝对路径(`/k8s/kubectl.html`)和相对路径都支持,`check-links` 会校验 |
 
 ## 内容质量要求
 
@@ -143,14 +144,14 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 八个分支都已接入二级分类,页面必须在对应文件里归类:
 
-- `command/linux/categories.json`:15 个分类、842 条
+- `command/linux/categories.json`:15 个分类、852 条
 - `command/k8s/categories.json`:12 个分类、274 条
-- `command/devops/categories.json`:9 个分类、67 条
-- `command/troubleshoot/categories.json`:6 个分类、97 条
-- `command/guide/categories.json`:3 个分类、70 条
+- `command/devops/categories.json`:9 个分类、82 条
+- `command/troubleshoot/categories.json`:6 个分类、119 条
+- `command/guide/categories.json`:3 个分类、90 条
 - `command/middleware/categories.json`:10 个分类、63 条
-- `command/tutorial/categories.json`:2 个分类、35 条
-- `command/ai/categories.json`:4 个分类、24 条
+- `command/tutorial/categories.json`:2 个分类、55 条
+- `command/ai/categories.json`:5 个分类、54 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。

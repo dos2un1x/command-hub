@@ -116,7 +116,10 @@ for (const file of htmlFiles) {
     if (!url) continue;
 
     linkCount++;
-    const target = path.resolve(dir, url);
+    // 站内绝对路径(/k8s/...)按产物根目录解析;相对路径按当前页面目录解析。
+    const target = url.startsWith('/')
+      ? path.join(OUT, url.replace(/^\//, ''))
+      : path.resolve(dir, url);
     const candidates = [target, path.join(target, 'index.html')];
     if (!(await candidates.reduce(async (acc, c) => (await acc) || (await exists(c)), Promise.resolve(false)))) {
       errors.push(`${rel(file)} → 断链 ${url}`);

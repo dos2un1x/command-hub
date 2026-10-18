@@ -381,17 +381,17 @@ const BRANCH_SEO = {
   devops: {
     label: 'DevOps 工具手册',
     intro: (n) =>
-      `收录 ${n} 个 DevOps 条目，覆盖 CI/CD、发布自动化、云 CLI、IaC、容器、安全供应链与可观测性。`,
+      `收录 ${n} 个 DevOps 条目，覆盖 CI/CD、发布自动化、云 CLI、IaC、容器、供应链安全、平台工程与可观测性。`,
   },
   troubleshoot: {
     label: '故障排查手册',
     intro: (n) =>
-      `收录 ${n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、证书、Kubernetes 与中间件。`,
+      `收录 ${n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、JVM/Go/Node、Kubernetes 与中间件。`,
   },
   guide: {
     label: '工具对比与速查表',
     intro: (n) =>
-      `收录 ${n} 个指南条目，包含工具对比、选型建议与高频命令速查表，帮助在相似方案之间做决定。`,
+      `收录 ${n} 个指南条目，包含工具对比、选型建议、高频命令速查表和上线检查清单，帮助在相似方案之间做决定。`,
   },
   middleware: {
     label: '中间件手册',
@@ -406,7 +406,7 @@ const BRANCH_SEO = {
   ai: {
     label: 'AI 与 MLOps 工具手册',
     intro: (n) =>
-      `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、实验跟踪与数据标注。`,
+      `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪与评估。`,
   },
 };
 const branchSeo = (b) =>

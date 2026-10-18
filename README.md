@@ -186,7 +186,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1543 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1661 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -194,7 +194,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1547 个 HTML、1472 个命令页、sitemap 1543 条、站内链接 46,222 条(校验零 404)。
+当前构建规模:1665 个 HTML、1589 个命令页、sitemap 1661 条、站内链接 50,087 条(校验零 404)。
 
 ## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -205,14 +205,14 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 
 当前有八份:
 
-- `command/linux/categories.json`:15 个分类、842 条
+- `command/linux/categories.json`:15 个分类、852 条
 - `command/k8s/categories.json`:12 个分类、274 条
-- `command/devops/categories.json`:9 个分类、67 条
-- `command/troubleshoot/categories.json`:6 个分类、97 条
-- `command/guide/categories.json`:3 个分类、70 条
+- `command/devops/categories.json`:9 个分类、82 条
+- `command/troubleshoot/categories.json`:6 个分类、119 条
+- `command/guide/categories.json`:3 个分类、90 条
 - `command/middleware/categories.json`:10 个分类、63 条
-- `command/tutorial/categories.json`:2 个分类、35 条
-- `command/ai/categories.json`:4 个分类、24 条
+- `command/tutorial/categories.json`:2 个分类、55 条
+- `command/ai/categories.json`:5 个分类、54 条
 
 构建时会校验:
 
@@ -253,14 +253,14 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 842 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,以及 py-spy/async-profiler/bpftool/ftrace 等构建、数据与性能工具 |
+| Linux | 852 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,以及 OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop 等构建、数据、安全与性能工具 |
 | Kubernetes | 274 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版,以及 Crossplane/Karpenter/Tetragon/Kueue/YuniKorn/Gateway API/External Secrets 等现代平台工具 |
-| DevOps | 67 | GitHub Actions、GitLab CI、Jenkins、发布自动化、AWS/GCP/Azure/阿里云/腾讯云/华为云/火山引擎 CLI、Terraform/OpenTofu/Pulumi/Ansible、容器、安全供应链与可观测性工具 |
-| 排障 | 97 | 按报错/现象组织:系统、磁盘、网络、权限证书、Nginx、MySQL/PostgreSQL、Redis/Kafka、K8s 控制面与中间件连接问题 |
-| 指南 | 70 | 31 个工具对比 + 29 个速查表 + 10 个路线图/检查清单,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本与事故响应 |
+| DevOps | 82 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage 等 |
+| 排障 | 119 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题 |
+| 指南 | 90 | 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 63 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB 等现代中间件 |
-| 教程 | 35 | 迁移与升级(Redis→Valkey、Ingress NGINX→Gateway API、MySQL/PostgreSQL 升级等)与搭建实战(Argo CD、Istio、Vault、Harbor、Prometheus/Loki HA、MySQL/MongoDB 高可用等) |
-| AI 与 MLOps | 24 | GPU 监控、CUDA/NCCL、Ollama/vLLM/SGLang/Triton 推理、torchrun/DeepSpeed/Ray 训练、LLaMA-Factory 微调、MLflow/DVC/W&B 实验管理与 lm-eval 评测 |
+| 教程 | 55 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)与搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等) |
+| AI 与 MLOps | 54 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性 |
 
 Kubernetes 分支按方向划分:
 
@@ -290,14 +290,15 @@ DevOps 分支按方向划分:
 
 ```
 持续集成与交付   github-actions gitlab-ci jenkins gitlab-runner act drone buildkite-agent
-                 circleci concourse dagger woodpecker gitea-actions tkn
+                 buildkite circleci concourse dagger woodpecker gitea-actions tkn backstage
 发布自动化       semantic-release release-please goreleaser renovate dependabot
-代码质量         pre-commit lefthook commitlint
+代码质量         pre-commit lefthook commitlint ansible-lint molecule
 云厂商 CLI       aws gcloud gsutil bq az aliyun doctl hcloud openstack oci
 基础设施即代码   terraform opentofu terragrunt pulumi ansible-playbook ansible-vault
-                 ansible-galaxy packer vagrant nomad
-容器与镜像       docker-compose docker-buildx buildctl crane regctl dive
-安全与供应链     grype syft hadolint gitleaks semgrep
+                 ansible-galaxy packer vagrant nomad helmfile cdk8s atlantis infracost tflint
+容器与镜像       docker-compose docker-buildx buildctl crane regctl dive oras
+安全与供应链     grype syft hadolint gitleaks semgrep tfsec kics terrascan
+                 slsa-verifier in-toto
 可观测性         promtool amtool logcli otel-cli
 消息系统         kafka-topics nats pulsar
 ```
@@ -307,19 +308,24 @@ DevOps 分支按方向划分:
 ```
 系统与进程       oom-killed too-many-open-files cpu-100 load-average-high
                  zombie-process process-stuck memory-leak boot-failure
+                 jvm-gc-overhead metaspace-oom thread-deadlock goroutine-leak
+                 node-heap-oom event-loop-blocked hung-task time-drift
 磁盘与文件系统   no-space-left inode-exhausted read-only-filesystem disk-io-high
-                 fsck-failed mount-failed
+                 fsck-failed mount-failed disk-readonly
 网络与 DNS       connection-refused connection-timeout dns-resolution-failed port-in-use
                  502-bad-gateway 504-gateway-timeout tls-handshake-failed packet-loss
+                 mtu-blackhole nat-port-exhausted
 权限与证书       permission-denied sudo-failed selinux-denied certificate-expired
                  certificate-untrusted ssh-permission-denied
 Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe-failed
-                 node-notready k8s-dns-failed k8s-pvc-pending
-服务与中间件     redis-connection-failed mysql-connection-failed
-                 postgres-connection-failed kafka-consumer-lag
+                 node-notready k8s-dns-failed k8s-pvc-pending etcd-slow apiserver-429
+                 kubelet-not-ready cni-plugin-failed csi-mount-failed terminating-stuck
+服务与中间件     redis-connection-failed mysql-connection-failed postgres-connection-failed
+                 kafka-consumer-lag postgres-lock-wait postgres-connection-exhausted
+                 redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支分三类(共 31 个工具对比 + 29 个速查表 + 10 个路线图/检查清单):
+指南分支分三类(共 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
@@ -327,7 +333,10 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            ext4-vs-xfs btrfs-vs-zfs psql-vs-mysql kafka-vs-pulsar nats-vs-kafka
            argocd-vs-flux ansible-vs-terraform prometheus-vs-victoriametrics
            kafka-vs-rabbitmq redis-vs-memcached mysql-vs-mariadb envoy-vs-nginx
-           traefik-vs-nginx terraform-vs-cloudformation 等
+           traefik-vs-nginx terraform-vs-cloudformation ollama-vs-vllm
+           vllm-vs-sglang qdrant-vs-milvus emqx-vs-mosquitto temporal-vs-airflow
+           valkey-vs-redis crossplane-vs-terraform karpenter-vs-cluster-autoscaler
+           envoy-gateway-vs-nginx-ingress pgvector-vs-qdrant
 速查表     linux-permission-cheatsheet k8s-troubleshooting-cheatsheet
            git-cheatsheet network-troubleshooting-cheatsheet bash-cheatsheet
            kubectl-cheatsheet docker-cheatsheet terraform-cheatsheet
@@ -337,11 +346,14 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            jq-cheatsheet yq-cheatsheet openssl-cheatsheet curl-cheatsheet
            promql-cheatsheet logql-cheatsheet nginx-cheatsheet redis-cheatsheet
            mysql-cheatsheet postgres-cheatsheet kafka-cheatsheet
+           helm-cheatsheet kustomize-cheatsheet dockerfile-cheatsheet
+           argocd-cheatsheet gpu-cheatsheet
 路线图     k8s-production-checklist linux-performance-triage observability-roadmap
            database-selection-roadmap container-security-checklist
            cicd-maturity-roadmap sre-oncall-checklist
            migration-readiness-checklist cost-optimization-checklist
-           incident-response-playbook
+           incident-response-playbook ai-infra-roadmap rag-production-checklist
+           gpu-cluster-checklist platform-engineering-roadmap k8s-upgrade-checklist
 ```
 
 中间件分支按服务划分:
@@ -373,7 +385,11 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
              migrate-postgresql-major-version migrate-nginx-to-caddy
              migrate-helm-to-kustomize migrate-jenkins-to-github-actions
              migrate-elk-to-loki migrate-redis-to-valkey
-             migrate-ingress-nginx-to-gateway-api
+             migrate-ingress-nginx-to-gateway-api migrate-mysql-to-postgresql
+             migrate-elasticsearch-to-opensearch migrate-prometheus-to-victoriametrics
+             migrate-nginx-ingress-to-traefik migrate-jenkins-to-gitlab-ci
+             migrate-helm-to-argo-cd migrate-vm-to-kubernetes
+             migrate-docker-compose-to-k8s
 搭建与实战   build-k8s-cluster build-kafka-cluster build-postgresql-ha
              build-redis-cluster build-observability-stack build-cicd-pipeline
              build-argocd-gitops build-istio-mesh build-velero-backup
@@ -381,16 +397,24 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
              build-loki-ha build-cert-manager build-external-dns
              build-sealed-secrets build-argo-rollouts build-kyverno-policies
              build-cilium-network build-postgresql-pitr build-mysql-ha
-             build-mongodb-replica-set build-kafka-connect
+             build-mongodb-replica-set build-kafka-connect build-argo-workflows
+             build-tekton build-flux build-gatekeeper build-falco build-openbao
+             build-temporal build-airflow build-clickhouse build-starrocks
+             build-minio build-ceph
 ```
 
 AI 与 MLOps 分支按方向划分:
 
 ```
 GPU 与加速   nvidia-smi nvitop nvtop cuda nccl dcgm-exporter
+             nvidia-container-toolkit hami gpu-burn bitsandbytes flash-attn transformers
 推理与服务   ollama vllm sglang llama-server triton huggingface-cli
+             tgi lmdeploy xinference openllm tensorrt-llm gpustack
 训练与编排   torchrun deepspeed accelerate ray kubeflow llama-factory
+             peft trl axolotl unsloth megatron-lm optuna
+RAG 与应用   langchain llamaindex ragflow dify fastgpt docling
 实验与数据   mlflow dvc wandb tensorboard label-studio lm-eval
+             langfuse phoenix evidently clearml comet neptune
 ```
 
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
@@ -399,7 +423,7 @@ GPU 与加速   nvidia-smi nvitop nvtop cuda nccl dcgm-exporter
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1472 页,在上游 621 页之外新增 851 页:Linux 224 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks 与性能剖析),Kubernetes 271 页,DevOps 67 页,排障 97 页,指南 70 页,中间件 63 页,教程 35 页,AI 与 MLOps 24 页。其中 P7 新增 111 页:教程 20 页、中间件 22 页、AI 24 页、Kubernetes 20 页、指南路线图 10 页、Linux 精选 15 页。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1589 页,在上游 621 页之外新增 968 页:Linux 234 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks、OpenSCAP/SSSD/PAM 与性能剖析),Kubernetes 271 页,DevOps 82 页,排障 119 页,指南 90 页,中间件 63 页,教程 55 页,AI 与 MLOps 54 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 
