@@ -29,6 +29,13 @@
       "desc": "CI/CD、发布自动化与云原生工具",
       "searchPlaceholder": "搜索 DevOps 工具",
       "default": false
+    },
+    {
+      "id": "troubleshoot",
+      "name": "排障",
+      "desc": "常见报错与故障排查",
+      "searchPlaceholder": "搜索报错或故障",
+      "default": false
     }
   ]
 }
