@@ -71,6 +71,47 @@ if (!(await exists(sitemapPath))) {
 }
 if (!(await exists(robotsPath))) errors.push('缺少 robots.txt');
 
+// ── 2.5 诊断向导数据:节点引用与结果链接 ──────────────────
+const diagnosePath = path.join(OUT, 'data', 'diagnose.json');
+let diagnoseTrees = 0;
+let diagnoseLinks = 0;
+if (!(await exists(diagnosePath))) {
+  errors.push('缺少 data/diagnose.json');
+} else {
+  const trees = JSON.parse(await FS.readFile(diagnosePath, 'utf8'));
+  diagnoseTrees = trees.length;
+  for (const tree of trees) {
+    if (!tree.start || !tree.nodes?.[tree.start]) {
+      errors.push(`诊断树 "${tree.id}" 的 start 节点不存在`);
+      continue;
+    }
+    for (const [nodeId, node] of Object.entries(tree.nodes)) {
+      if (node.type === 'question') {
+        for (const opt of node.options || []) {
+          if (!opt.next || !tree.nodes[opt.next]) {
+            errors.push(`诊断树 "${tree.id}" 节点 "${nodeId}" 指向不存在的节点 "${opt.next}"`);
+          }
+        }
+      }
+      if (node.type === 'result') {
+        for (const link of node.links || []) {
+          diagnoseLinks++;
+          const target = path.join(OUT, String(link.href || '').replace(/^\//, ''));
+          const candidates = [target, path.join(target, 'index.html')];
+          let found = false;
+          for (const c of candidates) {
+            if (await exists(c)) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) errors.push(`诊断树 "${tree.id}" 链接不存在: ${link.href}`);
+        }
+      }
+    }
+  }
+}
+
 // ── 3. 解析每个 HTML 的站内链接 ──────────────────────────
 const ATTR = /(?:href|src)\s*=\s*"([^"]*)"/gi;
 let linkCount = 0;
@@ -106,6 +147,7 @@ console.log(`校验站内链接    : ${linkCount}`);
 console.log(`dt.js 记录      : ${commands.length}`);
 console.log(`sitemap          : ${sitemapCount} 条`);
 console.log(`分支            : ${branches.map((b) => b.id).join(', ')}`);
+console.log(`诊断向导        : ${diagnoseTrees} 棵树 / ${diagnoseLinks} 个链接`);
 
 if (errors.length) {
   console.log(`\n✗ 发现 ${errors.length} 个问题:\n`);

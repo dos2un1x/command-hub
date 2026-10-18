@@ -2,7 +2,7 @@
 <div class="error-page">
   <h1>页面不存在</h1>
   <p>你访问的页面可能已经迁移或删除。可以试试上方的搜索框，或从下面的热门命令开始。</p>
-  <p><a href="index.html">返回首页</a> · <a href="hot.html">查看全部 <%= footerCount %> 个命令</a></p>
+  <p><a href="index.html">返回首页</a> · <a href="diagnose.html">故障诊断向导</a> · <a href="hot.html">查看全部 <%= footerCount %> 个命令</a></p>
   <ul class="hot-commands">
   <% hotCommands.forEach(function (page) { %>
     <li><a href="<%= page.b %>/<%= page.n %>.html"><%= page.n %></a></li>

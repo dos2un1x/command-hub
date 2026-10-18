@@ -9,7 +9,7 @@ import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const COMMAND_DIR = path.join(ROOT, 'command');
-const RESERVED = new Set(['index', 'list', 'hot', 'review']);
+const RESERVED = new Set(['index', 'list', 'hot', 'review', 'diagnose']);
 
 const sanitize = (v) =>
   String(v || '')
@@ -66,7 +66,7 @@ for (const b of config.branches) {
       errors.push(`${where}: 文件名不是合法 ASCII slug`);
     }
     if (RESERVED.has(slug)) {
-      errors.push(`${where}: "${slug}" 是保留名,会与 index/list/hot 冲突`);
+      errors.push(`${where}: "${slug}" 是保留名,会与 index/list/hot/review/diagnose 冲突`);
     }
     const dm = raw.match(/\n={1,}([\s\S]*?)##/i);
     if (!dm || !dm[1].replace(/[\r\n]/g, '').trim()) {

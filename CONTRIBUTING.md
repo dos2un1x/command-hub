@@ -87,6 +87,8 @@
 - 必须包含清理/回滚命令;磁盘、CPU、网络实验要明确禁止影响宿主机或生产。
 - 至少指出一个“容易误判”的点,让读者先写假设再验证,而不是照着答案改。
 
+目前有 12 个基础演练和 10 个进阶演练。新增演练后,同步更新 `command/guide/lab-learning-path.md` 的总览表、阶段顺序和 `command/tutorial/categories.json` 的 `lab` 分类。
+
 ### 读完自测的写法
 
 工具、概念和排查页可以在页尾加 `## 读完自测`,格式固定为 3 个问题 + 一个折叠答案块:
@@ -110,7 +112,16 @@
 </details>
 ```
 
-问题要考判断和易错点,答案必须能在本页找到依据。构建时会把所有自测抽成 `js/questions.json`,供 `/review.html` 随机抽题;因此答案保持单行、编号与问题一一对应。
+问题要考判断和易错点,答案必须能在本页找到依据。构建时会把所有自测抽成 `js/questions.json`,供 `/review.html` 抽题;复习页支持按分支筛选、只练错题、连续答对两次移出随机池和每日一题,因此答案保持单行、编号与问题一一对应。
+
+### 诊断向导的写法
+
+`/diagnose.html` 的决策树数据在 `assets/data/diagnose.json`,是一个数组。每棵树包含 `id`、`tag`、`title`、`desc`、`start` 和 `nodes`:
+
+- `question` 节点:必须有 `question`、`hint` 和 `options`;每个选项有 `label` 和 `next`,指向同一棵树里的节点。
+- `result` 节点:包含 `title`、`summary`、`commands`(可复制命令)和 `links`(站内相对链接,如 `troubleshoot/502-bad-gateway.html`)。
+
+构建会校验 `start` 存在、选项指向有效节点、每棵树至少有一个结果、所有节点从 `start` 可达;`check-links` 会校验结果页链接。新增树后跑 `npm run verify`。
 
 ### AI 分支的写法
 
@@ -174,10 +185,10 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:10 个分类、97 条
 - `command/troubleshoot/categories.json`:8 个分类、134 条
-- `command/guide/categories.json`:4 个分类、105 条
-- `command/middleware/categories.json`:10 个分类、63 条
-- `command/tutorial/categories.json`:3 个分类、67 条
-- `command/ai/categories.json`:7 个分类、74 条
+- `command/guide/categories.json`:4 个分类、120 条
+- `command/middleware/categories.json`:11 个分类、71 条
+- `command/tutorial/categories.json`:3 个分类、77 条
+- `command/ai/categories.json`:7 个分类、84 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。

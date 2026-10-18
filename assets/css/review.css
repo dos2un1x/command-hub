@@ -13,6 +13,30 @@
 .review-btn.ok.is-active{color:#fff;border-color:#16a34a;background:#16a34a}
 .review-btn.no.is-active{color:#fff;border-color:#dc2626;background:#dc2626}
 .review-progress{font-size:12px;color:#888}
+.review-controls{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;margin:0 auto 14px}
+.review-field{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#666}
+[data-color-mode*='dark'] .review-field{color:#aaa}
+.review-field select{min-height:34px;padding:5px 30px 5px 10px;border:1px solid var(--color-header-border);border-radius:10px;background:transparent;color:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.review-field select:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
+.review-toggle{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--color-header-border);border-radius:10px;font-size:12px;font-weight:600;color:#666;cursor:pointer;user-select:none}
+[data-color-mode*='dark'] .review-toggle{color:#aaa}
+.review-toggle input{width:14px;height:14px;accent-color:#2196f3;cursor:pointer}
+.review-progress-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 auto 16px;max-width:420px}
+.review-progress-bar{width:100%;height:5px;border-radius:999px;background:rgba(127,127,127,.16);overflow:hidden}
+.review-progress-bar span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2196f3,#16a34a);transition:width .25s ease}
+.review-daily{margin:0 0 18px;padding:16px 18px;border:1px solid rgba(33,150,243,.35);border-radius:16px;background:linear-gradient(180deg,rgba(33,150,243,.09),rgba(99,102,241,.04))}
+[data-color-mode*='dark'] .review-daily{background:linear-gradient(180deg,rgba(96,165,250,.12),rgba(129,140,248,.05))}
+.review-daily-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.review-daily-title{margin:0;font-size:12px;font-weight:800;letter-spacing:.08em;color:#2196f3}
+[data-color-mode*='dark'] .review-daily-title{color:#60a5fa}
+.review-daily-date{font-size:11px;color:#888;font-variant-numeric:tabular-nums}
+.review-daily .review-card{padding:0;border:0;background:transparent}
+.review-daily .review-card:hover{transform:none}
+.review-branch-tag{display:inline-block;margin-right:7px;padding:1px 7px;border-radius:999px;background:rgba(127,127,127,.12);font-size:11px;font-weight:600;color:#777}
+[data-color-mode*='dark'] .review-branch-tag{color:#aaa}
+.review-status{align-self:center;margin-left:2px;font-size:11px;color:#888}
+.review-card.is-mastered{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.04)}
+[data-color-mode*='dark'] .review-card.is-mastered{background:rgba(22,163,74,.06)}
 .review-list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
 .review-card{margin:0;padding:16px 18px;border:1px solid var(--color-header-border);border-radius:14px;background:rgba(127,127,127,.035);list-style:none}
 [data-color-mode*='dark'] .review-card{background:rgba(255,255,255,.03)}

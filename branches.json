@@ -71,13 +71,13 @@
         "branch": "guide",
         "slug": "learning-paths",
         "title": "学习路径总览",
-        "desc": "七条路径、七个心智模型与十二个故障演练"
+        "desc": "十条路径、十个心智模型与二十二个故障演练"
       }
     },
     {
       "id": "middleware",
       "name": "中间件",
-      "desc": "日志、消息、网关与接入服务",
+      "desc": "日志、消息、网关、数据与 Java 生态",
       "searchPlaceholder": "搜索中间件命令",
       "default": false,
       "learningPath": {
@@ -95,9 +95,9 @@
       "default": false,
       "learningPath": {
         "branch": "guide",
-        "slug": "learning-paths",
-        "title": "学习路径与故障演练",
-        "desc": "按领域学习，或在本地复现故障并修复"
+        "slug": "lab-learning-path",
+        "title": "故障演练学习路径",
+        "desc": "基础演练排成四周计划，进阶演练按故障域扩展"
       }
     },
     {

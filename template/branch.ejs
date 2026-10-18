@@ -12,6 +12,16 @@
     <span class="branch-learning-cta">按顺序开始 →</span>
   </a>
 <% } %>
+<% if (currentBranch === 'troubleshoot') { %>
+  <a class="branch-learning" href="../diagnose.html">
+    <span class="branch-learning-kicker">诊断向导</span>
+    <span class="branch-learning-body">
+      <strong>按现象逐步定位</strong>
+      <span class="branch-learning-desc">6 棵决策树，每一步给出验证命令和对应条目</span>
+    </span>
+    <span class="branch-learning-cta">开始判断 →</span>
+  </a>
+<% } %>
 <% if (typeof categoryNav !== 'undefined' && categoryNav.length) { %>
   <nav class="category-links" aria-label="<%= brand %> 分类">
   <% categoryNav.forEach(function (c) { %>

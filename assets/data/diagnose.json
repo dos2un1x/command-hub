@@ -1,0 +1,1182 @@
+[
+  {
+    "id": "http-5xx",
+    "tag": "HTTP",
+    "title": "502 / 504",
+    "desc": "网关、Ingress、负载均衡返回 5xx 时，先分清上游没连上、上游返回异常，还是上游太慢。",
+    "start": "q-status",
+    "nodes": {
+      "q-status": {
+        "type": "question",
+        "title": "先确认状态码",
+        "question": "网关或浏览器返回的是哪个状态码？",
+        "hint": "用 curl -I 或浏览器开发者工具的 Network 面板确认，不要只看页面文案。",
+        "options": [
+          { "label": "502 Bad Gateway", "next": "q-502-log" },
+          { "label": "504 Gateway Timeout", "next": "q-504-upstream" },
+          { "label": "只看到页面打不开，状态码不确定", "next": "r-status-check" }
+        ]
+      },
+      "q-502-log": {
+        "type": "question",
+        "title": "看网关错误日志",
+        "question": "Nginx / Ingress / 负载均衡的 error.log 里，最接近哪一类？",
+        "hint": "重点搜 connect() failed、Connection refused、no live upstreams、upstream prematurely closed。",
+        "options": [
+          { "label": "connection refused / connect() failed", "next": "r-502-refused" },
+          { "label": "upstream prematurely closed / invalid response", "next": "r-502-bad-response" },
+          { "label": "没有明显错误，只有 access log 里的 502", "next": "q-502-upstream" }
+        ]
+      },
+      "q-502-upstream": {
+        "type": "question",
+        "title": "确认上游是否存活",
+        "question": "绕过网关直接访问上游，结果是什么？",
+        "hint": "在网关所在机器上 curl 上游 IP:端口，排除 DNS 和网关配置干扰。",
+        "options": [
+          { "label": "端口没监听，或进程已经不在", "next": "r-502-refused" },
+          { "label": "端口在监听，但健康检查返回非 200", "next": "r-502-health" },
+          { "label": "直连正常，只有经过网关才 502", "next": "r-502-gateway" }
+        ]
+      },
+      "q-504-upstream": {
+        "type": "question",
+        "title": "分清慢和没收到",
+        "question": "上游服务有没有收到这次请求？",
+        "hint": "对照上游 access log 的时间戳和请求 ID；没有日志通常意味着请求没到。",
+        "options": [
+          { "label": "收到了，但处理时间超过网关超时", "next": "r-504-slow" },
+          { "label": "完全没收到请求", "next": "r-504-network" },
+          { "label": "不确定，日志里找不到", "next": "r-504-check" }
+        ]
+      },
+      "r-status-check": {
+        "type": "result",
+        "title": "先拿到真实状态码和链路",
+        "summary": "不要凭页面表现猜。先用 curl 和网关日志确认状态码、上游地址和耗时，再进入对应的 502 或 504 分支。",
+        "commands": [
+          "curl -sS -o /dev/null -w '%{http_code} %{time_total}s\\n' -I https://example.com/",
+          "curl -v http://127.0.0.1:8080/health",
+          "tail -n 100 /var/log/nginx/error.log"
+        ],
+        "links": [
+          { "label": "502 Bad Gateway", "href": "troubleshoot/502-bad-gateway.html" },
+          { "label": "504 Gateway Timeout", "href": "troubleshoot/504-gateway-timeout.html" },
+          { "label": "Nginx 上游超时", "href": "troubleshoot/nginx-upstream-timed-out.html" }
+        ]
+      },
+      "r-502-refused": {
+        "type": "result",
+        "title": "上游没监听或进程已退出",
+        "summary": "502 加 connection refused，通常不是网关配置问题，而是上游进程没起来、端口写错，或者只监听了 127.0.0.1。先确认监听地址和端口，再看进程退出原因。",
+        "commands": [
+          "ss -lntp | grep ':8080'",
+          "curl -v http://127.0.0.1:8080/health",
+          "journalctl -u your-service -n 80 --no-pager",
+          "docker ps -a --filter name=your-service"
+        ],
+        "links": [
+          { "label": "502 Bad Gateway", "href": "troubleshoot/502-bad-gateway.html" },
+          { "label": "Connection refused", "href": "troubleshoot/connection-refused.html" },
+          { "label": "ss 命令", "href": "linux/ss.html" }
+        ]
+      },
+      "r-502-bad-response": {
+        "type": "result",
+        "title": "上游提前关闭或返回了非法响应",
+        "summary": "连接建立过但响应不完整，常见于上游崩溃、超时主动断开、HTTP/2 或 keepalive 配置不匹配、响应头过大。对比直连和经网关的差异，再看上游日志里有没有 panic、reset 或超时。",
+        "commands": [
+          "curl -v --http1.1 http://127.0.0.1:8080/",
+          "tail -n 100 /var/log/nginx/error.log",
+          "kubectl -n app logs deploy/app --tail=100",
+          "kubectl -n app describe pod <pod>"
+        ],
+        "links": [
+          { "label": "502 Bad Gateway", "href": "troubleshoot/502-bad-gateway.html" },
+          { "label": "Nginx 上游超时", "href": "troubleshoot/nginx-upstream-timed-out.html" },
+          { "label": "K8s Ingress 502", "href": "troubleshoot/k8s-ingress-502.html" }
+        ]
+      },
+      "r-502-health": {
+        "type": "result",
+        "title": "上游进程在，但没有健康后端",
+        "summary": "端口在监听但健康检查失败时，网关会认为没有可用后端。先看 readinessProbe 的路径、端口和返回码，再确认 EndpointSlice 里是否真的挂上了 Pod。",
+        "commands": [
+          "kubectl -n app get pod -o wide",
+          "kubectl -n app get endpointslice",
+          "kubectl -n app describe pod <pod> | sed -n '/Events/,$p'",
+          "kubectl -n app logs <pod> --tail=100"
+        ],
+        "links": [
+          { "label": "K8s Ingress 502", "href": "troubleshoot/k8s-ingress-502.html" },
+          { "label": "探针失败", "href": "troubleshoot/probe-failed.html" },
+          { "label": "Pod", "href": "k8s/pod.html" }
+        ]
+      },
+      "r-502-gateway": {
+        "type": "result",
+        "title": "直连正常，问题在网关转发",
+        "summary": "检查 upstream 地址、端口、协议和 Host 头。常见原因是 upstream 指向了旧 IP、用了 HTTPS 却按 HTTP 转发、或者 Ingress 的 servicePort 写错。",
+        "commands": [
+          "nginx -T | grep -n -A8 'upstream'",
+          "kubectl -n ingress-nginx get svc,endpointslice",
+          "kubectl -n app get svc -o wide",
+          "curl -H 'Host: example.com' http://<ingress-ip>/"
+        ],
+        "links": [
+          { "label": "Nginx 上游超时", "href": "troubleshoot/nginx-upstream-timed-out.html" },
+          { "label": "K8s Ingress 502", "href": "troubleshoot/k8s-ingress-502.html" },
+          { "label": "云负载均衡 502", "href": "troubleshoot/cloud-lb-502.html" }
+        ]
+      },
+      "r-504-slow": {
+        "type": "result",
+        "title": "上游处理超时",
+        "summary": "504 说明网关等到了自己的超时上限。先确认慢在应用、数据库还是下游依赖，再决定调大超时还是修根因；只调大超时会把问题藏得更久。",
+        "commands": [
+          "curl -sS -o /dev/null -w '%{time_total}s\\n' http://127.0.0.1:8080/slow",
+          "kubectl -n app logs deploy/app --tail=100",
+          "kubectl -n app top pod",
+          "grep -n 'proxy_read_timeout\\|proxy_connect_timeout' /etc/nginx/nginx.conf"
+        ],
+        "links": [
+          { "label": "504 Gateway Timeout", "href": "troubleshoot/504-gateway-timeout.html" },
+          { "label": "Nginx 上游超时", "href": "troubleshoot/nginx-upstream-timed-out.html" },
+          { "label": "慢查询", "href": "troubleshoot/mysql-slow-query.html" }
+        ]
+      },
+      "r-504-network": {
+        "type": "result",
+        "title": "请求根本没到上游",
+        "summary": "上游没有收到请求，先查路由、安全组、NetworkPolicy、DNS 和端口。504 只是网关等待的结果，根因可能在网络层。",
+        "commands": [
+          "ss -lntp | grep ':8080'",
+          "ip route get <upstream-ip>",
+          "kubectl -n app get networkpolicy",
+          "curl -v --connect-timeout 3 http://<upstream-ip>:8080/"
+        ],
+        "links": [
+          { "label": "Connection timeout", "href": "troubleshoot/connection-timeout.html" },
+          { "label": "丢包", "href": "troubleshoot/packet-loss.html" },
+          { "label": "NetworkPolicy", "href": "k8s/networkpolicy.html" }
+        ]
+      },
+      "r-504-check": {
+        "type": "result",
+        "title": "用请求 ID 把链路串起来",
+        "summary": "在网关、Ingress、应用日志里搜同一个请求 ID 或时间戳，确认请求停在哪一跳。没有请求 ID 时，先看网关的 upstream_response_time 和 upstream_addr。",
+        "commands": [
+          "grep '<request-id>' /var/log/nginx/access.log",
+          "kubectl -n ingress-nginx logs deploy/ingress-nginx-controller --tail=100",
+          "kubectl -n app logs deploy/app --since=10m | grep '<request-id>'"
+        ],
+        "links": [
+          { "label": "504 Gateway Timeout", "href": "troubleshoot/504-gateway-timeout.html" },
+          { "label": "K8s 排障速查", "href": "guide/k8s-troubleshooting-cheatsheet.html" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "pod-status",
+    "tag": "K8s",
+    "title": "Pod Pending / CrashLoop",
+    "desc": "Pod 起不来或反复重启时，先按状态分流：Pending 看调度，CrashLoop 看退出原因，Running 但没有流量看就绪与 Service。",
+    "start": "q-pod-status",
+    "nodes": {
+      "q-pod-status": {
+        "type": "question",
+        "title": "先看 Pod 状态",
+        "question": "kubectl get pod 显示的是什么状态？",
+        "hint": "同时看 READY、RESTARTS 和 AGE；状态相同但原因可能完全不同。",
+        "options": [
+          { "label": "Pending", "next": "q-pending-events" },
+          { "label": "CrashLoopBackOff / Error", "next": "q-crash-logs" },
+          { "label": "ImagePullBackOff / ErrImagePull", "next": "r-imagepull" },
+          { "label": "Running，但请求没有流量", "next": "q-running-ready" }
+        ]
+      },
+      "q-pending-events": {
+        "type": "question",
+        "title": "看 describe 的 Events",
+        "question": "kubectl describe pod 的 Events 里，最接近哪一类？",
+        "hint": "Events 通常只保留最近一小时，必要时用 kubectl get events --sort-by=.lastTimestamp。",
+        "options": [
+          { "label": "Insufficient cpu / memory", "next": "r-pending-resource" },
+          { "label": "node(s) had untolerated taint", "next": "r-pending-taint" },
+          { "label": "pod has unbound immediate PersistentVolumeClaims", "next": "r-pending-pvc" },
+          { "label": "didn't match node affinity / topology", "next": "r-pending-affinity" },
+          { "label": "没有明显事件，或事件已被清理", "next": "r-pending-check" }
+        ]
+      },
+      "q-crash-logs": {
+        "type": "question",
+        "title": "看上一次退出的日志",
+        "question": "kubectl logs --previous 的最后一段更像什么？",
+        "hint": "没有 previous 日志时，容器可能还没真正启动；先看 describe 的 State 和 Last State。",
+        "options": [
+          { "label": "应用主动退出、配置错误、端口占用", "next": "r-crash-app" },
+          { "label": "OOMKilled、exit 137、内存持续上涨", "next": "r-crash-oom" },
+          { "label": "探针失败后被杀，日志看起来正常", "next": "r-crash-probe" },
+          { "label": "完全看不到应用日志", "next": "r-crash-start" }
+        ]
+      },
+      "q-running-ready": {
+        "type": "question",
+        "title": "看就绪状态",
+        "question": "Pod 的 READY 列显示什么？",
+        "hint": "READY 0/1 表示容器运行但 readinessProbe 没通过，Service 不会把它加入后端。",
+        "options": [
+          { "label": "0/1，未就绪", "next": "r-running-probe" },
+          { "label": "1/1，已就绪但 Service 没流量", "next": "r-running-service" }
+        ]
+      },
+      "r-pending-resource": {
+        "type": "result",
+        "title": "调度器找不到满足资源请求的节点",
+        "summary": "Requests 决定调度，不是实际使用量。先看 Pod 的 requests、节点可分配资源和已有 Pod 的 requests 总和；不要直接调大节点，先确认是否请求写得过高。",
+        "commands": [
+          "kubectl -n app describe pod <pod> | sed -n '/Requests/,$p'",
+          "kubectl describe node <node> | sed -n '/Allocated resources/,$p'",
+          "kubectl -n app get resourcequota,limitrange",
+          "kubectl -n app get pod -o custom-columns=NAME:.metadata.name,REQ:.spec.containers[*].resources.requests"
+        ],
+        "links": [
+          { "label": "Pod Pending", "href": "troubleshoot/pod-pending.html" },
+          { "label": "ResourceQuota", "href": "k8s/resource-quota.html" },
+          { "label": "LimitRange", "href": "k8s/limitrange.html" }
+        ]
+      },
+      "r-pending-taint": {
+        "type": "result",
+        "title": "节点有污点，Pod 没有对应容忍",
+        "summary": "先看节点上的 taints 和 Pod 的 tolerations。控制面节点、专用 GPU 节点、NotReady 节点都可能有污点；不要为了调度成功随意去掉生产节点的污点。",
+        "commands": [
+          "kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints",
+          "kubectl -n app get pod <pod> -o jsonpath='{.spec.tolerations}'",
+          "kubectl describe node <node> | grep -A3 Taints"
+        ],
+        "links": [
+          { "label": "污点与容忍", "href": "k8s/taints-tolerations.html" },
+          { "label": "Pod Pending", "href": "troubleshoot/pod-pending.html" }
+        ]
+      },
+      "r-pending-pvc": {
+        "type": "result",
+        "title": "PVC 没有绑定，Pod 无法调度",
+        "summary": "先看 PVC 的 STATUS、StorageClass 和 Events。常见原因是 StorageClass 不存在、没有默认 StorageClass、WaitForFirstConsumer 模式下节点拓扑不匹配，或容量不足。",
+        "commands": [
+          "kubectl -n app get pvc",
+          "kubectl -n app describe pvc <pvc>",
+          "kubectl get storageclass",
+          "kubectl -n app get pod <pod> -o yaml | grep -A6 persistentVolumeClaim"
+        ],
+        "links": [
+          { "label": "PVC", "href": "k8s/pvc.html" },
+          { "label": "StorageClass", "href": "k8s/storageclass.html" },
+          { "label": "PVC Pending", "href": "troubleshoot/k8s-pvc-pending.html" }
+        ]
+      },
+      "r-pending-affinity": {
+        "type": "result",
+        "title": "亲和性或拓扑约束排除了所有节点",
+        "summary": "检查 nodeSelector、nodeAffinity、podAffinity 和 topologySpreadConstraints。约束过严时，集群有资源也调度不上去；先确认约束是不是业务真的需要。",
+        "commands": [
+          "kubectl -n app get pod <pod> -o yaml | grep -A20 -E 'affinity|nodeSelector|topologySpreadConstraints'",
+          "kubectl get nodes --show-labels",
+          "kubectl -n app describe pod <pod> | sed -n '/Events/,$p'"
+        ],
+        "links": [
+          { "label": "亲和性", "href": "k8s/affinity.html" },
+          { "label": "拓扑分布", "href": "k8s/topology-spread.html" },
+          { "label": "Pod Pending", "href": "troubleshoot/pod-pending.html" }
+        ]
+      },
+      "r-pending-check": {
+        "type": "result",
+        "title": "补拿调度器视角的信息",
+        "summary": "Pod 可能刚创建、事件还没写入，或事件已经过期。用 get events、describe 和 scheduler 日志三条线交叉确认，不要只看 Pod 状态。",
+        "commands": [
+          "kubectl -n app get events --sort-by=.lastTimestamp | tail -30",
+          "kubectl -n app describe pod <pod>",
+          "kubectl -n kube-system logs deploy/kube-scheduler --tail=100"
+        ],
+        "links": [
+          { "label": "Pod Pending", "href": "troubleshoot/pod-pending.html" },
+          { "label": "kube-scheduler", "href": "k8s/kube-scheduler.html" },
+          { "label": "K8s 排障速查", "href": "guide/k8s-troubleshooting-cheatsheet.html" }
+        ]
+      },
+      "r-imagepull": {
+        "type": "result",
+        "title": "镜像拉取失败",
+        "summary": "先区分 tag 不存在、私有仓库认证失败、节点无法访问仓库、镜像架构不匹配。ImagePullBackOff 是重试退避，ErrImagePull 是最近一次失败原因。",
+        "commands": [
+          "kubectl -n app describe pod <pod> | sed -n '/Events/,$p'",
+          "kubectl -n app get pod <pod> -o jsonpath='{.spec.imagePullSecrets}'",
+          "crictl pull <image>",
+          "kubectl -n app get secret <secret> -o jsonpath=\"{.data['.dockerconfigjson']}\" | base64 -d"
+        ],
+        "links": [
+          { "label": "ImagePullBackOff", "href": "troubleshoot/imagepullbackoff.html" },
+          { "label": "镜像仓库", "href": "k8s/registry.html" },
+          { "label": "Secret", "href": "k8s/secret.html" }
+        ]
+      },
+      "r-crash-app": {
+        "type": "result",
+        "title": "应用自己退出了",
+        "summary": "退出码和最后几行日志比重启次数更有价值。先看配置、依赖地址、端口占用、启动命令和挂载文件；不要用重启掩盖启动失败。",
+        "commands": [
+          "kubectl -n app logs <pod> --previous --tail=100",
+          "kubectl -n app describe pod <pod> | sed -n '/Last State/,$p'",
+          "kubectl -n app get configmap,secret",
+          "kubectl -n app exec <pod> -- env | sort"
+        ],
+        "links": [
+          { "label": "CrashLoopBackOff", "href": "troubleshoot/crashloopbackoff.html" },
+          { "label": "ConfigMap", "href": "k8s/configmap.html" },
+          { "label": "Secret", "href": "k8s/secret.html" }
+        ]
+      },
+      "r-crash-oom": {
+        "type": "result",
+        "title": "容器被 OOM 杀掉",
+        "summary": "exit 137 不一定是 OOM，也可能是 SIGKILL。先看 Last State 的 Reason 是否为 OOMKilled，再看 cgroup 的 memory.events 和进程 RSS 曲线。Limit 要覆盖堆外内存、线程栈和直接内存。",
+        "commands": [
+          "kubectl -n app describe pod <pod> | grep -A4 'Last State'",
+          "kubectl -n app get pod <pod> -o jsonpath='{.status.containerStatuses[*].lastState}'",
+          "kubectl -n app top pod <pod> --containers",
+          "cat /sys/fs/cgroup/memory.events"
+        ],
+        "links": [
+          { "label": "OOMKilled", "href": "troubleshoot/oom-killed.html" },
+          { "label": "内存泄漏", "href": "troubleshoot/memory-leak.html" },
+          { "label": "CrashLoopBackOff", "href": "troubleshoot/crashloopbackoff.html" }
+        ]
+      },
+      "r-crash-probe": {
+        "type": "result",
+        "title": "探针失败导致反复重启",
+        "summary": "livenessProbe 失败会重启容器，readinessProbe 失败只会摘流量。先看探针的路径、端口、initialDelaySeconds 和 timeoutSeconds，再确认应用启动到底需要多久。",
+        "commands": [
+          "kubectl -n app get pod <pod> -o yaml | grep -A12 -E 'livenessProbe|readinessProbe|startupProbe'",
+          "kubectl -n app describe pod <pod> | sed -n '/Events/,$p'",
+          "kubectl -n app exec <pod> -- wget -qO- http://127.0.0.1:8080/health"
+        ],
+        "links": [
+          { "label": "探针失败", "href": "troubleshoot/probe-failed.html" },
+          { "label": "CrashLoopBackOff", "href": "troubleshoot/crashloopbackoff.html" },
+          { "label": "Pod", "href": "k8s/pod.html" }
+        ]
+      },
+      "r-crash-start": {
+        "type": "result",
+        "title": "容器没有真正启动",
+        "summary": "看不到日志通常说明入口命令、镜像、挂载或安全上下文在启动前就失败了。先看 describe 的 State、Events 和容器 command/args。",
+        "commands": [
+          "kubectl -n app describe pod <pod>",
+          "kubectl -n app get pod <pod> -o jsonpath='{.spec.containers[*].command}{.spec.containers[*].args}'",
+          "kubectl -n app get pod <pod> -o yaml | grep -A10 securityContext"
+        ],
+        "links": [
+          { "label": "CrashLoopBackOff", "href": "troubleshoot/crashloopbackoff.html" },
+          { "label": "安全上下文", "href": "k8s/securitycontext.html" },
+          { "label": "Pod", "href": "k8s/pod.html" }
+        ]
+      },
+      "r-running-probe": {
+        "type": "result",
+        "title": "容器在跑，但没有就绪",
+        "summary": "readinessProbe 不通过时 Service 不会转发流量。先直连 Pod IP 验证应用，再检查探针路径、端口和返回码；不要只看容器 Running。",
+        "commands": [
+          "kubectl -n app get pod <pod> -o wide",
+          "kubectl -n app exec <pod> -- wget -qO- http://127.0.0.1:8080/health",
+          "kubectl -n app get endpointslice -o wide",
+          "kubectl -n app describe pod <pod> | sed -n '/Readiness/,$p'"
+        ],
+        "links": [
+          { "label": "探针失败", "href": "troubleshoot/probe-failed.html" },
+          { "label": "Service", "href": "k8s/service.html" },
+          { "label": "Pod", "href": "k8s/pod.html" }
+        ]
+      },
+      "r-running-service": {
+        "type": "result",
+        "title": "Pod 就绪，但 Service 没有流量",
+        "summary": "检查 Service 的 selector 是否匹配 Pod 标签、targetPort 是否等于容器实际监听端口、EndpointSlice 是否有地址。Ingress 再往后就是 Service 和 Pod，逐跳验证。",
+        "commands": [
+          "kubectl -n app get svc <svc> -o yaml | grep -A6 selector",
+          "kubectl -n app get endpointslice -l kubernetes.io/service-name=<svc>",
+          "kubectl -n app get pod --show-labels",
+          "kubectl -n app run tmp --rm -it --image=busybox -- wget -qO- http://<svc>:80/"
+        ],
+        "links": [
+          { "label": "Service", "href": "k8s/service.html" },
+          { "label": "K8s Ingress 502", "href": "troubleshoot/k8s-ingress-502.html" },
+          { "label": "NetworkPolicy", "href": "k8s/networkpolicy.html" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "disk-full",
+    "tag": "磁盘",
+    "title": "磁盘满 / inode 耗尽",
+    "desc": "No space left on device 不等于磁盘一定满了。先分空间、inode、只读和 IO 四条线。",
+    "start": "q-disk-kind",
+    "nodes": {
+      "q-disk-kind": {
+        "type": "question",
+        "title": "先分清是哪种“满”",
+        "question": "df -h 和 df -i 分别是什么情况？",
+        "hint": "必须看报错所在的挂载点，不要只看根分区；容器里还要看挂载进去的卷。",
+        "options": [
+          { "label": "df -h 使用率接近 100%", "next": "q-disk-space" },
+          { "label": "df -i 使用率接近 100%", "next": "r-inode" },
+          { "label": "两个都正常，但写入仍然报错", "next": "q-disk-other" }
+        ]
+      },
+      "q-disk-space": {
+        "type": "question",
+        "title": "对比 du 和 df",
+        "question": "du 统计出的目录大小，和 df 显示的已用空间差得多吗？",
+        "hint": "用 du -x 限制在同一文件系统，避免把挂载点下的其它文件系统算进来。",
+        "options": [
+          { "label": "du 明显小于 df", "next": "r-deleted-open" },
+          { "label": "du 和 df 基本接近", "next": "q-disk-what" },
+          { "label": "不确定，或没有权限统计全部目录", "next": "r-disk-check" }
+        ]
+      },
+      "q-disk-what": {
+        "type": "question",
+        "title": "找增长最快的目录",
+        "question": "占用增长最快的是哪一类目录？",
+        "hint": "先按一级目录排序，再往下钻；不要一上来就全盘 find。",
+        "options": [
+          { "label": "日志目录（/var/log、容器日志）", "next": "r-log-growth" },
+          { "label": "数据、上传、备份目录", "next": "r-data-growth" },
+          { "label": "找不到明显的大文件", "next": "r-disk-check" }
+        ]
+      },
+      "q-disk-other": {
+        "type": "question",
+        "title": "看具体报错",
+        "question": "写入失败时的报错最接近哪一种？",
+        "hint": "同一句 No space left on device 可能在空间、inode、保留块或只读挂载下出现。",
+        "options": [
+          { "label": "Read-only file system", "next": "r-readonly" },
+          { "label": "No space left on device，但 df 看起来正常", "next": "r-reserved" },
+          { "label": "Input/output error 或明显变慢", "next": "r-io" }
+        ]
+      },
+      "r-deleted-open": {
+        "type": "result",
+        "title": "空间被已删除但仍打开的文件占着",
+        "summary": "进程还持有文件描述符时，rm 不会释放空间。用 lsof +L1 找 deleted 文件，重启或优雅重开日志句柄后空间才会回来。",
+        "commands": [
+          "lsof +L1 | grep -i deleted",
+          "du -x -h --max-depth=1 / | sort -h | tail -20",
+          "df -h /",
+          "systemctl restart <service>"
+        ],
+        "links": [
+          { "label": "磁盘写满", "href": "troubleshoot/no-space-left.html" },
+          { "label": "lsof", "href": "linux/lsof.html" },
+          { "label": "du", "href": "linux/du.html" }
+        ]
+      },
+      "r-log-growth": {
+        "type": "result",
+        "title": "日志增长过快",
+        "summary": "先确认是应用日志、容器日志还是系统日志。清理前先保留最近一段和关键错误；长期方案是轮转、限速和把日志送到外部存储。",
+        "commands": [
+          "du -x -h --max-depth=1 /var/log | sort -h",
+          "journalctl --disk-usage",
+          "find /var/log -type f -size +500M -printf '%s %p\\n' | sort -n",
+          "logrotate -d /etc/logrotate.conf"
+        ],
+        "links": [
+          { "label": "磁盘写满", "href": "troubleshoot/no-space-left.html" },
+          { "label": "logrotate", "href": "linux/logrotate.html" },
+          { "label": "journalctl", "href": "linux/journalctl.html" }
+        ]
+      },
+      "r-data-growth": {
+        "type": "result",
+        "title": "数据或备份目录增长",
+        "summary": "先确认是不是正常业务增长、备份没有清理、临时文件堆积或数据库文件膨胀。不要直接删数据目录；先停写入、备份、再清理。",
+        "commands": [
+          "du -x -h --max-depth=2 /data | sort -h | tail -30",
+          "find /data -type f -mtime +30 -size +1G -printf '%TY-%Tm-%Td %s %p\\n' | sort",
+          "df -h /data",
+          "lsof +L1 | grep /data"
+        ],
+        "links": [
+          { "label": "磁盘写满", "href": "troubleshoot/no-space-left.html" },
+          { "label": "磁盘 IO 高", "href": "troubleshoot/disk-io-high.html" }
+        ]
+      },
+      "r-inode": {
+        "type": "result",
+        "title": "inode 耗尽",
+        "summary": "磁盘还有空间但无法创建新文件，通常是大量小文件。先找小文件密集的目录，确认来源（缓存、会话、邮件队列、容器层），再清理。",
+        "commands": [
+          "df -i",
+          "find / -xdev -type f | sed 's#/[^/]*$##' | sort | uniq -c | sort -rn | head -20",
+          "find /var -xdev -type f -mtime +7 | wc -l",
+          "du -x -h --max-depth=2 /var | sort -h | tail -20"
+        ],
+        "links": [
+          { "label": "inode 耗尽", "href": "troubleshoot/inode-exhausted.html" },
+          { "label": "df", "href": "linux/df.html" }
+        ]
+      },
+      "r-readonly": {
+        "type": "result",
+        "title": "文件系统变成只读",
+        "summary": "内核检测到文件系统错误或底层 IO 故障时，会把它重新挂载为只读。先看 dmesg 和挂载选项，不要直接 remount rw 掩盖问题；确认数据安全后再修复。",
+        "commands": [
+          "mount | grep ' ro,'",
+          "dmesg -T | tail -80",
+          "journalctl -k -n 100 --no-pager",
+          "touch /mountpoint/test"
+        ],
+        "links": [
+          { "label": "只读文件系统", "href": "troubleshoot/read-only-filesystem.html" },
+          { "label": "dmesg", "href": "linux/dmesg.html" }
+        ]
+      },
+      "r-reserved": {
+        "type": "result",
+        "title": "保留块或配额限制",
+        "summary": "ext4 默认给 root 保留约 5% 空间，普通用户可能先写失败；磁盘配额、容器 writable layer 和 overlay 上限也会造成同样报错。",
+        "commands": [
+          "df -h /",
+          "tune2fs -l /dev/<device> | grep -i reserved",
+          "quota -s",
+          "docker system df"
+        ],
+        "links": [
+          { "label": "磁盘写满", "href": "troubleshoot/no-space-left.html" },
+          { "label": "df", "href": "linux/df.html" }
+        ]
+      },
+      "r-io": {
+        "type": "result",
+        "title": "底层 IO 故障或磁盘过慢",
+        "summary": "I/O error 可能来自坏盘、云盘限流、文件系统损坏或内核问题。先看 dmesg、iostat 和云厂商事件，不要在故障盘上继续压测。",
+        "commands": [
+          "dmesg -T | grep -i -E 'i/o error|medium error|failed command' | tail -50",
+          "iostat -x 1 5",
+          "smartctl -a /dev/<device>",
+          "df -h"
+        ],
+        "links": [
+          { "label": "磁盘 IO 高", "href": "troubleshoot/disk-io-high.html" },
+          { "label": "iostat", "href": "linux/iostat.html" },
+          { "label": "dmesg", "href": "linux/dmesg.html" }
+        ]
+      },
+      "r-disk-check": {
+        "type": "result",
+        "title": "补做一轮完整检查",
+        "summary": "按挂载点、inode、删除未释放、保留块、配额、只读和 IO 七项依次排查；每项都留下命令输出，避免凭印象判断。",
+        "commands": [
+          "df -hT",
+          "df -i",
+          "lsof +L1 | head -30",
+          "du -x -h --max-depth=1 / | sort -h | tail -20",
+          "dmesg -T | tail -50"
+        ],
+        "links": [
+          { "label": "磁盘写满", "href": "troubleshoot/no-space-left.html" },
+          { "label": "inode 耗尽", "href": "troubleshoot/inode-exhausted.html" },
+          { "label": "磁盘 IO 高", "href": "troubleshoot/disk-io-high.html" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "dns-network",
+    "tag": "网络",
+    "title": "DNS / 网络不通",
+    "desc": "先分清域名解析、端口连接、TLS 和链路质量，再按层验证，不要从应用日志猜网络。",
+    "start": "q-net-kind",
+    "nodes": {
+      "q-net-kind": {
+        "type": "question",
+        "title": "先分清故障层次",
+        "question": "现在最符合哪一种现象？",
+        "hint": "用 IP 和域名分别测一次，能快速区分解析问题和连接问题。",
+        "options": [
+          { "label": "域名解析失败，或 IP 能通但域名不行", "next": "q-dns" },
+          { "label": "IP/端口不通、连接被拒绝或超时", "next": "q-connect" },
+          { "label": "偶发超时、丢包、时快时慢", "next": "q-loss" }
+        ]
+      },
+      "q-dns": {
+        "type": "question",
+        "title": "确认解析在哪一层失败",
+        "question": "用 dig 直接查权威 DNS，能拿到记录吗？",
+        "hint": "分别测本机 resolver、公共 DNS 和权威 NS；集群内还要测 CoreDNS。",
+        "options": [
+          { "label": "权威能查到，本机解析失败", "next": "r-dns-local" },
+          { "label": "权威也查不到记录", "next": "r-dns-auth" },
+          { "label": "只有 Kubernetes 集群内域名失败", "next": "r-dns-k8s" },
+          { "label": "不确定，或没有 dig", "next": "r-dns-check" }
+        ]
+      },
+      "q-connect": {
+        "type": "question",
+        "title": "看连接卡在哪一步",
+        "question": "用 curl -v 或 nc -vz 测试时，卡在哪一步？",
+        "hint": "Connection refused、timed out、TLS handshake 是三类不同问题。",
+        "options": [
+          { "label": "Connection refused", "next": "r-refused" },
+          { "label": "Connection timed out", "next": "r-timeout" },
+          { "label": "TCP 能连上，但 TLS 握手失败", "next": "r-tls" },
+          { "label": "小包正常，大包卡住或超时", "next": "r-mtu" }
+        ]
+      },
+      "q-loss": {
+        "type": "question",
+        "title": "定位丢包段落",
+        "question": "mtr 或 ping 显示丢包主要发生在哪一段？",
+        "hint": "先看第一跳和最后一跳，中间节点丢包不一定影响端到端。",
+        "options": [
+          { "label": "本机到网关", "next": "r-local-loss" },
+          { "label": "中间路径或目标端", "next": "r-path-loss" },
+          { "label": "只有业务高峰丢包", "next": "r-congestion" }
+        ]
+      },
+      "r-dns-local": {
+        "type": "result",
+        "title": "本机 resolver 配置或缓存问题",
+        "summary": "检查 /etc/resolv.conf、search 域、ndots 和 systemd-resolved。容器里还要注意 DNS 策略和 NetworkPolicy；ndots 过高会让短域名先走多次搜索域查询。",
+        "commands": [
+          "cat /etc/resolv.conf",
+          "dig +short example.com",
+          "dig @1.1.1.1 example.com +short",
+          "resolvectl status 2>/dev/null || systemd-resolve --status"
+        ],
+        "links": [
+          { "label": "DNS 解析失败", "href": "troubleshoot/dns-resolution-failed.html" },
+          { "label": "DNS ndots", "href": "troubleshoot/dns-ndots.html" },
+          { "label": "dig", "href": "linux/dig.html" }
+        ]
+      },
+      "r-dns-auth": {
+        "type": "result",
+        "title": "权威 DNS 没有记录或记录错误",
+        "summary": "确认域名是否过期、NS 是否指向正确、A/AAAA/CNAME 是否拼错、TTL 是否还没生效。改记录前先核对域名和区域，避免改错环境。",
+        "commands": [
+          "dig NS example.com +short",
+          "dig example.com A +short",
+          "dig example.com AAAA +short",
+          "whois example.com | head -30"
+        ],
+        "links": [
+          { "label": "DNS 解析失败", "href": "troubleshoot/dns-resolution-failed.html" },
+          { "label": "DNS 速查", "href": "guide/dns-cheatsheet.html" }
+        ]
+      },
+      "r-dns-k8s": {
+        "type": "result",
+        "title": "集群内 DNS 失败",
+        "summary": "先确认 CoreDNS Pod 是否就绪、Service 是否有 endpoint、NetworkPolicy 是否放行 53 端口。再从同命名空间的临时 Pod 里测 short name 和 FQDN。",
+        "commands": [
+          "kubectl -n kube-system get pod -l k8s-app=kube-dns -o wide",
+          "kubectl -n kube-system get svc kube-dns",
+          "kubectl -n app run tmp --rm -it --image=busybox -- nslookup kubernetes.default",
+          "kubectl -n app get networkpolicy"
+        ],
+        "links": [
+          { "label": "K8s DNS 失败", "href": "troubleshoot/k8s-dns-failed.html" },
+          { "label": "CoreDNS", "href": "k8s/coredns.html" },
+          { "label": "NetworkPolicy", "href": "k8s/networkpolicy.html" }
+        ]
+      },
+      "r-dns-check": {
+        "type": "result",
+        "title": "用三步确认解析链路",
+        "summary": "先看本机 resolver，再查公共 DNS，最后查权威 NS。三步结果不同，问题位置就不同；不要只看浏览器报错。",
+        "commands": [
+          "cat /etc/resolv.conf",
+          "dig example.com +short",
+          "dig @8.8.8.8 example.com +short",
+          "dig NS example.com +short"
+        ],
+        "links": [
+          { "label": "DNS 解析失败", "href": "troubleshoot/dns-resolution-failed.html" },
+          { "label": "dig", "href": "linux/dig.html" },
+          { "label": "DNS 速查", "href": "guide/dns-cheatsheet.html" }
+        ]
+      },
+      "r-refused": {
+        "type": "result",
+        "title": "端口没有服务监听或防火墙拒绝",
+        "summary": "Connection refused 通常说明目标机器可达，但端口没有监听，或防火墙主动拒绝。先在本机 ss 看监听地址，再从对端 nc 测试。",
+        "commands": [
+          "ss -lntp | grep ':8080'",
+          "nc -vz <host> 8080",
+          "iptables -S | grep 8080",
+          "firewall-cmd --list-all 2>/dev/null"
+        ],
+        "links": [
+          { "label": "Connection refused", "href": "troubleshoot/connection-refused.html" },
+          { "label": "ss", "href": "linux/ss.html" },
+          { "label": "端口占用", "href": "troubleshoot/port-in-use.html" }
+        ]
+      },
+      "r-timeout": {
+        "type": "result",
+        "title": "连接超时，包没有到达或被丢弃",
+        "summary": "超时通常是路由、安全组、NetworkPolicy、目标未监听且丢弃、或中间设备静默丢包。用 traceroute/mtr 和抓包确认请求走到了哪一跳。",
+        "commands": [
+          "curl -v --connect-timeout 5 http://<host>:8080/",
+          "mtr -rwc 20 <host>",
+          "ip route get <host>",
+          "tcpdump -ni any host <host> and port 8080"
+        ],
+        "links": [
+          { "label": "Connection timeout", "href": "troubleshoot/connection-timeout.html" },
+          { "label": "丢包", "href": "troubleshoot/packet-loss.html" },
+          { "label": "tcpdump", "href": "linux/tcpdump.html" }
+        ]
+      },
+      "r-tls": {
+        "type": "result",
+        "title": "TCP 通了，TLS 握手失败",
+        "summary": "检查证书有效期、SAN、证书链、协议版本和 SNI。客户端时间不对也会导致握手失败；mTLS 还要检查客户端证书。",
+        "commands": [
+          "openssl s_client -connect example.com:443 -servername example.com </dev/null",
+          "curl -vI https://example.com/",
+          "echo | openssl s_client -connect example.com:443 2>/dev/null | openssl x509 -noout -dates -subject -issuer",
+          "date -u"
+        ],
+        "links": [
+          { "label": "证书过期", "href": "troubleshoot/certificate-expired.html" },
+          { "label": "TLS 速查", "href": "guide/tls-cheatsheet.html" },
+          { "label": "openssl", "href": "linux/openssl.html" }
+        ]
+      },
+      "r-mtu": {
+        "type": "result",
+        "title": "MTU 不匹配导致大包黑洞",
+        "summary": "小请求正常、大响应卡住，常见于 VPN、overlay 网络或云网络 MTU 不一致。用 ping 指定包大小和 DF 位定位，再调整接口或 CNI MTU。",
+        "commands": [
+          "ping -M do -s 1472 <host>",
+          "ip link show | grep mtu",
+          "tracepath <host>",
+          "kubectl -n kube-system get configmap <cni-config> -o yaml | grep -i mtu"
+        ],
+        "links": [
+          { "label": "MTU 问题", "href": "troubleshoot/mtu-issue.html" },
+          { "label": "MTU 黑洞", "href": "troubleshoot/mtu-blackhole.html" }
+        ]
+      },
+      "r-local-loss": {
+        "type": "result",
+        "title": "本机到网关之间丢包",
+        "summary": "先看网卡错误计数、链路速率、双工和无线信号。虚拟机还要看宿主机和虚拟交换机的限流。",
+        "commands": [
+          "ip -s link",
+          "ethtool <iface>",
+          "ping -c 20 <gateway>",
+          "dmesg -T | grep -i -E 'link|eth|drop' | tail -30"
+        ],
+        "links": [
+          { "label": "丢包", "href": "troubleshoot/packet-loss.html" },
+          { "label": "ip", "href": "linux/ip.html" }
+        ]
+      },
+      "r-path-loss": {
+        "type": "result",
+        "title": "路径中间或目标端丢包",
+        "summary": "用 mtr 分别看去程和回程，确认是固定节点还是目标端。中间节点 ICMP 限速会造成假丢包，重点看最后一跳和 TCP 重传。",
+        "commands": [
+          "mtr -rwc 50 <host>",
+          "ss -ti | grep -E 'retrans|rtt'",
+          "nstat -az | grep -i -E 'retrans|drop'",
+          "tcpdump -ni any 'tcp[tcpflags] & tcp-retransmit != 0'"
+        ],
+        "links": [
+          { "label": "丢包", "href": "troubleshoot/packet-loss.html" },
+          { "label": "TCP 重传", "href": "troubleshoot/tcp-retransmit.html" },
+          { "label": "ss", "href": "linux/ss.html" }
+        ]
+      },
+      "r-congestion": {
+        "type": "result",
+        "title": "高峰期限流或拥塞",
+        "summary": "检查带宽、连接数、NAT 端口、云厂商限流和 TCP 重传。只在高峰出现的问题通常不是 DNS，而是容量或队列。",
+        "commands": [
+          "sar -n DEV 1 10",
+          "ss -s",
+          "conntrack -S",
+          "nstat -az | grep -i -E 'listenoverflow|retrans|drop'"
+        ],
+        "links": [
+          { "label": "丢包", "href": "troubleshoot/packet-loss.html" },
+          { "label": "NAT 端口耗尽", "href": "troubleshoot/nat-port-exhausted.html" },
+          { "label": "socket listen overflow", "href": "troubleshoot/socket-listen-overflow.html" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "cpu-load",
+    "tag": "系统",
+    "title": "CPU 高 / 负载高",
+    "desc": "CPU 高和负载高不是一回事。先看 us/sy/wa/st，再分进程、线程、cgroup 和 IO。",
+    "start": "q-cpu-kind",
+    "nodes": {
+      "q-cpu-kind": {
+        "type": "question",
+        "title": "先看 CPU 时间花在哪",
+        "question": "top 或 mpstat 里，哪一项最突出？",
+        "hint": "us 用户态、sy 内核态、wa IO 等待、st 虚拟化被抢占；load 高但 CPU 低是另一条线。",
+        "options": [
+          { "label": "us 高", "next": "q-cpu-user" },
+          { "label": "sy 高", "next": "r-cpu-sys" },
+          { "label": "wa 高", "next": "r-cpu-io" },
+          { "label": "st 高", "next": "r-cpu-steal" },
+          { "label": "CPU 不高，但 load average 很高", "next": "r-load-dstate" }
+        ]
+      },
+      "q-cpu-user": {
+        "type": "question",
+        "title": "看是单线程还是多线程",
+        "question": "热点是单个线程/进程，还是很多进程一起高？",
+        "hint": "top -Hp、pidstat -t 或 perf top 能区分。",
+        "options": [
+          { "label": "单个线程打满一个核", "next": "r-cpu-single" },
+          { "label": "多进程或多线程一起高", "next": "r-cpu-multi" },
+          { "label": "容器内 CPU 不高，但延迟很高", "next": "r-cpu-throttle" }
+        ]
+      },
+      "r-cpu-single": {
+        "type": "result",
+        "title": "单线程热点",
+        "summary": "单核打满常见于死循环、正则回溯、序列化大对象、GC 线程或锁竞争。先抓线程栈和 CPU 火焰图，确认热点函数再改。",
+        "commands": [
+          "top -Hp <pid>",
+          "pidstat -t -p <pid> 1 5",
+          "perf top -p <pid>",
+          "jstack <pid> | grep -A20 'nid=0x<tid>'"
+        ],
+        "links": [
+          { "label": "CPU 100%", "href": "troubleshoot/cpu-100.html" },
+          { "label": "perf", "href": "linux/perf.html" },
+          { "label": "火焰图", "href": "linux/flamegraph.html" }
+        ]
+      },
+      "r-cpu-multi": {
+        "type": "result",
+        "title": "多进程/多线程整体繁忙",
+        "summary": "先确认是业务流量增长、批任务、还是异常重试。看进程列表和 cgroup 限制，再决定扩容、限流还是优化。",
+        "commands": [
+          "ps -eo pid,ppid,comm,%cpu --sort=-%cpu | head -15",
+          "pidstat 1 5",
+          "systemd-cgtop -m 2>/dev/null || top -b -n1 | head -20",
+          "cat /proc/pressure/cpu"
+        ],
+        "links": [
+          { "label": "CPU 100%", "href": "troubleshoot/cpu-100.html" },
+          { "label": "负载高", "href": "troubleshoot/load-average-high.html" },
+          { "label": "pidstat", "href": "linux/pidstat.html" }
+        ]
+      },
+      "r-cpu-throttle": {
+        "type": "result",
+        "title": "容器被 CPU 配额节流",
+        "summary": "CPU 使用率不高但延迟高，可能是 cfs quota 用尽。看 cpu.stat 的 nr_throttled 和 throttled_usec；先确认 limits 是否过低，再考虑调整。",
+        "commands": [
+          "cat /sys/fs/cgroup/cpu.max",
+          "cat /sys/fs/cgroup/cpu.stat",
+          "kubectl -n app get pod <pod> -o jsonpath='{.spec.containers[*].resources}'",
+          "kubectl -n app top pod <pod> --containers"
+        ],
+        "links": [
+          { "label": "CPU 100%", "href": "troubleshoot/cpu-100.html" },
+          { "label": "cgroups v2", "href": "linux/cgroups-v2.html" }
+        ]
+      },
+      "r-cpu-sys": {
+        "type": "result",
+        "title": "内核态开销高",
+        "summary": "sy 高常见于大量系统调用、网络包处理、上下文切换、锁竞争或内核 bug。先看上下文切换和系统调用热点。",
+        "commands": [
+          "vmstat 1 5",
+          "pidstat -w 1 5",
+          "perf top",
+          "strace -c -p <pid>"
+        ],
+        "links": [
+          { "label": "CPU 100%", "href": "troubleshoot/cpu-100.html" },
+          { "label": "perf", "href": "linux/perf.html" },
+          { "label": "strace", "href": "linux/strace.html" }
+        ]
+      },
+      "r-cpu-io": {
+        "type": "result",
+        "title": "CPU 在等 IO",
+        "summary": "wa 高不是 CPU 忙，而是进程在等磁盘或网络。先看 iostat 的 await/util 和 D 状态进程，再查具体设备或远端存储。",
+        "commands": [
+          "iostat -x 1 5",
+          "pidstat -d 1 5",
+          "ps -eo pid,stat,wchan:32,comm | awk '$2 ~ /D/'",
+          "dmesg -T | tail -50"
+        ],
+        "links": [
+          { "label": "磁盘 IO 高", "href": "troubleshoot/disk-io-high.html" },
+          { "label": "iostat", "href": "linux/iostat.html" },
+          { "label": "负载高", "href": "troubleshoot/load-average-high.html" }
+        ]
+      },
+      "r-cpu-steal": {
+        "type": "result",
+        "title": "宿主机抢占虚拟 CPU",
+        "summary": "st 高说明虚拟机想跑但宿主机没给 CPU 时间。先看宿主机和云厂商的 CPU 争用指标，再考虑换规格或迁移。",
+        "commands": [
+          "mpstat 1 5",
+          "top -b -n1 | head -5",
+          "cat /proc/stat | grep '^cpu '",
+          "dmesg -T | grep -i -E 'steal|throttl'"
+        ],
+        "links": [
+          { "label": "CPU 100%", "href": "troubleshoot/cpu-100.html" },
+          { "label": "负载高", "href": "troubleshoot/load-average-high.html" }
+        ]
+      },
+      "r-load-dstate": {
+        "type": "result",
+        "title": "load 高但 CPU 空闲：大量 D 状态进程",
+        "summary": "Linux 的 load average 把不可中断睡眠也计入。磁盘、NFS、内核锁、云盘限流都会推高 load；此时看 CPU 使用率会误判。",
+        "commands": [
+          "ps -eo pid,stat,wchan:32,comm | awk '$2 ~ /D/'",
+          "vmstat 1 5",
+          "iostat -x 1 5",
+          "cat /proc/pressure/io"
+        ],
+        "links": [
+          { "label": "负载高", "href": "troubleshoot/load-average-high.html" },
+          { "label": "磁盘 IO 高", "href": "troubleshoot/disk-io-high.html" },
+          { "label": "进程卡住", "href": "troubleshoot/process-stuck.html" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "db-connections",
+    "tag": "数据库",
+    "title": "数据库连接满 / 慢查询",
+    "desc": "先分清连不上、连接池等待、慢查询和锁等待，再决定改数据库参数还是改应用。",
+    "start": "q-db-kind",
+    "nodes": {
+      "q-db-kind": {
+        "type": "question",
+        "title": "先分清“连不上”和“慢”",
+        "question": "现在的现象更接近哪一种？",
+        "hint": "连接被拒绝、连接池超时、查询慢、锁等待是四条不同的线。",
+        "options": [
+          { "label": "连不上，或报连接数/连接池错误", "next": "q-db-conn" },
+          { "label": "能连上，但查询明显变慢", "next": "q-db-slow" },
+          { "label": "连接数很高，但业务看起来并不忙", "next": "r-db-idle" }
+        ]
+      },
+      "q-db-conn": {
+        "type": "question",
+        "title": "看具体报错",
+        "question": "应用或数据库报错最接近哪一种？",
+        "hint": "数据库端的 Too many connections 和应用侧的 connection pool timeout 不是同一层问题。",
+        "options": [
+          { "label": "Too many connections", "next": "r-db-max" },
+          { "label": "Access denied / authentication failed", "next": "r-db-auth" },
+          { "label": "Connection timed out / 网络不可达", "next": "r-db-network" },
+          { "label": "连接池等待超时，数据库连接数未必满", "next": "r-db-pool" }
+        ]
+      },
+      "q-db-slow": {
+        "type": "question",
+        "title": "定位慢在哪一层",
+        "question": "数据库慢日志里有对应的 SQL 吗？",
+        "hint": "没有慢日志不代表数据库没问题；也可能是应用侧序列化、网络或锁等待。",
+        "options": [
+          { "label": "有，且执行计划看起来不对", "next": "q-db-plan" },
+          { "label": "有，但执行计划正常，数据量也不大", "next": "r-db-lock" },
+          { "label": "没有记录，应用侧慢", "next": "r-db-app" },
+          { "label": "不确定，没开慢日志", "next": "r-db-check" }
+        ]
+      },
+      "q-db-plan": {
+        "type": "question",
+        "title": "看执行计划",
+        "question": "EXPLAIN 的结果最接近哪一种？",
+        "hint": "重点看 type/rows/filtered/Extra，不要只看有没有用到索引。",
+        "options": [
+          { "label": "全表扫描，或 rows 估算很大", "next": "r-db-index" },
+          { "label": "走了索引，但回表或排序很多", "next": "r-db-rows" },
+          { "label": "不确定，或 SQL 是 ORM 生成的", "next": "r-db-check" }
+        ]
+      },
+      "r-db-max": {
+        "type": "result",
+        "title": "数据库连接数达到上限",
+        "summary": "先看当前连接里有多少是 Sleep/Idle，多少是活跃查询。连接数满往往不是数据库太小，而是应用连接池过大、泄漏或长事务占连接。",
+        "commands": [
+          "mysql -e \"SHOW STATUS LIKE 'Threads_connected'; SHOW VARIABLES LIKE 'max_connections';\"",
+          "mysql -e \"SELECT user,host,command,time,state FROM information_schema.processlist ORDER BY time DESC LIMIT 20;\"",
+          "psql -c \"SELECT state, count(*) FROM pg_stat_activity GROUP BY state;\"",
+          "kubectl -n app logs deploy/app --tail=100 | grep -i -E 'pool|connection'"
+        ],
+        "links": [
+          { "label": "MySQL 连接过多", "href": "troubleshoot/mysql-too-many-connections.html" },
+          { "label": "PostgreSQL 连接过多", "href": "troubleshoot/postgres-too-many-connections.html" },
+          { "label": "PgBouncer", "href": "middleware/pgbouncer.html" }
+        ]
+      },
+      "r-db-auth": {
+        "type": "result",
+        "title": "认证或权限失败",
+        "summary": "先确认用户名、密码、来源主机、数据库名和认证插件。MySQL 的 host 匹配、PostgreSQL 的 pg_hba.conf、以及密码里的特殊字符都容易出错。",
+        "commands": [
+          "mysql -h <host> -u <user> -p -e 'SELECT 1'",
+          "psql 'host=<host> user=<user> dbname=<db>' -c 'SELECT 1'",
+          "grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | tail -20",
+          "mysql -e \"SELECT user,host,plugin FROM mysql.user;\""
+        ],
+        "links": [
+          { "label": "MySQL 连接失败", "href": "troubleshoot/mysql-connection-failed.html" },
+          { "label": "PostgreSQL 连接失败", "href": "troubleshoot/postgres-connection-failed.html" },
+          { "label": "MySQL 速查", "href": "guide/mysql-cheatsheet.html" }
+        ]
+      },
+      "r-db-network": {
+        "type": "result",
+        "title": "连接超时或网络不可达",
+        "summary": "先确认端口监听、安全组、NetworkPolicy 和 DNS。数据库连接超时经常被误判为数据库慢，实际是网络或白名单。",
+        "commands": [
+          "nc -vz <db-host> 3306",
+          "ss -lntp | grep -E ':3306|:5432'",
+          "kubectl -n app get networkpolicy",
+          "getent hosts <db-host>"
+        ],
+        "links": [
+          { "label": "Connection timeout", "href": "troubleshoot/connection-timeout.html" },
+          { "label": "PostgreSQL 连接失败", "href": "troubleshoot/postgres-connection-failed.html" },
+          { "label": "MySQL 连接失败", "href": "troubleshoot/mysql-connection-failed.html" }
+        ]
+      },
+      "r-db-pool": {
+        "type": "result",
+        "title": "应用连接池等待超时",
+        "summary": "数据库连接数可能没满，但应用池太小、连接泄漏、长事务或慢查询占住了池。先看池的 active/idle/wait 指标，再看数据库端连接状态。",
+        "commands": [
+          "kubectl -n app logs deploy/app --tail=200 | grep -i -E 'pool|timeout|active|idle'",
+          "mysql -e \"SELECT command,time,state,count(*) FROM information_schema.processlist GROUP BY command,state ORDER BY count(*) DESC;\"",
+          "psql -c \"SELECT state, wait_event_type, count(*) FROM pg_stat_activity GROUP BY 1,2;\""
+        ],
+        "links": [
+          { "label": "MySQL 连接过多", "href": "troubleshoot/mysql-too-many-connections.html" },
+          { "label": "PgBouncer", "href": "middleware/pgbouncer.html" },
+          { "label": "ProxySQL", "href": "middleware/proxysql.html" }
+        ]
+      },
+      "r-db-idle": {
+        "type": "result",
+        "title": "连接多但业务空闲：连接泄漏或长事务",
+        "summary": "空闲连接长期不释放，常见于连接池配置错误、应用没有 close、事务忘记提交。先按状态和持续时间分组，再找来源应用。",
+        "commands": [
+          "mysql -e \"SELECT user,host,command,time,state FROM information_schema.processlist WHERE command='Sleep' ORDER BY time DESC LIMIT 30;\"",
+          "psql -c \"SELECT pid,usename,state,now()-state_change AS idle_for,query FROM pg_stat_activity WHERE state='idle' ORDER BY idle_for DESC LIMIT 20;\"",
+          "mysql -e \"SHOW VARIABLES LIKE 'wait_timeout'; SHOW VARIABLES LIKE 'interactive_timeout';\""
+        ],
+        "links": [
+          { "label": "MySQL 连接过多", "href": "troubleshoot/mysql-too-many-connections.html" },
+          { "label": "PostgreSQL 连接过多", "href": "troubleshoot/postgres-too-many-connections.html" },
+          { "label": "连接池", "href": "middleware/pgbouncer.html" }
+        ]
+      },
+      "r-db-lock": {
+        "type": "result",
+        "title": "锁等待或死锁",
+        "summary": "执行计划正常但查询慢，可能是等锁。先看锁等待链和阻塞源，不要直接杀所有连接；找到持锁事务再决定回滚还是提交。",
+        "commands": [
+          "mysql -e \"SELECT * FROM performance_schema.data_lock_waits;\"",
+          "mysql -e \"SELECT * FROM information_schema.innodb_trx ORDER BY trx_started;\"",
+          "psql -c \"SELECT pid,wait_event_type,wait_event,pg_blocking_pids(pid),query FROM pg_stat_activity WHERE wait_event_type IS NOT NULL;\"",
+          "psql -c \"SELECT * FROM pg_locks WHERE NOT granted;\""
+        ],
+        "links": [
+          { "label": "MySQL 死锁", "href": "troubleshoot/mysql-deadlock.html" },
+          { "label": "PostgreSQL 死锁", "href": "troubleshoot/postgres-deadlock.html" },
+          { "label": "PostgreSQL 锁等待", "href": "troubleshoot/postgres-lock-wait.html" }
+        ]
+      },
+      "r-db-app": {
+        "type": "result",
+        "title": "数据库不慢，慢在应用侧",
+        "summary": "检查 N+1 查询、序列化大对象、网络往返、连接池等待和应用线程池。用请求级 trace 把 SQL 时间和应用时间分开。",
+        "commands": [
+          "kubectl -n app logs deploy/app --tail=200",
+          "kubectl -n app top pod",
+          "curl -sS -o /dev/null -w '%{time_total}s\\n' http://127.0.0.1:8080/api/slow",
+          "kubectl -n app exec <pod> -- sh -c 'cat /proc/1/status | grep -E \"Threads|VmRSS\"'"
+        ],
+        "links": [
+          { "label": "慢查询", "href": "troubleshoot/mysql-slow-query.html" },
+          { "label": "PostgreSQL 连接过多", "href": "troubleshoot/postgres-too-many-connections.html" }
+        ]
+      },
+      "r-db-index": {
+        "type": "result",
+        "title": "执行计划走了全表扫描",
+        "summary": "先看 WHERE、JOIN、ORDER BY 的列是否有合适索引，再看字段类型、函数包裹和隐式转换。不要盲目加索引；索引也会增加写入成本。",
+        "commands": [
+          "mysql -e 'EXPLAIN FORMAT=JSON <SQL>'",
+          "mysql -e 'SHOW INDEX FROM <table>;'",
+          "psql -c 'EXPLAIN (ANALYZE, BUFFERS) <SQL>;'",
+          "psql -c \"SELECT * FROM pg_stat_statements ORDER BY total_exec_time DESC LIMIT 10;\""
+        ],
+        "links": [
+          { "label": "MySQL 慢查询", "href": "troubleshoot/mysql-slow-query.html" },
+          { "label": "PostgreSQL 连接过多", "href": "troubleshoot/postgres-too-many-connections.html" },
+          { "label": "MySQL 速查", "href": "guide/mysql-cheatsheet.html" }
+        ]
+      },
+      "r-db-rows": {
+        "type": "result",
+        "title": "索引有了，但扫描/回表/排序仍然多",
+        "summary": "看 rows、filtered、Using filesort、Using temporary。联合索引顺序不对、范围查询后的列失效、SELECT * 拉太多列都可能导致。",
+        "commands": [
+          "mysql -e 'EXPLAIN ANALYZE <SQL>'",
+          "psql -c 'EXPLAIN (ANALYZE, BUFFERS) <SQL>;'",
+          "mysql -e 'SHOW CREATE TABLE <table>\\G'",
+          "psql -c '\\d+ <table>'"
+        ],
+        "links": [
+          { "label": "MySQL 慢查询", "href": "troubleshoot/mysql-slow-query.html" },
+          { "label": "PostgreSQL 锁等待", "href": "troubleshoot/postgres-lock-wait.html" }
+        ]
+      },
+      "r-db-check": {
+        "type": "result",
+        "title": "补开观测再判断",
+        "summary": "先开慢查询日志、看连接状态和执行计划，再决定是加索引、改 SQL、调连接池还是扩容。没有数据的“优化”通常只是换一种猜测。",
+        "commands": [
+          "mysql -e \"SHOW VARIABLES LIKE 'slow_query_log'; SHOW VARIABLES LIKE 'long_query_time';\"",
+          "psql -c \"SHOW shared_preload_libraries;\"",
+          "mysql -e 'SHOW FULL PROCESSLIST;'",
+          "psql -c \"SELECT * FROM pg_stat_activity WHERE state <> 'idle';\""
+        ],
+        "links": [
+          { "label": "MySQL 慢查询", "href": "troubleshoot/mysql-slow-query.html" },
+          { "label": "PostgreSQL 连接过多", "href": "troubleshoot/postgres-too-many-connections.html" },
+          { "label": "数据库选型", "href": "guide/database-selection-roadmap.html" }
+        ]
+      }
+    }
+  }
+]

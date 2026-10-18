@@ -1,19 +1,37 @@
 <%- include('partials/head') %><%- include('partials/topbar') %>
 <main class="review-page">
   <header class="review-head">
-    <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>每日 5 题</p>
+    <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>每日复习</p>
     <h1>先回忆，再核对</h1>
-    <p class="review-lead">从全站 <%= questionCount %> 道“读完自测”中随机抽取 5 道。先自己回答，再展开答案；标记“会 / 不会”，错题会优先出现。</p>
+    <p class="review-lead">从全站 <%= questionCount %> 道“读完自测”中抽题。按分支筛选，错题优先；同一道题连续答对两次后，会自动移出随机池。先自己回答，再展开答案。</p>
+    <div class="review-controls">
+      <label class="review-field" for="review-branch">领域
+        <select id="review-branch">
+          <option value="">全部分支</option>
+          <% reviewBranches.forEach(function (b) { %>
+          <option value="<%= b.id %>"><%= b.name %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label class="review-toggle" for="review-wrong-only">
+        <input type="checkbox" id="review-wrong-only" />
+        <span>只练错题</span>
+      </label>
+    </div>
+    <div class="review-progress-wrap">
+      <div class="review-progress-bar" aria-hidden="true"><span id="review-progress-fill"></span></div>
+      <span id="review-progress" class="review-progress" aria-live="polite"></span>
+    </div>
     <div class="review-actions">
       <button id="review-new" class="review-btn primary" type="button">换一组</button>
       <button id="review-reset" class="review-btn" type="button">清空记录</button>
-      <span id="review-progress" class="review-progress" aria-live="polite"></span>
     </div>
   </header>
+  <section id="review-daily" class="review-daily" aria-labelledby="review-daily-title" hidden></section>
   <ol id="review-list" class="review-list"></ol>
   <p class="review-empty" id="review-empty" hidden>题库加载失败。直接打开任意页面，做页尾的“读完自测”也可以。</p>
   <noscript><p class="review-empty">这个页面需要 JavaScript 才能随机抽题。</p></noscript>
-  <p class="review-back"><a href="guide/learning-paths.html">← 返回学习路径</a></p>
+  <p class="review-back"><a href="guide/learning-paths.html">← 返回学习路径</a> · <a href="diagnose.html">故障诊断向导 →</a></p>
 </main>
 <%- include('partials/sitefooter') %>
 <%- include('partials/scripts') %>

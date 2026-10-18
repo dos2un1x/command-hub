@@ -1,0 +1,24 @@
+<%- include('partials/head') %><%- include('partials/topbar') %>
+<main class="diagnose-page">
+  <header class="diagnose-head">
+    <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>故障诊断向导</p>
+    <h1>先判断，再动手</h1>
+    <p class="diagnose-lead">选择最接近的现象，按问题一步步缩小范围。每一步只做一件事：看一个信号、跑一条命令、排除一类原因。结果页会给出验证命令和对应条目，不替你做决定。</p>
+    <p class="diagnose-meta"><%= diagnoseTreeCount %> 棵决策树 · 覆盖 HTTP、K8s、磁盘、网络、CPU 与数据库</p>
+  </header>
+  <div class="diagnose-layout">
+    <nav class="diagnose-trees" id="diagnose-trees" aria-label="诊断主题"></nav>
+    <section class="diagnose-panel" aria-live="polite">
+      <div class="diagnose-toolbar">
+        <button id="diagnose-back" class="diagnose-btn" type="button" hidden>← 上一步</button>
+        <button id="diagnose-reset" class="diagnose-btn" type="button">重新开始</button>
+      </div>
+      <div id="diagnose-content"></div>
+    </section>
+  </div>
+  <noscript><p class="diagnose-empty">这个页面需要 JavaScript 才能展开决策树。你也可以直接阅读排障分支的条目。</p></noscript>
+  <p class="diagnose-back-link"><a href="troubleshoot/">← 浏览全部排障条目</a> · <a href="review.html">去复习自测 →</a></p>
+</main>
+<%- include('partials/sitefooter') %>
+<%- include('partials/scripts') %>
+<script src="js/diagnose.js?v=<%= v %>"></script>

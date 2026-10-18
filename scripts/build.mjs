@@ -83,7 +83,7 @@ async function readSources(branches) {
 }
 
 async function markdownToHTML(str) {
-  return create({
+  const html = await create({
     rewrite: (node) => {
       if (
         node.type === 'element' &&
@@ -101,6 +101,13 @@ async function markdownToHTML(str) {
     document: undefined,
     'dark-mode': false,
   });
+  // markdown-to-html-cli 即使传 dark-mode:false 也会注入一份隐藏的
+  // <dark-mode> 与脚本；头部已加载 dark-mode.min.js，重复 define 会让
+  // 浏览器抛 NotSupportedError。这里移除渲染器注入的那一份。
+  return html.replace(
+    /<dark-mode[^>]*display:\s*none;[^>]*><\/dark-mode><script>[\s\S]*?customElements\.define\("dark-mode",a\);<\/script>/,
+    ''
+  );
 }
 
 async function render(tplName, data) {
@@ -206,6 +213,7 @@ const branchUnit = (id) => (['guide', 'tutorial', 'troubleshoot', 'ai'].includes
 const items = await readSources(branches);
 
 /** 全站复习题库:每个“读完自测”的三道题。 */
+const branchNameById = new Map(branches.map((b) => [b.id, b.name]));
 const reviewQuestions = items.flatMap((it) =>
   parseSelfTests(it.md).map((qa, i) => ({
     id: `${it.b}/${it.n}#${i}`,
@@ -215,12 +223,66 @@ const reviewQuestions = items.flatMap((it) =>
     d: it.d,
     p: `${it.b}/${it.n}.html`,
     b: it.b,
+    bn: branchNameById.get(it.b) || it.b,
   }))
 );
 const logo = await FS.readFile(path.join(TEMPLATE_DIR, 'partials', 'logo-inline.svg'), 'utf8');
 
+/** 故障诊断向导数据:构建时校验结构,链接由 check-links 统一校验。 */
+const diagnoseData = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'diagnose.json'), 'utf8')
+);
+if (!Array.isArray(diagnoseData) || !diagnoseData.length) {
+  throw new Error('assets/data/diagnose.json 必须是非空数组');
+}
+for (const tree of diagnoseData) {
+  if (!tree.id || !tree.title || !tree.start || !tree.nodes?.[tree.start]) {
+    throw new Error(`诊断树 "${tree.id || '?'}" 缺少 id/title/start 或 start 节点不存在`);
+  }
+  let resultCount = 0;
+  for (const [nodeId, node] of Object.entries(tree.nodes)) {
+    if (node.type === 'question') {
+      if (!Array.isArray(node.options) || !node.options.length) {
+        throw new Error(`诊断树 "${tree.id}" 节点 "${nodeId}" 没有选项`);
+      }
+      for (const opt of node.options) {
+        if (!opt.label) {
+          throw new Error(`诊断树 "${tree.id}" 节点 "${nodeId}" 有空选项`);
+        }
+        if (!tree.nodes[opt.next]) {
+          throw new Error(
+            `诊断树 "${tree.id}" 节点 "${nodeId}" 的选项指向不存在的节点 "${opt.next}"`
+          );
+        }
+      }
+    } else if (node.type === 'result') {
+      resultCount++;
+    } else {
+      throw new Error(`诊断树 "${tree.id}" 节点 "${nodeId}" 的 type 必须是 question 或 result`);
+    }
+  }
+  if (!resultCount) throw new Error(`诊断树 "${tree.id}" 没有任何结果节点`);
+
+  // 所有节点必须从 start 可达,避免数据里留下孤立分支。
+  const seen = new Set([tree.start]);
+  const queue = [tree.start];
+  while (queue.length) {
+    const current = tree.nodes[queue.shift()];
+    for (const opt of current.options || []) {
+      if (!seen.has(opt.next)) {
+        seen.add(opt.next);
+        queue.push(opt.next);
+      }
+    }
+  }
+  const unreachable = Object.keys(tree.nodes).filter((id) => !seen.has(id));
+  if (unreachable.length) {
+    throw new Error(`诊断树 "${tree.id}" 存在不可达节点: ${unreachable.join(', ')}`);
+  }
+}
+
 // 保留字与跨分支冲突防护
-const RESERVED = new Set(['index', 'list', 'hot', 'review']);
+const RESERVED = new Set(['index', 'list', 'hot', 'review', 'diagnose']);
 for (const b of branches) {
   for (const it of items.filter((x) => x.b === b.id)) {
     if (RESERVED.has(it.n)) {
@@ -344,6 +406,7 @@ await FS.mkdir(OUT_DIR, { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'img'), path.join(OUT_DIR, 'img'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'css'), path.join(OUT_DIR, 'css'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'js'), path.join(OUT_DIR, 'js'), { recursive: true });
+await FS.cp(path.join(ASSETS_DIR, 'data'), path.join(OUT_DIR, 'data'), { recursive: true });
 await FS.rm(path.join(OUT_DIR, 'js', 'github-corners.js'), { force: true });
 await FS.rm(path.join(OUT_DIR, 'css', 'index.legacy.css'), { force: true });
 
@@ -401,24 +464,24 @@ const BRANCH_SEO = {
       `收录 ${n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、JVM/Go/Node、Kubernetes 与中间件。`,
   },
   guide: {
-    label: '工具对比与速查表',
+    label: '学习路径、工具对比与速查表',
     intro: (n) =>
-      `收录 ${n} 个指南条目，包含工具对比、选型建议、高频命令速查表和上线检查清单，帮助在相似方案之间做决定。`,
+      `收录 ${n} 个指南条目，包含十条领域学习路径、心智模型、工具对比、选型建议、高频命令速查表和上线检查清单，帮助先建立方向，再在相似方案之间做决定。`,
   },
   middleware: {
     label: '中间件手册',
     intro: (n) =>
-      `收录 ${n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库与数据库连接池。`,
+      `收录 ${n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库、数据库连接池、Java 生态与向量检索。`,
   },
   tutorial: {
-    label: '迁移与搭建教程',
+    label: '迁移、搭建与故障演练',
     intro: (n) =>
-      `收录 ${n} 个教程条目，覆盖组件迁移、版本升级，以及 Kubernetes、Kafka、Redis、PostgreSQL 高可用、可观测性、密钥管理与发布策略搭建。`,
+      `收录 ${n} 个教程条目，覆盖组件迁移、版本升级，以及 Kubernetes、Kafka、Redis、PostgreSQL 高可用、可观测性、密钥管理、发布策略搭建与本地故障演练。`,
   },
   ai: {
     label: 'AI 与 MLOps 工具手册',
     intro: (n) =>
-      `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪与评估。`,
+      `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪、评估、Agent 与安全。`,
   },
 };
 const branchSeo = (b) =>
@@ -601,7 +664,30 @@ await write(
     ogType: 'website',
     robots: 'noindex,follow',
     questionCount: reviewQuestions.length,
+    reviewBranches: branches.map((b) => ({ id: b.id, name: b.name })),
     extraCss: [`css/review.css?v=${V}`],
+    ...rootFooter,
+  }))
+);
+
+await write(
+  path.join(OUT_DIR, 'diagnose.html'),
+  await render('diagnose.ejs', base({
+    relative_path: '',
+    current_path: '/diagnose.html',
+    currentBranch: null,
+    placeholder: '搜索命令、报错或工具',
+    isHome: false,
+    describe: { n: '故障诊断向导', d: '按现象逐步判断，找到下一步该查什么' },
+    brand: site.name,
+    pageTitle: brandTitle('故障诊断向导：从现象到下一步'),
+    metaDescription:
+      '按现象逐步判断的故障诊断向导：502/504、Pod Pending/CrashLoopBackOff、磁盘满、DNS/网络不通、CPU/负载高、数据库连接满，每一步给出验证命令与对应页面。',
+    metaKeywords: '故障诊断,排障向导,502,504,CrashLoopBackOff,磁盘满,DNS,CPU高,数据库连接',
+    canonicalUrl: `${baseUrl}/diagnose.html`,
+    ogType: 'website',
+    diagnoseTreeCount: diagnoseData.length,
+    extraCss: [`css/diagnose.css?v=${V}`],
     ...rootFooter,
   }))
 );
@@ -740,6 +826,7 @@ const sitemapItems = [...items].sort((a, b) => {
 const sitemapEntries = [
   { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'weekly' },
   { loc: `${baseUrl}/hot.html`, priority: '0.8', changefreq: 'weekly' },
+  { loc: `${baseUrl}/diagnose.html`, priority: '0.8', changefreq: 'monthly' },
   ...branches.map((b) => ({ loc: `${baseUrl}/${b.id}/`, priority: '0.9', changefreq: 'weekly' })),
   ...categoryPages,
   ...sitemapItems.map((it) => ({
@@ -776,5 +863,6 @@ console.log(`\n✓ 构建完成 ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 console.log(`  命令页   ${items.length}`);
 console.log(`  分类页   ${categoryPages.length}`);
 console.log(`  分支页   ${branches.length}`);
+console.log(`  诊断树   ${diagnoseData.length}`);
 console.log(`  sitemap  ${sitemapEntries.length}`);
 console.log(`  产物目录 ${path.relative(process.cwd(), OUT_DIR)}/`);
