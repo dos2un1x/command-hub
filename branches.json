@@ -43,6 +43,13 @@
       "desc": "工具对比与常用速查表",
       "searchPlaceholder": "搜索对比或速查",
       "default": false
+    },
+    {
+      "id": "middleware",
+      "name": "中间件",
+      "desc": "日志、消息、网关与接入服务",
+      "searchPlaceholder": "搜索中间件命令",
+      "default": false
     }
   ]
 }
