@@ -1,6 +1,6 @@
 # 命令速查站(多分支)
 
-Linux / Kubernetes 命令速查站。支持多分支切换,新增分支不需要改代码。
+Linux / Kubernetes / DevOps 命令速查站。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
@@ -186,7 +186,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(974 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1089 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -194,19 +194,20 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:978 个 HTML、944 个命令页、sitemap 974 条、站内链接 23,482 条(校验零 404)。
+当前构建规模:1093 个 HTML、1051 个命令页、sitemap 1089 条、站内链接 27,305 条(校验零 404)。
 
-## 二级分类(Linux / Kubernetes)
+## 二级分类(Linux / Kubernetes / DevOps)
 
 `command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
-当前有两份:
+当前有三份:
 
-- `command/linux/categories.json`:14 个分类、690 条
+- `command/linux/categories.json`:15 个分类、750 条
 - `command/k8s/categories.json`:12 个分类、254 条
+- `command/devops/categories.json`:6 个分类、47 条
 
 构建时会校验:
 
@@ -247,8 +248,9 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 690 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具(rg/fd/bat/fzf/yq/perf/bpftrace/hyperfine/just/restic/rclone/gh/sops/zstd/podman 等) |
+| Linux | 750 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具(rg/fd/bat/fzf/yq/perf/bpftrace/hyperfine/just/restic/rclone/gh/sops/zstd/podman 等),以及数据库客户端(pg_dump/psql/mysqldump/redis-cli/mongosh 等)与语言运行时(npm/pnpm/uv/poetry/cargo/go/mvn/gradle/composer 等) |
 | Kubernetes | 254 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版等 |
+| DevOps | 47 | GitHub Actions、GitLab CI、Jenkins、Argo/Tekton 生态、发布自动化,以及 AWS/GCP/Azure/阿里云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Docker Compose/Buildx 等 |
 
 Kubernetes 分支按方向划分:
 
@@ -270,13 +272,26 @@ Operator     crd operator kubebuilder operator-sdk olm controller-runtime aggreg
 运维工具     k9s kustomize velero metrics-server kube-bench kube-state-metrics chaos-mesh ...
 ```
 
+DevOps 分支按方向划分:
+
+```
+持续集成与交付   github-actions gitlab-ci jenkins gitlab-runner act drone buildkite-agent
+                 circleci concourse dagger woodpecker gitea-actions tkn
+发布自动化       semantic-release release-please goreleaser renovate dependabot
+代码质量         pre-commit lefthook commitlint
+云厂商 CLI       aws gcloud gsutil bq az aliyun doctl hcloud openstack oci
+基础设施即代码   terraform opentofu terragrunt pulumi ansible-playbook ansible-vault
+                 ansible-galaxy packer vagrant nomad
+容器与镜像       docker-compose docker-buildx buildctl crane regctl dive
+```
+
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
 
 > 各页面的 `### 注意` 小节记录的是**经核实的真实坑点**与常见误传的纠正,而非泛泛的最佳实践。
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 72 个现代/冷门工具页面(Linux 现为 690 页),补写了 Linux 长尾页的“易错点与排错”,并撰写了 Kubernetes 分支其余 251 页内容。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 132 个页面(Linux 现为 750 页,含 72 个现代/冷门工具、21 个数据库客户端和 39 个语言运行时工具),补写了 Linux 长尾页的“易错点与排错”,撰写了 Kubernetes 分支其余 251 页内容,并新增 DevOps 分支 47 页(CI/CD、云 CLI、IaC 与容器工具)。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 
