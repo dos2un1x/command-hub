@@ -4,7 +4,7 @@
 
 - 机器可读清单：[provenance.json](provenance.json)（重写进度以其中的 `rewritten_pages` 为准）
 - 执行计划：[UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md)
-- 当前进度：仍属上游 411 页（Linux 408 + K8s 3），已重写 210 页（每批完成后更新）
+- 当前进度：仍属上游 251 页（Linux 248 + K8s 3），已重写 370 页（每批完成后更新）
 
 ## 上游来源
 

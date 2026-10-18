@@ -13,27 +13,11 @@
     },
     {
       "b": "linux",
-      "s": "accept"
-    },
-    {
-      "b": "linux",
       "s": "alias"
     },
     {
       "b": "linux",
-      "s": "ansible"
-    },
-    {
-      "b": "linux",
-      "s": "apachectl"
-    },
-    {
-      "b": "linux",
       "s": "apk"
-    },
-    {
-      "b": "linux",
-      "s": "apropos"
     },
     {
       "b": "linux",
@@ -50,10 +34,6 @@
     {
       "b": "linux",
       "s": "aptitude"
-    },
-    {
-      "b": "linux",
-      "s": "arch"
     },
     {
       "b": "linux",
@@ -81,27 +61,11 @@
     },
     {
       "b": "linux",
-      "s": "at"
-    },
-    {
-      "b": "linux",
-      "s": "atq"
-    },
-    {
-      "b": "linux",
-      "s": "atrm"
-    },
-    {
-      "b": "linux",
       "s": "axel"
     },
     {
       "b": "linux",
       "s": "badblocks"
-    },
-    {
-      "b": "linux",
-      "s": "batch"
     },
     {
       "b": "linux",
@@ -141,10 +105,6 @@
     },
     {
       "b": "linux",
-      "s": "cancel"
-    },
-    {
-      "b": "linux",
       "s": "cdrecord"
     },
     {
@@ -153,19 +113,11 @@
     },
     {
       "b": "linux",
-      "s": "chkconfig"
-    },
-    {
-      "b": "linux",
       "s": "chroot"
     },
     {
       "b": "linux",
       "s": "clear"
-    },
-    {
-      "b": "linux",
-      "s": "clock"
     },
     {
       "b": "linux",
@@ -197,18 +149,6 @@
     },
     {
       "b": "linux",
-      "s": "cupsdisable"
-    },
-    {
-      "b": "linux",
-      "s": "cupsenable"
-    },
-    {
-      "b": "linux",
-      "s": "date"
-    },
-    {
-      "b": "linux",
       "s": "dc"
     },
     {
@@ -218,10 +158,6 @@
     {
       "b": "linux",
       "s": "declare"
-    },
-    {
-      "b": "linux",
-      "s": "depmod"
     },
     {
       "b": "linux",
@@ -242,10 +178,6 @@
     {
       "b": "linux",
       "s": "dirs"
-    },
-    {
-      "b": "linux",
-      "s": "dmidecode"
     },
     {
       "b": "linux",
@@ -301,10 +233,6 @@
     },
     {
       "b": "linux",
-      "s": "dstat"
-    },
-    {
-      "b": "linux",
       "s": "dump"
     },
     {
@@ -334,10 +262,6 @@
     {
       "b": "linux",
       "s": "elinks"
-    },
-    {
-      "b": "linux",
-      "s": "elm"
     },
     {
       "b": "linux",
@@ -449,10 +373,6 @@
     },
     {
       "b": "linux",
-      "s": "get_module"
-    },
-    {
-      "b": "linux",
       "s": "getcap"
     },
     {
@@ -461,35 +381,11 @@
     },
     {
       "b": "linux",
-      "s": "getent"
-    },
-    {
-      "b": "linux",
       "s": "getsebool"
     },
     {
       "b": "linux",
       "s": "gpg"
-    },
-    {
-      "b": "linux",
-      "s": "gpm"
-    },
-    {
-      "b": "linux",
-      "s": "grub"
-    },
-    {
-      "b": "linux",
-      "s": "grub2-mkconfig"
-    },
-    {
-      "b": "linux",
-      "s": "grub2-set-default"
-    },
-    {
-      "b": "linux",
-      "s": "halt"
     },
     {
       "b": "linux",
@@ -513,18 +409,6 @@
     },
     {
       "b": "linux",
-      "s": "hostid"
-    },
-    {
-      "b": "linux",
-      "s": "hostname"
-    },
-    {
-      "b": "linux",
-      "s": "hostnamectl"
-    },
-    {
-      "b": "linux",
       "s": "hping3"
     },
     {
@@ -534,10 +418,6 @@
     {
       "b": "linux",
       "s": "htpasswd"
-    },
-    {
-      "b": "linux",
-      "s": "hwclock"
     },
     {
       "b": "linux",
@@ -561,66 +441,6 @@
     },
     {
       "b": "linux",
-      "s": "ifup"
-    },
-    {
-      "b": "linux",
-      "s": "info"
-    },
-    {
-      "b": "linux",
-      "s": "init"
-    },
-    {
-      "b": "linux",
-      "s": "insmod"
-    },
-    {
-      "b": "linux",
-      "s": "ip6tables"
-    },
-    {
-      "b": "linux",
-      "s": "ip6tables-restore"
-    },
-    {
-      "b": "linux",
-      "s": "ip6tables-save"
-    },
-    {
-      "b": "linux",
-      "s": "ipcalc"
-    },
-    {
-      "b": "linux",
-      "s": "ipcrm"
-    },
-    {
-      "b": "linux",
-      "s": "ipcs"
-    },
-    {
-      "b": "linux",
-      "s": "iperf"
-    },
-    {
-      "b": "linux",
-      "s": "iptables-restore"
-    },
-    {
-      "b": "linux",
-      "s": "iptables-save"
-    },
-    {
-      "b": "linux",
-      "s": "iptraf"
-    },
-    {
-      "b": "linux",
-      "s": "iptstate"
-    },
-    {
-      "b": "linux",
       "s": "iscsiadm"
     },
     {
@@ -633,27 +453,7 @@
     },
     {
       "b": "linux",
-      "s": "jwhois"
-    },
-    {
-      "b": "linux",
-      "s": "kernelversion"
-    },
-    {
-      "b": "linux",
-      "s": "kexec"
-    },
-    {
-      "b": "linux",
-      "s": "l2ping"
-    },
-    {
-      "b": "linux",
       "s": "ld"
-    },
-    {
-      "b": "linux",
-      "s": "ldconfig"
     },
     {
       "b": "linux",
@@ -665,51 +465,7 @@
     },
     {
       "b": "linux",
-      "s": "lftp"
-    },
-    {
-      "b": "linux",
-      "s": "lftpget"
-    },
-    {
-      "b": "linux",
-      "s": "lilo"
-    },
-    {
-      "b": "linux",
-      "s": "lnstat"
-    },
-    {
-      "b": "linux",
       "s": "local"
-    },
-    {
-      "b": "linux",
-      "s": "logger"
-    },
-    {
-      "b": "linux",
-      "s": "login"
-    },
-    {
-      "b": "linux",
-      "s": "logname"
-    },
-    {
-      "b": "linux",
-      "s": "logout"
-    },
-    {
-      "b": "linux",
-      "s": "logrotate"
-    },
-    {
-      "b": "linux",
-      "s": "logsave"
-    },
-    {
-      "b": "linux",
-      "s": "logwatch"
     },
     {
       "b": "linux",
@@ -717,55 +473,7 @@
     },
     {
       "b": "linux",
-      "s": "lp"
-    },
-    {
-      "b": "linux",
-      "s": "lpadmin"
-    },
-    {
-      "b": "linux",
-      "s": "lpc"
-    },
-    {
-      "b": "linux",
-      "s": "lpq"
-    },
-    {
-      "b": "linux",
-      "s": "lpr"
-    },
-    {
-      "b": "linux",
-      "s": "lprm"
-    },
-    {
-      "b": "linux",
-      "s": "lpstat"
-    },
-    {
-      "b": "linux",
-      "s": "lsb_release"
-    },
-    {
-      "b": "linux",
       "s": "lsblk"
-    },
-    {
-      "b": "linux",
-      "s": "lscpu"
-    },
-    {
-      "b": "linux",
-      "s": "lsmod"
-    },
-    {
-      "b": "linux",
-      "s": "lspci"
-    },
-    {
-      "b": "linux",
-      "s": "lsusb"
     },
     {
       "b": "linux",
@@ -797,43 +505,11 @@
     },
     {
       "b": "linux",
-      "s": "lynx"
-    },
-    {
-      "b": "linux",
-      "s": "mail"
-    },
-    {
-      "b": "linux",
-      "s": "mailq"
-    },
-    {
-      "b": "linux",
-      "s": "mailstat"
-    },
-    {
-      "b": "linux",
       "s": "make"
     },
     {
       "b": "linux",
-      "s": "man"
-    },
-    {
-      "b": "linux",
       "s": "mapfile"
-    },
-    {
-      "b": "linux",
-      "s": "mesg"
-    },
-    {
-      "b": "linux",
-      "s": "mii-tool"
-    },
-    {
-      "b": "linux",
-      "s": "mkbootdisk"
     },
     {
       "b": "linux",
@@ -849,10 +525,6 @@
     },
     {
       "b": "linux",
-      "s": "mkinitrd"
-    },
-    {
-      "b": "linux",
       "s": "mkisofs"
     },
     {
@@ -861,27 +533,7 @@
     },
     {
       "b": "linux",
-      "s": "modetest"
-    },
-    {
-      "b": "linux",
-      "s": "modinfo"
-    },
-    {
-      "b": "linux",
-      "s": "modprobe"
-    },
-    {
-      "b": "linux",
-      "s": "mpstat"
-    },
-    {
-      "b": "linux",
       "s": "mtools"
-    },
-    {
-      "b": "linux",
-      "s": "mtr"
     },
     {
       "b": "linux",
@@ -905,79 +557,11 @@
     },
     {
       "b": "linux",
-      "s": "named-checkzone"
-    },
-    {
-      "b": "linux",
-      "s": "nc"
-    },
-    {
-      "b": "linux",
       "s": "ncdu"
     },
     {
       "b": "linux",
-      "s": "ncftp"
-    },
-    {
-      "b": "linux",
-      "s": "neofetch"
-    },
-    {
-      "b": "linux",
-      "s": "nethogs"
-    },
-    {
-      "b": "linux",
-      "s": "nfsstat"
-    },
-    {
-      "b": "linux",
-      "s": "ngrep"
-    },
-    {
-      "b": "linux",
-      "s": "nisdomainname"
-    },
-    {
-      "b": "linux",
       "s": "nm"
-    },
-    {
-      "b": "linux",
-      "s": "nmap"
-    },
-    {
-      "b": "linux",
-      "s": "nmcli"
-    },
-    {
-      "b": "linux",
-      "s": "nmtui"
-    },
-    {
-      "b": "linux",
-      "s": "nologin"
-    },
-    {
-      "b": "linux",
-      "s": "nproc"
-    },
-    {
-      "b": "linux",
-      "s": "nslookup"
-    },
-    {
-      "b": "linux",
-      "s": "nstat"
-    },
-    {
-      "b": "linux",
-      "s": "ntpdate"
-    },
-    {
-      "b": "linux",
-      "s": "ntsysv"
     },
     {
       "b": "linux",
@@ -1005,23 +589,11 @@
     },
     {
       "b": "linux",
-      "s": "pfctl"
-    },
-    {
-      "b": "linux",
       "s": "php"
     },
     {
       "b": "linux",
       "s": "pico"
-    },
-    {
-      "b": "linux",
-      "s": "ping"
-    },
-    {
-      "b": "linux",
-      "s": "ping6"
     },
     {
       "b": "linux",
@@ -1033,23 +605,11 @@
     },
     {
       "b": "linux",
-      "s": "poweroff"
-    },
-    {
-      "b": "linux",
-      "s": "ppp-off"
-    },
-    {
-      "b": "linux",
       "s": "printf"
     },
     {
       "b": "linux",
       "s": "protoize"
-    },
-    {
-      "b": "linux",
-      "s": "pssh"
     },
     {
       "b": "linux",
@@ -1105,14 +665,6 @@
     },
     {
       "b": "linux",
-      "s": "rcconf"
-    },
-    {
-      "b": "linux",
-      "s": "rcp"
-    },
-    {
-      "b": "linux",
       "s": "read"
     },
     {
@@ -1122,14 +674,6 @@
     {
       "b": "linux",
       "s": "readonly"
-    },
-    {
-      "b": "linux",
-      "s": "reboot"
-    },
-    {
-      "b": "linux",
-      "s": "reject"
     },
     {
       "b": "linux",
@@ -1154,18 +698,6 @@
     {
       "b": "linux",
       "s": "return"
-    },
-    {
-      "b": "linux",
-      "s": "rexec"
-    },
-    {
-      "b": "linux",
-      "s": "rlogin"
-    },
-    {
-      "b": "linux",
-      "s": "rmmod"
     },
     {
       "b": "linux",
@@ -1197,18 +729,6 @@
     },
     {
       "b": "linux",
-      "s": "rsh"
-    },
-    {
-      "b": "linux",
-      "s": "runlevel"
-    },
-    {
-      "b": "linux",
-      "s": "sar"
-    },
-    {
-      "b": "linux",
       "s": "script"
     },
     {
@@ -1225,15 +745,7 @@
     },
     {
       "b": "linux",
-      "s": "sendmail"
-    },
-    {
-      "b": "linux",
       "s": "seq"
-    },
-    {
-      "b": "linux",
-      "s": "service"
     },
     {
       "b": "linux",
@@ -1245,19 +757,7 @@
     },
     {
       "b": "linux",
-      "s": "setpci"
-    },
-    {
-      "b": "linux",
       "s": "setsebool"
-    },
-    {
-      "b": "linux",
-      "s": "sftp"
-    },
-    {
-      "b": "linux",
-      "s": "sftp-server"
     },
     {
       "b": "linux",
@@ -1273,14 +773,6 @@
     },
     {
       "b": "linux",
-      "s": "showmount"
-    },
-    {
-      "b": "linux",
-      "s": "shutdown"
-    },
-    {
-      "b": "linux",
       "s": "slabtop"
     },
     {
@@ -1293,31 +785,11 @@
     },
     {
       "b": "linux",
-      "s": "smbclient"
-    },
-    {
-      "b": "linux",
       "s": "smbpasswd"
     },
     {
       "b": "linux",
-      "s": "sosreport"
-    },
-    {
-      "b": "linux",
       "s": "source"
-    },
-    {
-      "b": "linux",
-      "s": "speedtest-cli"
-    },
-    {
-      "b": "linux",
-      "s": "squid"
-    },
-    {
-      "b": "linux",
-      "s": "squidclient"
     },
     {
       "b": "linux",
@@ -1341,23 +813,7 @@
     },
     {
       "b": "linux",
-      "s": "sshd"
-    },
-    {
-      "b": "linux",
-      "s": "sshpass"
-    },
-    {
-      "b": "linux",
-      "s": "startx"
-    },
-    {
-      "b": "linux",
       "s": "stty"
-    },
-    {
-      "b": "linux",
-      "s": "supervisord"
     },
     {
       "b": "linux",
@@ -1377,51 +833,11 @@
     },
     {
       "b": "linux",
-      "s": "sysctl"
-    },
-    {
-      "b": "linux",
-      "s": "syslog"
-    },
-    {
-      "b": "linux",
-      "s": "systool"
-    },
-    {
-      "b": "linux",
-      "s": "talk"
-    },
-    {
-      "b": "linux",
-      "s": "tcpdump"
-    },
-    {
-      "b": "linux",
-      "s": "tcpreplay"
-    },
-    {
-      "b": "linux",
-      "s": "telinit"
-    },
-    {
-      "b": "linux",
-      "s": "telnet"
-    },
-    {
-      "b": "linux",
       "s": "test"
     },
     {
       "b": "linux",
-      "s": "tftp"
-    },
-    {
-      "b": "linux",
       "s": "time"
-    },
-    {
-      "b": "linux",
-      "s": "timedatectl"
     },
     {
       "b": "linux",
@@ -1434,14 +850,6 @@
     {
       "b": "linux",
       "s": "tput"
-    },
-    {
-      "b": "linux",
-      "s": "tracepath"
-    },
-    {
-      "b": "linux",
-      "s": "traceroute"
     },
     {
       "b": "linux",
@@ -1461,10 +869,6 @@
     },
     {
       "b": "linux",
-      "s": "ufw"
-    },
-    {
-      "b": "linux",
       "s": "ulimit"
     },
     {
@@ -1477,35 +881,11 @@
     },
     {
       "b": "linux",
-      "s": "uname"
-    },
-    {
-      "b": "linux",
       "s": "unprotoize"
     },
     {
       "b": "linux",
       "s": "unset"
-    },
-    {
-      "b": "linux",
-      "s": "uptime"
-    },
-    {
-      "b": "linux",
-      "s": "usernetctl"
-    },
-    {
-      "b": "linux",
-      "s": "uucico"
-    },
-    {
-      "b": "linux",
-      "s": "uupick"
-    },
-    {
-      "b": "linux",
-      "s": "uuto"
     },
     {
       "b": "linux",
@@ -1561,19 +941,7 @@
     },
     {
       "b": "linux",
-      "s": "wall"
-    },
-    {
-      "b": "linux",
       "s": "watch"
-    },
-    {
-      "b": "linux",
-      "s": "wget"
-    },
-    {
-      "b": "linux",
-      "s": "whatis"
     },
     {
       "b": "linux",
@@ -1582,10 +950,6 @@
     {
       "b": "linux",
       "s": "which"
-    },
-    {
-      "b": "linux",
-      "s": "write"
     },
     {
       "b": "linux",
@@ -1630,10 +994,6 @@
     {
       "b": "linux",
       "s": "yes"
-    },
-    {
-      "b": "linux",
-      "s": "ypdomainname"
     },
     {
       "b": "linux",
@@ -2492,6 +1852,646 @@
     {
       "b": "linux",
       "s": "skill"
+    },
+    {
+      "b": "linux",
+      "s": "runlevel"
+    },
+    {
+      "b": "linux",
+      "s": "sar"
+    },
+    {
+      "b": "linux",
+      "s": "sendmail"
+    },
+    {
+      "b": "linux",
+      "s": "service"
+    },
+    {
+      "b": "linux",
+      "s": "setpci"
+    },
+    {
+      "b": "linux",
+      "s": "shutdown"
+    },
+    {
+      "b": "linux",
+      "s": "sosreport"
+    },
+    {
+      "b": "linux",
+      "s": "startx"
+    },
+    {
+      "b": "linux",
+      "s": "supervisord"
+    },
+    {
+      "b": "linux",
+      "s": "sysctl"
+    },
+    {
+      "b": "linux",
+      "s": "syslog"
+    },
+    {
+      "b": "linux",
+      "s": "systool"
+    },
+    {
+      "b": "linux",
+      "s": "talk"
+    },
+    {
+      "b": "linux",
+      "s": "telinit"
+    },
+    {
+      "b": "linux",
+      "s": "timedatectl"
+    },
+    {
+      "b": "linux",
+      "s": "uname"
+    },
+    {
+      "b": "linux",
+      "s": "uptime"
+    },
+    {
+      "b": "linux",
+      "s": "wall"
+    },
+    {
+      "b": "linux",
+      "s": "whatis"
+    },
+    {
+      "b": "linux",
+      "s": "write"
+    },
+    {
+      "b": "linux",
+      "s": "wget"
+    },
+    {
+      "b": "linux",
+      "s": "ypdomainname"
+    },
+    {
+      "b": "linux",
+      "s": "accept"
+    },
+    {
+      "b": "linux",
+      "s": "ansible"
+    },
+    {
+      "b": "linux",
+      "s": "apachectl"
+    },
+    {
+      "b": "linux",
+      "s": "apropos"
+    },
+    {
+      "b": "linux",
+      "s": "arch"
+    },
+    {
+      "b": "linux",
+      "s": "at"
+    },
+    {
+      "b": "linux",
+      "s": "atq"
+    },
+    {
+      "b": "linux",
+      "s": "atrm"
+    },
+    {
+      "b": "linux",
+      "s": "batch"
+    },
+    {
+      "b": "linux",
+      "s": "cancel"
+    },
+    {
+      "b": "linux",
+      "s": "chkconfig"
+    },
+    {
+      "b": "linux",
+      "s": "clock"
+    },
+    {
+      "b": "linux",
+      "s": "cupsdisable"
+    },
+    {
+      "b": "linux",
+      "s": "cupsenable"
+    },
+    {
+      "b": "linux",
+      "s": "date"
+    },
+    {
+      "b": "linux",
+      "s": "depmod"
+    },
+    {
+      "b": "linux",
+      "s": "dmidecode"
+    },
+    {
+      "b": "linux",
+      "s": "dstat"
+    },
+    {
+      "b": "linux",
+      "s": "lilo"
+    },
+    {
+      "b": "linux",
+      "s": "logger"
+    },
+    {
+      "b": "linux",
+      "s": "login"
+    },
+    {
+      "b": "linux",
+      "s": "logname"
+    },
+    {
+      "b": "linux",
+      "s": "logout"
+    },
+    {
+      "b": "linux",
+      "s": "logrotate"
+    },
+    {
+      "b": "linux",
+      "s": "logsave"
+    },
+    {
+      "b": "linux",
+      "s": "logwatch"
+    },
+    {
+      "b": "linux",
+      "s": "lp"
+    },
+    {
+      "b": "linux",
+      "s": "lpadmin"
+    },
+    {
+      "b": "linux",
+      "s": "lpc"
+    },
+    {
+      "b": "linux",
+      "s": "lpq"
+    },
+    {
+      "b": "linux",
+      "s": "lpr"
+    },
+    {
+      "b": "linux",
+      "s": "lprm"
+    },
+    {
+      "b": "linux",
+      "s": "lpstat"
+    },
+    {
+      "b": "linux",
+      "s": "lsb_release"
+    },
+    {
+      "b": "linux",
+      "s": "lscpu"
+    },
+    {
+      "b": "linux",
+      "s": "lsmod"
+    },
+    {
+      "b": "linux",
+      "s": "lspci"
+    },
+    {
+      "b": "linux",
+      "s": "lsusb"
+    },
+    {
+      "b": "linux",
+      "s": "elm"
+    },
+    {
+      "b": "linux",
+      "s": "get_module"
+    },
+    {
+      "b": "linux",
+      "s": "getent"
+    },
+    {
+      "b": "linux",
+      "s": "gpm"
+    },
+    {
+      "b": "linux",
+      "s": "grub"
+    },
+    {
+      "b": "linux",
+      "s": "grub2-mkconfig"
+    },
+    {
+      "b": "linux",
+      "s": "grub2-set-default"
+    },
+    {
+      "b": "linux",
+      "s": "halt"
+    },
+    {
+      "b": "linux",
+      "s": "hostid"
+    },
+    {
+      "b": "linux",
+      "s": "hostname"
+    },
+    {
+      "b": "linux",
+      "s": "hostnamectl"
+    },
+    {
+      "b": "linux",
+      "s": "hwclock"
+    },
+    {
+      "b": "linux",
+      "s": "info"
+    },
+    {
+      "b": "linux",
+      "s": "init"
+    },
+    {
+      "b": "linux",
+      "s": "insmod"
+    },
+    {
+      "b": "linux",
+      "s": "ipcrm"
+    },
+    {
+      "b": "linux",
+      "s": "ipcs"
+    },
+    {
+      "b": "linux",
+      "s": "kernelversion"
+    },
+    {
+      "b": "linux",
+      "s": "kexec"
+    },
+    {
+      "b": "linux",
+      "s": "ldconfig"
+    },
+    {
+      "b": "linux",
+      "s": "sftp"
+    },
+    {
+      "b": "linux",
+      "s": "sftp-server"
+    },
+    {
+      "b": "linux",
+      "s": "showmount"
+    },
+    {
+      "b": "linux",
+      "s": "smbclient"
+    },
+    {
+      "b": "linux",
+      "s": "speedtest-cli"
+    },
+    {
+      "b": "linux",
+      "s": "squid"
+    },
+    {
+      "b": "linux",
+      "s": "squidclient"
+    },
+    {
+      "b": "linux",
+      "s": "sshd"
+    },
+    {
+      "b": "linux",
+      "s": "sshpass"
+    },
+    {
+      "b": "linux",
+      "s": "tcpdump"
+    },
+    {
+      "b": "linux",
+      "s": "tcpreplay"
+    },
+    {
+      "b": "linux",
+      "s": "telnet"
+    },
+    {
+      "b": "linux",
+      "s": "tftp"
+    },
+    {
+      "b": "linux",
+      "s": "tracepath"
+    },
+    {
+      "b": "linux",
+      "s": "traceroute"
+    },
+    {
+      "b": "linux",
+      "s": "ufw"
+    },
+    {
+      "b": "linux",
+      "s": "usernetctl"
+    },
+    {
+      "b": "linux",
+      "s": "uucico"
+    },
+    {
+      "b": "linux",
+      "s": "uupick"
+    },
+    {
+      "b": "linux",
+      "s": "uuto"
+    },
+    {
+      "b": "linux",
+      "s": "ifup"
+    },
+    {
+      "b": "linux",
+      "s": "ip6tables"
+    },
+    {
+      "b": "linux",
+      "s": "ip6tables-restore"
+    },
+    {
+      "b": "linux",
+      "s": "ip6tables-save"
+    },
+    {
+      "b": "linux",
+      "s": "ipcalc"
+    },
+    {
+      "b": "linux",
+      "s": "iperf"
+    },
+    {
+      "b": "linux",
+      "s": "iptables-restore"
+    },
+    {
+      "b": "linux",
+      "s": "iptables-save"
+    },
+    {
+      "b": "linux",
+      "s": "iptraf"
+    },
+    {
+      "b": "linux",
+      "s": "iptstate"
+    },
+    {
+      "b": "linux",
+      "s": "jwhois"
+    },
+    {
+      "b": "linux",
+      "s": "l2ping"
+    },
+    {
+      "b": "linux",
+      "s": "lftp"
+    },
+    {
+      "b": "linux",
+      "s": "lftpget"
+    },
+    {
+      "b": "linux",
+      "s": "lnstat"
+    },
+    {
+      "b": "linux",
+      "s": "lynx"
+    },
+    {
+      "b": "linux",
+      "s": "mii-tool"
+    },
+    {
+      "b": "linux",
+      "s": "mtr"
+    },
+    {
+      "b": "linux",
+      "s": "named-checkzone"
+    },
+    {
+      "b": "linux",
+      "s": "nc"
+    },
+    {
+      "b": "linux",
+      "s": "mail"
+    },
+    {
+      "b": "linux",
+      "s": "mailq"
+    },
+    {
+      "b": "linux",
+      "s": "mailstat"
+    },
+    {
+      "b": "linux",
+      "s": "man"
+    },
+    {
+      "b": "linux",
+      "s": "mesg"
+    },
+    {
+      "b": "linux",
+      "s": "mkbootdisk"
+    },
+    {
+      "b": "linux",
+      "s": "mkinitrd"
+    },
+    {
+      "b": "linux",
+      "s": "modetest"
+    },
+    {
+      "b": "linux",
+      "s": "modinfo"
+    },
+    {
+      "b": "linux",
+      "s": "modprobe"
+    },
+    {
+      "b": "linux",
+      "s": "mpstat"
+    },
+    {
+      "b": "linux",
+      "s": "neofetch"
+    },
+    {
+      "b": "linux",
+      "s": "nologin"
+    },
+    {
+      "b": "linux",
+      "s": "nproc"
+    },
+    {
+      "b": "linux",
+      "s": "ntsysv"
+    },
+    {
+      "b": "linux",
+      "s": "poweroff"
+    },
+    {
+      "b": "linux",
+      "s": "rcconf"
+    },
+    {
+      "b": "linux",
+      "s": "reboot"
+    },
+    {
+      "b": "linux",
+      "s": "reject"
+    },
+    {
+      "b": "linux",
+      "s": "rmmod"
+    },
+    {
+      "b": "linux",
+      "s": "ncftp"
+    },
+    {
+      "b": "linux",
+      "s": "nethogs"
+    },
+    {
+      "b": "linux",
+      "s": "nfsstat"
+    },
+    {
+      "b": "linux",
+      "s": "ngrep"
+    },
+    {
+      "b": "linux",
+      "s": "nisdomainname"
+    },
+    {
+      "b": "linux",
+      "s": "nmap"
+    },
+    {
+      "b": "linux",
+      "s": "nmcli"
+    },
+    {
+      "b": "linux",
+      "s": "nmtui"
+    },
+    {
+      "b": "linux",
+      "s": "nslookup"
+    },
+    {
+      "b": "linux",
+      "s": "nstat"
+    },
+    {
+      "b": "linux",
+      "s": "ntpdate"
+    },
+    {
+      "b": "linux",
+      "s": "pfctl"
+    },
+    {
+      "b": "linux",
+      "s": "ping"
+    },
+    {
+      "b": "linux",
+      "s": "ping6"
+    },
+    {
+      "b": "linux",
+      "s": "ppp-off"
+    },
+    {
+      "b": "linux",
+      "s": "pssh"
+    },
+    {
+      "b": "linux",
+      "s": "rcp"
+    },
+    {
+      "b": "linux",
+      "s": "rexec"
+    },
+    {
+      "b": "linux",
+      "s": "rlogin"
+    },
+    {
+      "b": "linux",
+      "s": "rsh"
     }
   ],
   "last_updated": "2026-10-18"
