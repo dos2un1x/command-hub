@@ -127,9 +127,9 @@
 
 四个分支都已接入二级分类,页面必须在对应文件里归类:
 
-- `command/linux/categories.json`:15 个分类、750 条
+- `command/linux/categories.json`:15 个分类、777 条
 - `command/k8s/categories.json`:12 个分类、254 条
-- `command/devops/categories.json`:6 个分类、47 条
+- `command/devops/categories.json`:9 个分类、60 条
 - `command/troubleshoot/categories.json`:6 个分类、40 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
