@@ -9,7 +9,7 @@ import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const COMMAND_DIR = path.join(ROOT, 'command');
-const RESERVED = new Set(['index', 'list', 'hot']);
+const RESERVED = new Set(['index', 'list', 'hot', 'review']);
 
 const sanitize = (v) =>
   String(v || '')

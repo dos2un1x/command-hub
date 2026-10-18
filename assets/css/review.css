@@ -1,0 +1,38 @@
+/* 每日复习页 */
+.review-page{max-width:820px;margin:0 auto;padding:112px 27px 48px}
+.review-head{text-align:center;margin-bottom:26px}
+.review-head h1{margin:0 0 12px;font-size:clamp(26px,4vw,38px);line-height:1.25;font-weight:800;letter-spacing:-.02em}
+.review-lead{max-width:640px;margin:0 auto 18px;font-size:14px;line-height:1.9;color:#666}
+[data-color-mode*='dark'] .review-lead{color:#aaa}
+.review-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px}
+.review-btn{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 14px;border:1px solid var(--color-header-border);border-radius:10px;background:rgba(127,127,127,.05);color:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.review-btn:hover{transform:translateY(-1px);border-color:rgba(33,150,243,.5);background:rgba(33,150,243,.08)}
+.review-btn:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
+.review-btn.primary{color:#fff;border-color:transparent;background:linear-gradient(135deg,#2196f3,#6366f1)}
+.review-btn.primary:hover{background:linear-gradient(135deg,#1d86e0,#5457e5)}
+.review-btn.ok.is-active{color:#fff;border-color:#16a34a;background:#16a34a}
+.review-btn.no.is-active{color:#fff;border-color:#dc2626;background:#dc2626}
+.review-progress{font-size:12px;color:#888}
+.review-list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+.review-card{margin:0;padding:16px 18px;border:1px solid var(--color-header-border);border-radius:14px;background:rgba(127,127,127,.035);list-style:none}
+[data-color-mode*='dark'] .review-card{background:rgba(255,255,255,.03)}
+.review-meta{margin:0 0 8px;font-size:12px;color:#888}
+.review-meta a{color:#2196f3}
+[data-color-mode*='dark'] .review-meta a{color:#60a5fa}
+.review-question{margin:0 0 12px;font-size:14px;line-height:1.8;font-weight:600}
+.review-card-actions{display:flex;flex-wrap:wrap;gap:8px}
+.review-answer{margin:12px 0 0;padding:12px 14px;border-left:3px solid #2196f3;border-radius:0 8px 8px 0;background:rgba(33,150,243,.06);font-size:13px;line-height:1.8;color:#444}
+[data-color-mode*='dark'] .review-answer{color:#ccc;background:rgba(96,165,250,.10)}
+.review-empty{margin:24px 0;padding:16px;border:1px dashed var(--color-header-border);border-radius:12px;text-align:center;font-size:13px;color:#888}
+.review-back{margin:28px 0 0;text-align:center;font-size:13px}
+.review-back a{color:#2196f3}
+@media screen and (max-width:840px){
+  .review-page{padding:108px 20px 40px}
+}
+@media screen and (max-width:479px){
+  .review-page{padding:96px 15px 32px}
+  .review-card{padding:14px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .review-btn{transition:none}
+}

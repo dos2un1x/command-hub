@@ -151,6 +151,25 @@ const plainText = (s) =>
     .trim();
 /** 去掉句末标点,便于拼进 meta description */
 const sentenceText = (s) => plainText(s).replace(/[。.!！?？;；,，]+$/, '');
+
+/** 从页面的“## 读完自测”中抽取问答,供 /review.html 随机复习。 */
+function parseSelfTests(md) {
+  const marker = '## 读完自测';
+  const start = md.indexOf(marker);
+  if (start < 0) return [];
+  const rest = md.slice(start + marker.length);
+  const next = rest.search(/\n## /);
+  const body = next >= 0 ? rest.slice(0, next) : rest;
+  const cut = body.indexOf('<details>');
+  if (cut < 0) return [];
+  const qPart = body.slice(0, cut);
+  const aPart = body.slice(cut);
+  const questions = [...qPart.matchAll(/^\s*\d+\.\s+(.+)$/gm)].map((x) => x[1].trim());
+  const answers = [...aPart.matchAll(/^\s*\d+\.\s+(.+)$/gm)].map((x) => x[1].trim());
+  return questions
+    .map((q, i) => ({ q, a: answers[i] || '' }))
+    .filter((x) => x.q && x.a);
+}
 /** 标题里用的简短描述:去掉「是/用于/用来/可以/主要」等开头,过长则不用 */
 const titlePhrase = (s) => {
   const t = sentenceText(s).replace(/^(是|用于|用来|可以|主要)+/, '');
@@ -186,10 +205,23 @@ const CONTENT_BRANCHES = new Set(['guide', 'tutorial']);
 const branchUnit = (id) => (['guide', 'tutorial', 'troubleshoot', 'ai'].includes(id) ? '条目' : '命令');
 
 const items = await readSources(branches);
+
+/** 全站复习题库:每个“读完自测”的三道题。 */
+const reviewQuestions = items.flatMap((it) =>
+  parseSelfTests(it.md).map((qa, i) => ({
+    id: `${it.b}/${it.n}#${i}`,
+    q: plainText(qa.q),
+    a: plainText(qa.a),
+    n: it.n,
+    d: it.d,
+    p: `/${it.b}/${it.n}.html`,
+    b: it.b,
+  }))
+);
 const logo = await FS.readFile(path.join(TEMPLATE_DIR, 'partials', 'logo-inline.svg'), 'utf8');
 
 // 保留字与跨分支冲突防护
-const RESERVED = new Set(['index', 'list', 'hot']);
+const RESERVED = new Set(['index', 'list', 'hot', 'review']);
 for (const b of branches) {
   for (const it of items.filter((x) => x.b === b.id)) {
     if (RESERVED.has(it.n)) {
@@ -361,6 +393,8 @@ await FS.rm(path.join(OUT_DIR, 'css', 'index.legacy.css'), { force: true });
 const dt = `var commands=${JSON.stringify(items.map(({ n, p, d, b }) => ({ n, p, d, b })))};\n` +
   `var branches=${JSON.stringify(branches.map(({ id, name, desc }) => ({ id, name, desc })))};\n`;
 await write(path.join(OUT_DIR, 'js', 'dt.js'), dt);
+await write(path.join(OUT_DIR, 'js', 'questions.json'), JSON.stringify(reviewQuestions));
+console.log(`复习题库 ${reviewQuestions.length} 道`);
 
 // ── 3. 公共渲染参数 ─────────────────────────────────────────
 const total = items.length;
@@ -579,6 +613,29 @@ await write(
     metaKeywords: '404,页面不存在',
     robots: 'noindex,follow',
     hotCommands,
+    ...rootFooter,
+  }))
+);
+
+// ── 5. 分支落地页 ───────────────────────────────────────────
+await write(
+  path.join(OUT_DIR, 'review.html'),
+  await render('review.ejs', base({
+    relative_path: '',
+    current_path: '/review.html',
+    currentBranch: null,
+    placeholder: '搜索命令、报错或工具',
+    isHome: false,
+    describe: { n: '每日复习', d: '从全站自测中随机抽取 5 道题' },
+    brand: site.name,
+    pageTitle: brandTitle('每日复习：从自测中随机抽题'),
+    metaDescription: `从全站 ${reviewQuestions.length} 道“读完自测”中随机抽取 5 道，先回答再核对，支持错题重练。`,
+    metaKeywords: '每日复习,自测,命令练习,运维练习',
+    canonicalUrl: `${baseUrl}/review.html`,
+    ogType: 'website',
+    robots: 'noindex,follow',
+    questionCount: reviewQuestions.length,
+    extraCss: [`css/review.css?v=${V}`],
     ...rootFooter,
   }))
 );

@@ -79,6 +79,39 @@
 
 教程页按“适用场景 → 前置条件 → 步骤 → 验证 → 回滚 → 常见坑 → 相关命令”组织,每页 60–100 行。步骤要可执行,验证和回滚必须写清楚;不要只贴命令而不说明前置条件和影响范围。
 
+### 故障演练的写法
+
+故障演练放在教程分支的 `lab` 类目,按“演练目标 → 环境准备 → 注入故障 → 观察现象 → 判断与定位 → 修复 → 复盘 → 延伸阅读 → 读完自测”组织,每页 80–140 行。要求:
+
+- 只使用一次性虚拟机、kind/minikube 或本地 Docker Compose,并在页面开头写清隔离边界。
+- 必须包含清理/回滚命令;磁盘、CPU、网络实验要明确禁止影响宿主机或生产。
+- 至少指出一个“容易误判”的点,让读者先写假设再验证,而不是照着答案改。
+
+### 读完自测的写法
+
+工具、概念和排查页可以在页尾加 `## 读完自测`,格式固定为 3 个问题 + 一个折叠答案块:
+
+```
+## 读完自测
+
+合上页面，先回答，再展开对照。
+
+1. 问题一
+2. 问题二
+3. 问题三
+
+<details>
+<summary>答案</summary>
+
+1. 答案一
+2. 答案二
+3. 答案三
+
+</details>
+```
+
+问题要考判断和易错点,答案必须能在本页找到依据。构建时会把所有自测抽成 `js/questions.json`,供 `/review.html` 随机抽题;因此答案保持单行、编号与问题一一对应。
+
 ### AI 分支的写法
 
 AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每页 40–80 行。重点写清 GPU/显存、CUDA/NCCL 版本、模型格式、服务端并发和健康检查;不要只贴安装命令。
@@ -145,14 +178,14 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 八个分支都已接入二级分类,页面必须在对应文件里归类:
 
-- `command/linux/categories.json`:15 个分类、852 条
+- `command/linux/categories.json`:16 个分类、862 条
 - `command/k8s/categories.json`:12 个分类、274 条
-- `command/devops/categories.json`:9 个分类、82 条
-- `command/troubleshoot/categories.json`:6 个分类、119 条
-- `command/guide/categories.json`:4 个分类、91 条
+- `command/devops/categories.json`:10 个分类、97 条
+- `command/troubleshoot/categories.json`:8 个分类、134 条
+- `command/guide/categories.json`:4 个分类、105 条
 - `command/middleware/categories.json`:10 个分类、63 条
-- `command/tutorial/categories.json`:2 个分类、55 条
-- `command/ai/categories.json`:5 个分类、54 条
+- `command/tutorial/categories.json`:3 个分类、67 条
+- `command/ai/categories.json`:7 个分类、74 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。

@@ -14,7 +14,13 @@
       "name": "Linux",
       "desc": "Linux 命令大全",
       "searchPlaceholder": "搜索 Linux 命令",
-      "default": true
+      "default": true,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "linux-learning-path",
+        "title": "Linux 学习路径",
+        "desc": "四个阶段：文件与权限 → 进程与资源 → 网络与存储 → 排障与安全"
+      }
     },
     {
       "id": "k8s",
@@ -34,42 +40,78 @@
       "name": "DevOps",
       "desc": "CI/CD、发布自动化与云原生工具",
       "searchPlaceholder": "搜索 DevOps 工具",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "devops-learning-path",
+        "title": "DevOps 学习路径",
+        "desc": "四个阶段：Git 与协作 → 构建与制品 → 部署与交付 → IaC/可观测/供应链"
+      }
     },
     {
       "id": "troubleshoot",
       "name": "排障",
       "desc": "常见报错与故障排查",
       "searchPlaceholder": "搜索报错或故障",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "troubleshoot-learning-path",
+        "title": "故障排查学习路径",
+        "desc": "四个阶段：方法论 → 系统与磁盘 → 网络 → 数据库与 K8s"
+      }
     },
     {
       "id": "guide",
       "name": "指南",
       "desc": "工具对比与常用速查表",
       "searchPlaceholder": "搜索对比或速查",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "learning-paths",
+        "title": "学习路径总览",
+        "desc": "七条路径、七个心智模型与十二个故障演练"
+      }
     },
     {
       "id": "middleware",
       "name": "中间件",
       "desc": "日志、消息、网关与接入服务",
       "searchPlaceholder": "搜索中间件命令",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "middleware-learning-path",
+        "title": "中间件学习路径",
+        "desc": "四个阶段：日志与搜索 → 消息与协调 → 网关与接入 → 数据与高可用"
+      }
     },
     {
       "id": "tutorial",
       "name": "教程",
       "desc": "迁移、搭建与实战步骤",
       "searchPlaceholder": "搜索教程或迁移方案",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "learning-paths",
+        "title": "学习路径与故障演练",
+        "desc": "按领域学习，或在本地复现故障并修复"
+      }
     },
     {
       "id": "ai",
       "name": "AI 与 MLOps",
       "desc": "GPU、推理、训练与实验管理工具",
       "searchPlaceholder": "搜索 AI 与 MLOps 工具",
-      "default": false
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "ai-learning-path",
+        "title": "AI 与 MLOps 学习路径",
+        "desc": "四个阶段：GPU 与运行时 → 推理 → 训练与微调 → RAG/评估/实验"
+      }
     }
   ]
 }

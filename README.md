@@ -36,9 +36,21 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染八分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务)四张场景卡、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,K8s 分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
+`template/index.ejs` 渲染八分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务)四张场景卡与“每日复习”入口、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
 
 首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为八个并列入口;页脚只保留“全部条目”、收藏提示、备案号与署名。
+
+## 学习层
+
+站点在“查”之外提供一条“学”的路径,相关页面集中在指南分支的“学习路径”类目:
+
+- `/guide/learning-paths.html`:总入口,列出 7 条领域路径、7 个心智模型和 12 个故障演练,并给出六周推进建议。
+- 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(8–10 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`。
+- 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`。
+- 故障演练:教程分支 `lab` 类目的 12 页,在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产。
+- 读完自测:147 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 441 道题中随机抽 5 题,用 localStorage 记录“会 / 不会”,错题优先重练。
+
+新增工具或概念页时,建议在页尾补 `## 读完自测`;学习路径、心智模型和故障演练的写法见 CONTRIBUTING。
 
 ## 贪吃蛇小游戏
 
@@ -194,7 +206,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1667 个 HTML、1590 个命令页、sitemap 1663 条、站内链接 50,190 条(校验零 404)。
+当前构建规模:1761 个 HTML、1676 个内容页、sitemap 1756 条、站内链接 53,768 条(校验零 404)。
 
 ## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -205,14 +217,14 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 
 当前有八份:
 
-- `command/linux/categories.json`:15 个分类、852 条
+- `command/linux/categories.json`:16 个分类、862 条
 - `command/k8s/categories.json`:12 个分类、274 条
-- `command/devops/categories.json`:9 个分类、82 条
-- `command/troubleshoot/categories.json`:6 个分类、119 条
-- `command/guide/categories.json`:4 个分类、91 条
+- `command/devops/categories.json`:10 个分类、97 条
+- `command/troubleshoot/categories.json`:8 个分类、134 条
+- `command/guide/categories.json`:4 个分类、105 条
 - `command/middleware/categories.json`:10 个分类、63 条
-- `command/tutorial/categories.json`:2 个分类、55 条
-- `command/ai/categories.json`:5 个分类、54 条
+- `command/tutorial/categories.json`:3 个分类、67 条
+- `command/ai/categories.json`:7 个分类、74 条
 
 构建时会校验:
 
@@ -253,14 +265,14 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 852 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,以及 OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop 等构建、数据、安全与性能工具 |
+| Linux | 862 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop,以及 bcc-tools/火焰图/namespace/cgroup v2/page cache/IO 调度/网络栈/内存回收/eBPF 探针/sysdig 等性能与 eBPF 工具 |
 | Kubernetes | 274 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版,以及 Crossplane/Karpenter/Tetragon/Kueue/YuniKorn/Gateway API/External Secrets 等现代平台工具 |
-| DevOps | 82 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage 等 |
-| 排障 | 119 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题 |
-| 指南 | 91 | 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 1 条学习路径,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
+| 排障 | 134 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
+| 指南 | 105 | 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 15 个学习路径与心智模型(7 条领域路径、1 个总入口、7 个心智模型),覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 63 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB 等现代中间件 |
-| 教程 | 55 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)与搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等) |
-| AI 与 MLOps | 54 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性 |
+| 教程 | 67 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 12 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis) |
+| AI 与 MLOps | 74 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo 评估、LangGraph/CrewAI/AutoGen/MCP/DSPy Agent、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册 |
 
 Kubernetes 分支按方向划分:
 
@@ -325,7 +337,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支分四类(共 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 1 条学习路径):
+指南分支分四类(共 41 个工具对比 + 34 个速查表 + 15 个路线图/检查清单 + 15 个学习路径与心智模型):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
@@ -354,7 +366,12 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            migration-readiness-checklist cost-optimization-checklist
            incident-response-playbook ai-infra-roadmap rag-production-checklist
            gpu-cluster-checklist platform-engineering-roadmap k8s-upgrade-checklist
-学习路径   k8s-learning-path
+学习路径   linux-learning-path devops-learning-path troubleshoot-learning-path
+           middleware-learning-path ai-learning-path security-learning-path
+           k8s-learning-path learning-paths
+心智模型   linux-mental-model k8s-mental-model devops-mental-model
+           troubleshoot-mental-model middleware-mental-model ai-mental-model
+           security-mental-model
 ```
 
 中间件分支按服务划分:
@@ -378,7 +395,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
 全文搜索       meilisearch typesense solr
 ```
 
-教程分支分两类:
+教程分支分三类:
 
 ```
 迁移与升级   migrate-docker-to-containerd migrate-iptables-to-nftables
@@ -402,6 +419,10 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
              build-tekton build-flux build-gatekeeper build-falco build-openbao
              build-temporal build-airflow build-clickhouse build-starrocks
              build-minio build-ceph
+故障演练     lab-disk-full lab-inode-exhausted lab-cpu-100 lab-network-latency
+             lab-pod-pending lab-crashloopbackoff lab-dns-failure lab-pvc-pending
+             lab-mysql-deadlock lab-postgres-connection-exhausted
+             lab-kafka-consumer-lag lab-redis-hotkey
 ```
 
 AI 与 MLOps 分支按方向划分:
@@ -409,13 +430,19 @@ AI 与 MLOps 分支按方向划分:
 ```
 GPU 与加速   nvidia-smi nvitop nvtop cuda nccl dcgm-exporter
              nvidia-container-toolkit hami gpu-burn bitsandbytes flash-attn transformers
+             slurm
 推理与服务   ollama vllm sglang llama-server triton huggingface-cli
              tgi lmdeploy xinference openllm tensorrt-llm gpustack
+             triton-inference-server ray-serve bentoml
+推理优化     vllm-tuning quantization speculative-decoding
 训练与编排   torchrun deepspeed accelerate ray kubeflow llama-factory
              peft trl axolotl unsloth megatron-lm optuna
 RAG 与应用   langchain llamaindex ragflow dify fastgpt docling
+RAG 运维     weaviate-ops chroma-ops
+评估与安全   ragas deepeval guardrails-ai llama-guard promptfoo
+Agent 与编排 langgraph crewai autogen mcp dspy
 实验与数据   mlflow dvc wandb tensorboard label-studio lm-eval
-             langfuse phoenix evidently clearml comet neptune
+             langfuse phoenix evidently clearml comet neptune model-registry
 ```
 
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
@@ -424,7 +451,7 @@ RAG 与应用   langchain llamaindex ragflow dify fastgpt docling
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1590 页,在上游 621 页之外新增 969 页:Linux 234 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM 与性能剖析),Kubernetes 271 页,DevOps 82 页,排障 119 页,指南 91 页,中间件 63 页,教程 55 页,AI 与 MLOps 54 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1676 页,在上游 621 页之外新增 1055 页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 105 页,中间件 63 页,教程 67 页,AI 与 MLOps 74 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10)。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 
