@@ -444,3 +444,12 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 - AI 与 MLOps：84 页
 
 引用第三方工具或文档时，页面内保留官方来源链接；正文、示例取舍与排错说明由本站组织。分发或复用内容时请保留 LICENSE。
+
+## 联系与支持
+
+扫码添加微信、加入交流群，或赞赏支持。
+
+| 加我微信 | 加入交流群 | 赞赏支持 |
+| :---: | :---: | :---: |
+| <img src="images/wechat-user.jpg" width="220" alt="dos2unix 微信二维码"> | <img src="images/wechat-group.jpg" width="220" alt="command-hub 微信交流群二维码"> | <img src="images/wechat-reward.jpg" width="220" alt="dos2unix 赞赏码"> |
+| 扫码添加作者微信 | 扫码加入交流群（7 天内有效） | 扫码赞赏支持 |
