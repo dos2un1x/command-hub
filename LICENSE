@@ -24,15 +24,18 @@ SOFTWARE.
 第三方内容 / Third-party content
 ================================================================================
 
-以下路径的内容取自 jaywcjlove/linux-command
-(https://github.com/jaywcjlove/linux-command),按下方许可分发:
+以下内容取自 jaywcjlove/linux-command
+(https://github.com/jaywcjlove/linux-command),按下方 MIT 许可分发:
 
-  · command/linux/ 下的全部页面
+  · command/linux/ 下源自上游的 618 个页面
   · command/k8s/ 下的 kubectl、helm、docker 三页(自上游迁入本分支)
 
+上述页面无论是否经过本站修改,均属于上游内容的衍生作品,继续按下方 MIT 许可分发。
+完整 slug 清单、上游固定 commit 与自有内容边界见仓库根目录的 PROVENANCE.md。
+
 本仓库其余部分 —— 构建管线(scripts/)、模板(template/)、样式与脚本
-(assets/)、配置(branches.json)、文档,以及
-Kubernetes 分支的其余页面 —— 为本站作者所写,适用上方许可。
+(assets/)、配置(branches.json)、文档、command/linux/ 下不在上述清单中的
+244 个页面,以及 Kubernetes 分支的其余页面 —— 为本站作者所写,适用上方许可。
 
 --------------------------------------------------------------------------------
 

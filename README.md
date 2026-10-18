@@ -437,9 +437,9 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。当前全站 1719 页,在上游 621 页之外新增 1098 页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。其中 618 个 Linux 页面里,480 页与上游固定 commit 逐字节相同,138 页经过修改;修改版仍是衍生作品。完整 slug 清单见 [PROVENANCE.md](PROVENANCE.md)。当前全站 1719 页,在上游 621 页之外新增 1098 页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
 
-上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
+上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。[PROVENANCE.md](PROVENANCE.md) 记录了上游固定 commit、621 页完整清单、自有内容边界,以及后续完全自有化的分批计划。**分发本仓库或其内容时,不得移除 LICENSE 与 PROVENANCE.md。**
 
 其中 `gcc.md` 修正了一处上游缺陷:原标题误写为 `pullgcc`,导致产物名为 `pullgcc.html` 而链接指向 `gcc.html`,产生 404。现标题与文件名统一为 `gcc`。
 

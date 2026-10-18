@@ -145,6 +145,15 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 已退役项目与重大变更统一记录在 `command/k8s/ecosystem-status.md`。
 若某项目已归档或停止维护,在 `## 补充说明` 开头显著写明(含时间点与替代方案)。
 
+## 内容来源与 PROVENANCE
+
+新增页面默认属于本站自有内容。`command/linux/` 下有 618 个页面、`command/k8s/` 下有 3 个页面来自 MIT 上游,完整清单、固定 commit 与自有内容边界见仓库根目录的 [PROVENANCE.md](PROVENANCE.md)。
+
+- **修改上游页面仍是衍生作品**,不能从清单移除,也不能删除 `LICENSE` 中的上游 MIT 段。
+- 只有从 man page、`--help`、官方文档独立重写并通过相似度检查,才能把 slug 从上游清单移入自有内容。
+- 迁移后同步更新 `PROVENANCE.md` 的清单与数量、`LICENSE` 中的数量,并运行 `npm run verify`。
+- `PROVENANCE.md` 必须留在仓库根目录,不要放进被 `.gitignore` 忽略的 `docs/`。
+
 ## 内容差异化(P2)
 
 新增长尾页或重写存量页时,**优先搜索量大、操作风险高的命令**,
