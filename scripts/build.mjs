@@ -3,7 +3,6 @@
  *
  * 输入:command/<branch>/<slug>.md + branches.json + template/ + assets/
  * 输出:build/  (根页面、<branch>/ 页面、js/css/img)
- *      deploy/nginx/legacy-redirects.conf  (老 URL 301 规则,不进 build/)
  */
 import FS from 'node:fs/promises';
 import path from 'node:path';
@@ -292,30 +291,20 @@ const categoryNavFor = (branchId) => {
   }));
 };
 
-// ── 老 URL stub 的目标解析 ──────────────────────────────────
-// 以 legacy-slugs.json 固化的「曾发布过的 slug 集合」为准,而不是按分支判断:
-// 页面迁到别的分支后,老 URL 仍须可访问。
-const legacyConfig = JSON.parse(await FS.readFile(path.join(ROOT, 'legacy-slugs.json'), 'utf8'));
-const legacySlugs = legacyConfig.slugs;
-const legacyAliases = legacyConfig.aliases || {};
-
+// ── 同名页与热门命令 ────────────────────────────────────────
 const dupes = items.map((i) => i.n).filter((n, i, a) => a.indexOf(n) !== i);
 if (dupes.length) {
   console.log(`  提示:跨分支同名页 ${[...new Set(dupes)].join(', ')}(各自独立 URL,无冲突)`);
 }
 
-// 老 URL 指向哪个页面:优先默认分支的同名页(默认分支即原始命名空间),
-// 找不到才用其它分支的。这样 pv/service 这类跨分支同名页自然落到 linux,
-// 而 kubectl 这类已迁走的落到 k8s。
+// 热门命令优先取默认分支的同名页,找不到才用其它分支。
 const byNameAll = new Map();
 for (const it of items) {
   if (!byNameAll.has(it.n)) byNameAll.set(it.n, []);
   byNameAll.get(it.n).push(it);
 }
 const byName = new Map();
-const ambiguous = [];
 for (const [name, list] of byNameAll) {
-  if (list.length > 1) ambiguous.push(`${name}(${list.map((x) => x.b).join('/')})`);
   byName.set(name, list.find((x) => x.b === defaultBranch.id) || list[0]);
 }
 
@@ -339,29 +328,6 @@ const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
     return true;
   })
   .slice(0, 42);
-
-const legacyItems = [];
-const unmappedSlugs = [];
-const movedSlugs = [];
-for (const slug of legacySlugs) {
-  const target = byName.get(legacyAliases[slug] || slug);
-  if (!target) {
-    unmappedSlugs.push(slug);
-    continue;
-  }
-  legacyItems.push({ slug, item: target });
-  if (target.b !== defaultBranch.id) movedSlugs.push(`${slug}→${target.b}`);
-}
-if (unmappedSlugs.length) {
-  throw new Error(
-    `老 URL 有 ${unmappedSlugs.length} 个 slug 找不到对应页面,无法生成 301:\n  ` +
-      `${unmappedSlugs.slice(0, 20).join(', ')}${unmappedSlugs.length > 20 ? ' …' : ''}\n` +
-      `  请修正 legacy-slugs.json 的 aliases,或删除确实已下线的 slug。`
-  );
-}
-if (ambiguous.length) {
-  console.log(`  跨分支同名页 ${ambiguous.join(', ')},老 URL 均指向 ${defaultBranch.id}`);
-}
 
 const byBranch = {};
 for (const b of branches) byBranch[b.id] = [];
@@ -805,42 +771,10 @@ await write(path.join(OUT_DIR, 'robots.txt'), robots);
 
 console.log(`生成 sitemap ${sitemapEntries.length} 条与 robots.txt`);
 
-// ── 9. 老 URL 301(nginx)────────────────────────────────────
-// 不再生成 /c/*.html 薄跳转页:meta refresh + noindex 既占用抓取预算,
-// 也不会把老 URL 的权重传给新页面。改为生成 nginx 永久 301 配置。
-const redirectLines = legacyItems.map(({ slug, item }) => {
-  const target = `${baseUrl}/${item.b}/${item.n}.html`;
-  return `location = /c/${slug}.html { return 301 ${target}; }`;
-});
-
-const redirectConf = [
-  '# 由 `npm run build` 自动生成,请勿手改。',
-  '# 源:legacy-slugs.json + command/<branch>/<slug>.md',
-  '# 用法:在站点 server {} 内 include 本文件,然后 nginx -t && nginx -s reload。',
-  '#',
-  '# 旧 URL: /c/<slug>.html → /<branch>/<slug>.html (301)',
-  '',
-  ...redirectLines,
-  '',
-  '# 未登记的 /c/ 路径一律 410,避免旧 stub 残留返回 200',
-  'location ^~ /c/ { return 410; }',
-  '',
-].join('\n');
-
-const redirectConfPath = path.join(ROOT, 'deploy', 'nginx', 'legacy-redirects.conf');
-await write(redirectConfPath, redirectConf);
-
-console.log(
-  `生成老 URL 301 ${legacyItems.length} 条` +
-    (movedSlugs.length ? `(已迁移:${movedSlugs.join(', ')})` : '') +
-    ` → ${path.relative(ROOT, redirectConfPath)}`
-);
-
-// ── 10. 完成 ────────────────────────────────────────────────
+// ── 9. 完成 ─────────────────────────────────────────────────
 console.log(`\n✓ 构建完成 ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 console.log(`  命令页   ${items.length}`);
 console.log(`  分类页   ${categoryPages.length}`);
-console.log(`  301 规则 ${legacyItems.length}`);
 console.log(`  分支页   ${branches.length}`);
 console.log(`  sitemap  ${sitemapEntries.length}`);
 console.log(`  产物目录 ${path.relative(process.cwd(), OUT_DIR)}/`);

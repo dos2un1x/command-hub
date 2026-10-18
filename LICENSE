@@ -31,7 +31,7 @@ SOFTWARE.
   · command/k8s/ 下的 kubectl、helm、docker 三页(自上游迁入本分支)
 
 本仓库其余部分 —— 构建管线(scripts/)、模板(template/)、样式与脚本
-(assets/)、配置(branches.json、legacy-slugs.json)、文档,以及
+(assets/)、配置(branches.json)、文档,以及
 Kubernetes 分支的其余页面 —— 为本站作者所写,适用上方许可。
 
 --------------------------------------------------------------------------------

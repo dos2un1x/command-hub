@@ -3,9 +3,8 @@
  *
  * 检查:
  *  1. dt.js 每条记录对应的页面存在
- *  2. 老 URL 301 配置覆盖 legacy-slugs.json 的全部 slug
- *  3. 所有 HTML 中的站内 href/src 可解析到真实文件
- *  4. 分支落地页存在
+ *  2. 所有 HTML 中的站内 href/src 可解析到真实文件
+ *  3. 分支落地页存在
  */
 import FS from 'node:fs/promises';
 import path from 'node:path';
@@ -53,33 +52,7 @@ for (const b of branches) {
   }
 }
 
-// ── 2. 老 URL 301 配置完整 ───────────────────────────────────
-const legacy = JSON.parse(await FS.readFile(path.join(ROOT, 'legacy-slugs.json'), 'utf8'));
-const redirectConfPath = path.join(ROOT, 'deploy', 'nginx', 'legacy-redirects.conf');
-let redirectRules = [];
-
-if (!(await exists(redirectConfPath))) {
-  errors.push(`缺少老 URL 301 配置: ${path.relative(ROOT, redirectConfPath)}`);
-} else {
-  const conf = await FS.readFile(redirectConfPath, 'utf8');
-  redirectRules = [...conf.matchAll(/^location = \/c\/(.+)\.html \{ return 301 .+; \}$/gm)].map(
-    (m) => m[1]
-  );
-  const declared = new Set(legacy.slugs);
-  const generated = new Set(redirectRules);
-
-  for (const slug of declared) {
-    if (!generated.has(slug)) errors.push(`老 URL 301 缺失: /c/${slug}.html`);
-  }
-  for (const slug of generated) {
-    if (!declared.has(slug)) errors.push(`老 URL 301 多出: /c/${slug}.html`);
-  }
-  if (redirectRules.length !== legacy.slugs.length) {
-    errors.push(`老 URL 301 数量 ${redirectRules.length} ≠ legacy-slugs.json ${legacy.slugs.length}`);
-  }
-}
-
-// ── 3. sitemap / robots ─────────────────────────────────────
+// ── 2. sitemap / robots ─────────────────────────────────────
 const sitemapPath = path.join(OUT, 'sitemap.xml');
 const robotsPath = path.join(OUT, 'robots.txt');
 let sitemapCount = 0;
@@ -98,7 +71,7 @@ if (!(await exists(sitemapPath))) {
 }
 if (!(await exists(robotsPath))) errors.push('缺少 robots.txt');
 
-// ── 4 & 5. 解析每个 HTML 的站内链接 ──────────────────────────
+// ── 3. 解析每个 HTML 的站内链接 ──────────────────────────
 const ATTR = /(?:href|src)\s*=\s*"([^"]*)"/gi;
 let linkCount = 0;
 
@@ -127,12 +100,11 @@ for (const file of htmlFiles) {
   }
 }
 
-// ── 6. 汇总 ─────────────────────────────────────────────────
+// ── 4. 汇总 ─────────────────────────────────────────────────
 console.log(`扫描 HTML      : ${htmlFiles.length}`);
 console.log(`校验站内链接    : ${linkCount}`);
 console.log(`dt.js 记录      : ${commands.length}`);
 console.log(`sitemap          : ${sitemapCount} 条`);
-console.log(`老 URL 301      : ${redirectRules.length} 条`);
 console.log(`分支            : ${branches.map((b) => b.id).join(', ')}`);
 
 if (errors.length) {
