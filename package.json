@@ -11,7 +11,6 @@
     "check-links": "node scripts/check-links.mjs",
     "category-map": "node scripts/render-category-map.mjs",
     "provenance": "node scripts/provenance.mjs",
-    "provenance:sync": "node scripts/sync-provenance-docs.mjs",
     "baidu:push": "node scripts/baidu-push.mjs",
     "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",
     "package": "npm run verify && node scripts/package.mjs",

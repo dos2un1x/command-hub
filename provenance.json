@@ -6,408 +6,7 @@
     "license": "MIT",
     "copyright": "Copyright © 2019 小弟调调™"
   },
-  "original_pages": [
-    {
-      "b": "linux",
-      "s": "ab"
-    },
-    {
-      "b": "linux",
-      "s": "arp"
-    },
-    {
-      "b": "linux",
-      "s": "arpd"
-    },
-    {
-      "b": "linux",
-      "s": "arping"
-    },
-    {
-      "b": "linux",
-      "s": "arptables"
-    },
-    {
-      "b": "linux",
-      "s": "arpwatch"
-    },
-    {
-      "b": "linux",
-      "s": "axel"
-    },
-    {
-      "b": "linux",
-      "s": "badblocks"
-    },
-    {
-      "b": "linux",
-      "s": "blkid"
-    },
-    {
-      "b": "linux",
-      "s": "blockdev"
-    },
-    {
-      "b": "linux",
-      "s": "cdrecord"
-    },
-    {
-      "b": "linux",
-      "s": "clockdiff"
-    },
-    {
-      "b": "linux",
-      "s": "convertquota"
-    },
-    {
-      "b": "linux",
-      "s": "cu"
-    },
-    {
-      "b": "linux",
-      "s": "dd"
-    },
-    {
-      "b": "linux",
-      "s": "dhclient"
-    },
-    {
-      "b": "linux",
-      "s": "dhcpd"
-    },
-    {
-      "b": "linux",
-      "s": "dhcrelay"
-    },
-    {
-      "b": "linux",
-      "s": "dnsdomainname"
-    },
-    {
-      "b": "linux",
-      "s": "domainname"
-    },
-    {
-      "b": "linux",
-      "s": "dump"
-    },
-    {
-      "b": "linux",
-      "s": "e2fsck"
-    },
-    {
-      "b": "linux",
-      "s": "e2label"
-    },
-    {
-      "b": "linux",
-      "s": "edquota"
-    },
-    {
-      "b": "linux",
-      "s": "eject"
-    },
-    {
-      "b": "linux",
-      "s": "elinks"
-    },
-    {
-      "b": "linux",
-      "s": "ethtool"
-    },
-    {
-      "b": "linux",
-      "s": "exportfs"
-    },
-    {
-      "b": "linux",
-      "s": "fdisk"
-    },
-    {
-      "b": "linux",
-      "s": "findfs"
-    },
-    {
-      "b": "linux",
-      "s": "firewalld"
-    },
-    {
-      "b": "linux",
-      "s": "fping"
-    },
-    {
-      "b": "linux",
-      "s": "fsck"
-    },
-    {
-      "b": "linux",
-      "s": "ftp"
-    },
-    {
-      "b": "linux",
-      "s": "ftpcount"
-    },
-    {
-      "b": "linux",
-      "s": "ftpshut"
-    },
-    {
-      "b": "linux",
-      "s": "ftptop"
-    },
-    {
-      "b": "linux",
-      "s": "ftpwho"
-    },
-    {
-      "b": "linux",
-      "s": "hcitool"
-    },
-    {
-      "b": "linux",
-      "s": "hdparm"
-    },
-    {
-      "b": "linux",
-      "s": "host"
-    },
-    {
-      "b": "linux",
-      "s": "hping3"
-    },
-    {
-      "b": "linux",
-      "s": "ifcfg"
-    },
-    {
-      "b": "linux",
-      "s": "ifconfig"
-    },
-    {
-      "b": "linux",
-      "s": "ifdown"
-    },
-    {
-      "b": "linux",
-      "s": "ifstat"
-    },
-    {
-      "b": "linux",
-      "s": "iftop"
-    },
-    {
-      "b": "linux",
-      "s": "iscsiadm"
-    },
-    {
-      "b": "linux",
-      "s": "losetup"
-    },
-    {
-      "b": "linux",
-      "s": "lsblk"
-    },
-    {
-      "b": "linux",
-      "s": "lvcreate"
-    },
-    {
-      "b": "linux",
-      "s": "lvdisplay"
-    },
-    {
-      "b": "linux",
-      "s": "lvextend"
-    },
-    {
-      "b": "linux",
-      "s": "lvreduce"
-    },
-    {
-      "b": "linux",
-      "s": "lvremove"
-    },
-    {
-      "b": "linux",
-      "s": "lvresize"
-    },
-    {
-      "b": "linux",
-      "s": "lvscan"
-    },
-    {
-      "b": "linux",
-      "s": "mke2fs"
-    },
-    {
-      "b": "linux",
-      "s": "mkfs"
-    },
-    {
-      "b": "linux",
-      "s": "mkisofs"
-    },
-    {
-      "b": "linux",
-      "s": "mkswap"
-    },
-    {
-      "b": "linux",
-      "s": "mtools"
-    },
-    {
-      "b": "linux",
-      "s": "ncdu"
-    },
-    {
-      "b": "linux",
-      "s": "parted"
-    },
-    {
-      "b": "linux",
-      "s": "partprobe"
-    },
-    {
-      "b": "linux",
-      "s": "pvchange"
-    },
-    {
-      "b": "linux",
-      "s": "pvck"
-    },
-    {
-      "b": "linux",
-      "s": "pvcreate"
-    },
-    {
-      "b": "linux",
-      "s": "pvdisplay"
-    },
-    {
-      "b": "linux",
-      "s": "pvremove"
-    },
-    {
-      "b": "linux",
-      "s": "pvs"
-    },
-    {
-      "b": "linux",
-      "s": "pvscan"
-    },
-    {
-      "b": "linux",
-      "s": "quota"
-    },
-    {
-      "b": "linux",
-      "s": "quotacheck"
-    },
-    {
-      "b": "linux",
-      "s": "quotaoff"
-    },
-    {
-      "b": "linux",
-      "s": "quotaon"
-    },
-    {
-      "b": "linux",
-      "s": "repquota"
-    },
-    {
-      "b": "linux",
-      "s": "restore"
-    },
-    {
-      "b": "linux",
-      "s": "slabtop"
-    },
-    {
-      "b": "linux",
-      "s": "smartmontools"
-    },
-    {
-      "b": "linux",
-      "s": "swapoff"
-    },
-    {
-      "b": "linux",
-      "s": "swapon"
-    },
-    {
-      "b": "linux",
-      "s": "sync"
-    },
-    {
-      "b": "linux",
-      "s": "time"
-    },
-    {
-      "b": "linux",
-      "s": "tload"
-    },
-    {
-      "b": "linux",
-      "s": "ulimit"
-    },
-    {
-      "b": "linux",
-      "s": "umount"
-    },
-    {
-      "b": "linux",
-      "s": "vdfuse"
-    },
-    {
-      "b": "linux",
-      "s": "vgchange"
-    },
-    {
-      "b": "linux",
-      "s": "vgconvert"
-    },
-    {
-      "b": "linux",
-      "s": "vgcreate"
-    },
-    {
-      "b": "linux",
-      "s": "vgdisplay"
-    },
-    {
-      "b": "linux",
-      "s": "vgextend"
-    },
-    {
-      "b": "linux",
-      "s": "vgreduce"
-    },
-    {
-      "b": "linux",
-      "s": "vgremove"
-    },
-    {
-      "b": "linux",
-      "s": "vgrename"
-    },
-    {
-      "b": "linux",
-      "s": "vgscan"
-    },
-    {
-      "b": "linux",
-      "s": "volname"
-    },
-    {
-      "b": "linux",
-      "s": "wait"
-    },
-    {
-      "b": "linux",
-      "s": "watch"
-    }
-  ],
+  "original_pages": [],
   "rewritten_pages": [
     {
       "b": "linux",
@@ -2492,6 +2091,406 @@
     {
       "b": "linux",
       "s": "openssl"
+    },
+    {
+      "b": "linux",
+      "s": "hdparm"
+    },
+    {
+      "b": "linux",
+      "s": "iscsiadm"
+    },
+    {
+      "b": "linux",
+      "s": "losetup"
+    },
+    {
+      "b": "linux",
+      "s": "lsblk"
+    },
+    {
+      "b": "linux",
+      "s": "lvcreate"
+    },
+    {
+      "b": "linux",
+      "s": "lvdisplay"
+    },
+    {
+      "b": "linux",
+      "s": "lvextend"
+    },
+    {
+      "b": "linux",
+      "s": "lvreduce"
+    },
+    {
+      "b": "linux",
+      "s": "lvremove"
+    },
+    {
+      "b": "linux",
+      "s": "lvresize"
+    },
+    {
+      "b": "linux",
+      "s": "lvscan"
+    },
+    {
+      "b": "linux",
+      "s": "mke2fs"
+    },
+    {
+      "b": "linux",
+      "s": "mkfs"
+    },
+    {
+      "b": "linux",
+      "s": "mkisofs"
+    },
+    {
+      "b": "linux",
+      "s": "mkswap"
+    },
+    {
+      "b": "linux",
+      "s": "mtools"
+    },
+    {
+      "b": "linux",
+      "s": "ncdu"
+    },
+    {
+      "b": "linux",
+      "s": "parted"
+    },
+    {
+      "b": "linux",
+      "s": "partprobe"
+    },
+    {
+      "b": "linux",
+      "s": "pvchange"
+    },
+    {
+      "b": "linux",
+      "s": "pvck"
+    },
+    {
+      "b": "linux",
+      "s": "pvcreate"
+    },
+    {
+      "b": "linux",
+      "s": "pvdisplay"
+    },
+    {
+      "b": "linux",
+      "s": "pvremove"
+    },
+    {
+      "b": "linux",
+      "s": "pvs"
+    },
+    {
+      "b": "linux",
+      "s": "pvscan"
+    },
+    {
+      "b": "linux",
+      "s": "quota"
+    },
+    {
+      "b": "linux",
+      "s": "quotacheck"
+    },
+    {
+      "b": "linux",
+      "s": "quotaoff"
+    },
+    {
+      "b": "linux",
+      "s": "quotaon"
+    },
+    {
+      "b": "linux",
+      "s": "repquota"
+    },
+    {
+      "b": "linux",
+      "s": "restore"
+    },
+    {
+      "b": "linux",
+      "s": "smartmontools"
+    },
+    {
+      "b": "linux",
+      "s": "swapoff"
+    },
+    {
+      "b": "linux",
+      "s": "swapon"
+    },
+    {
+      "b": "linux",
+      "s": "sync"
+    },
+    {
+      "b": "linux",
+      "s": "umount"
+    },
+    {
+      "b": "linux",
+      "s": "vdfuse"
+    },
+    {
+      "b": "linux",
+      "s": "vgchange"
+    },
+    {
+      "b": "linux",
+      "s": "vgconvert"
+    },
+    {
+      "b": "linux",
+      "s": "dnsdomainname"
+    },
+    {
+      "b": "linux",
+      "s": "domainname"
+    },
+    {
+      "b": "linux",
+      "s": "elinks"
+    },
+    {
+      "b": "linux",
+      "s": "ethtool"
+    },
+    {
+      "b": "linux",
+      "s": "exportfs"
+    },
+    {
+      "b": "linux",
+      "s": "firewalld"
+    },
+    {
+      "b": "linux",
+      "s": "fping"
+    },
+    {
+      "b": "linux",
+      "s": "ftp"
+    },
+    {
+      "b": "linux",
+      "s": "ftpcount"
+    },
+    {
+      "b": "linux",
+      "s": "ftpshut"
+    },
+    {
+      "b": "linux",
+      "s": "ftptop"
+    },
+    {
+      "b": "linux",
+      "s": "ftpwho"
+    },
+    {
+      "b": "linux",
+      "s": "hcitool"
+    },
+    {
+      "b": "linux",
+      "s": "host"
+    },
+    {
+      "b": "linux",
+      "s": "hping3"
+    },
+    {
+      "b": "linux",
+      "s": "ifcfg"
+    },
+    {
+      "b": "linux",
+      "s": "ifconfig"
+    },
+    {
+      "b": "linux",
+      "s": "ifdown"
+    },
+    {
+      "b": "linux",
+      "s": "ifstat"
+    },
+    {
+      "b": "linux",
+      "s": "iftop"
+    },
+    {
+      "b": "linux",
+      "s": "slabtop"
+    },
+    {
+      "b": "linux",
+      "s": "time"
+    },
+    {
+      "b": "linux",
+      "s": "tload"
+    },
+    {
+      "b": "linux",
+      "s": "ulimit"
+    },
+    {
+      "b": "linux",
+      "s": "wait"
+    },
+    {
+      "b": "linux",
+      "s": "watch"
+    },
+    {
+      "b": "linux",
+      "s": "badblocks"
+    },
+    {
+      "b": "linux",
+      "s": "blkid"
+    },
+    {
+      "b": "linux",
+      "s": "blockdev"
+    },
+    {
+      "b": "linux",
+      "s": "cdrecord"
+    },
+    {
+      "b": "linux",
+      "s": "convertquota"
+    },
+    {
+      "b": "linux",
+      "s": "dd"
+    },
+    {
+      "b": "linux",
+      "s": "dump"
+    },
+    {
+      "b": "linux",
+      "s": "e2fsck"
+    },
+    {
+      "b": "linux",
+      "s": "e2label"
+    },
+    {
+      "b": "linux",
+      "s": "edquota"
+    },
+    {
+      "b": "linux",
+      "s": "eject"
+    },
+    {
+      "b": "linux",
+      "s": "fdisk"
+    },
+    {
+      "b": "linux",
+      "s": "findfs"
+    },
+    {
+      "b": "linux",
+      "s": "fsck"
+    },
+    {
+      "b": "linux",
+      "s": "vgcreate"
+    },
+    {
+      "b": "linux",
+      "s": "vgdisplay"
+    },
+    {
+      "b": "linux",
+      "s": "vgextend"
+    },
+    {
+      "b": "linux",
+      "s": "vgreduce"
+    },
+    {
+      "b": "linux",
+      "s": "vgremove"
+    },
+    {
+      "b": "linux",
+      "s": "vgrename"
+    },
+    {
+      "b": "linux",
+      "s": "vgscan"
+    },
+    {
+      "b": "linux",
+      "s": "volname"
+    },
+    {
+      "b": "linux",
+      "s": "ab"
+    },
+    {
+      "b": "linux",
+      "s": "arp"
+    },
+    {
+      "b": "linux",
+      "s": "arpd"
+    },
+    {
+      "b": "linux",
+      "s": "arping"
+    },
+    {
+      "b": "linux",
+      "s": "arptables"
+    },
+    {
+      "b": "linux",
+      "s": "arpwatch"
+    },
+    {
+      "b": "linux",
+      "s": "axel"
+    },
+    {
+      "b": "linux",
+      "s": "clockdiff"
+    },
+    {
+      "b": "linux",
+      "s": "cu"
+    },
+    {
+      "b": "linux",
+      "s": "dhclient"
+    },
+    {
+      "b": "linux",
+      "s": "dhcpd"
+    },
+    {
+      "b": "linux",
+      "s": "dhcrelay"
     }
   ],
   "last_updated": "2026-10-18"

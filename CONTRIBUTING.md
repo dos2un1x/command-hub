@@ -147,9 +147,9 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 ## 内容来源与 PROVENANCE
 
-新增页面默认属于本站自有内容。原始基线中 `command/linux/` 有 618 个页面、`command/k8s/` 有 3 个页面来自 MIT 上游;截至 2026-10-18 已重写 521 页,剩余 Linux 100 页 + K8s 0 页。完整清单、固定 commit 与自有内容边界见仓库根目录的 [PROVENANCE.md](PROVENANCE.md);重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),进度见 [provenance.json](provenance.json)。
+新增页面默认属于本站自有内容。原始基线中 `command/linux/` 有 618 个页面、`command/k8s/` 有 3 个页面来自 MIT 上游;这 621 页已于 2026-10-18 全部独立重写,当前仓库树不再包含上游内容(旧 Git 提交仍按 MIT 授权)。完整清单、固定 commit 与历史边界见仓库根目录的 [PROVENANCE.md](PROVENANCE.md);重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),机器可读记录见 [provenance.json](provenance.json)。
 
-- **修改上游页面仍是衍生作品**,不能从清单移除,也不能删除 `LICENSE` 中的上游 MIT 段。
+- 以上规则适用于历史追溯与未来重新引入第三方内容时;截至 2026-10-18,621 页已全部重写,当前 `LICENSE` 不再包含上游 MIT 段。
 - 只有从 man page、`--help`、官方文档独立重写并通过相似度检查,才能把 slug 从上游清单移入自有内容。
 - 迁移后同步更新 `PROVENANCE.md` 的清单与数量、`LICENSE` 中的数量,并运行 `npm run verify`。
 - `PROVENANCE.md` 必须留在仓库根目录,不要放进被 `.gitignore` 忽略的 `docs/`。

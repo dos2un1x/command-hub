@@ -180,7 +180,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1806 个 HTML、1719 个内容页、sitemap 1801 条、站内链接 59,134 条(校验零 404)。
+当前构建规模:1806 个 HTML、1719 个内容页、sitemap 1801 条、站内链接 59,133 条(校验零 404)。
 
 ## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -437,9 +437,9 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。原始基线中 618 个 Linux 页面里,480 页与上游固定 commit 逐字节相同,138 页经过修改;修改版仍是衍生作品。截至 2026-10-18 已重写 521 页,剩余 100 个 Linux 页面和 0 个 K8s 页面仍属上游;完整清单与进度见 [PROVENANCE.md](PROVENANCE.md) 和 [provenance.json](provenance.json)。当前全站 1719 页,在上游 621 页之外新增 1098 页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。原始基线中 618 个 Linux 页面里,480 页与上游固定 commit 逐字节相同,138 页经过修改;修改版仍是衍生作品。原始基线 621 页已于 2026-10-18 全部独立重写;当前仓库树不再包含上游内容(旧 Git 提交仍按 MIT 授权)。完整清单与重写记录见 [PROVENANCE.md](PROVENANCE.md) 和 [provenance.json](provenance.json)。当前全站 1719 页 = 621 个重写页 + 1098 个新增页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
 
-上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。[PROVENANCE.md](PROVENANCE.md) 记录了上游固定 commit、621 页完整清单、自有内容边界;重写执行计划见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),机器可读进度见 [provenance.json](provenance.json)。**分发本仓库或其内容时,不得移除 LICENSE 与 PROVENANCE.md。**
+原始上游的版权与 MIT 许可记录在 [PROVENANCE.md](PROVENANCE.md) 中;当前 [LICENSE](LICENSE) 只包含本站自有内容的 MIT 许可。[PROVENANCE.md](PROVENANCE.md) 同时保留上游固定 commit、621 页历史清单与自有内容边界;重写执行计划见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),机器可读记录见 [provenance.json](provenance.json)。**分发本仓库或其内容时,不得移除 LICENSE 与 PROVENANCE.md。**
 
 其中 `gcc.md` 修正了一处上游缺陷:原标题误写为 `pullgcc`,导致产物名为 `pullgcc.html` 而链接指向 `gcc.html`,产生 404。现标题与文件名统一为 `gcc`。
 
