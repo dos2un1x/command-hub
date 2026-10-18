@@ -12,6 +12,9 @@ build/
 # 百度推送 token,只保存在本机
 /.baidu-token
 
+# 本机每日定时推送脚本(含站点配置),不对外发布
+/scripts/baidu-daily.sh
+
 # 本机工作记录(AI 辅助设计文档),不对外发布
 /docs/
 
