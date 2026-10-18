@@ -151,7 +151,7 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 - 以上规则适用于历史追溯与未来重新引入第三方内容时;截至 2026-10-18,621 页已全部重写,当前 `LICENSE` 不再包含上游 MIT 段。
 - 只有从 man page、`--help`、官方文档独立重写并通过相似度检查,才能把 slug 从上游清单移入自有内容。
-- 迁移后同步更新 `PROVENANCE.md` 的清单与数量、`LICENSE` 中的数量,并运行 `npm run verify`。
+- 迁移后同步更新 `PROVENANCE.md` 与 README 中的清单、数量和重写进度,并运行 `npm run verify`。
 - `PROVENANCE.md` 必须留在仓库根目录,不要放进被 `.gitignore` 忽略的 `docs/`。
 
 ## 内容差异化(P2)

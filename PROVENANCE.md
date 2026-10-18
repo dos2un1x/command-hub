@@ -13,13 +13,13 @@
 - 许可证：MIT License，Copyright © 2019 小弟调调™
 - 历史许可全文：<https://github.com/jaywcjlove/linux-command/blob/master/LICENSE>
 
-截至 2026-10-18 对比，`command/linux/` 下 618 个页面来自上游，其中 480 个与上述 commit 逐字节相同，138 个经过本站修改；`command/k8s/` 下另有 3 个页面来自上游。**修改过的页面仍然是上游内容的衍生作品，不能因为改过就移出本清单。**
+重写前（2026-10-18）对比，`command/linux/` 下 618 个页面来自上游，其中 480 个与上述 commit 逐字节相同，138 个经过本站修改；`command/k8s/` 下另有 3 个页面来自上游。**修改过的页面仍然是上游内容的衍生作品，不能因为改过就移出本清单。**
 
 **2026-10-18 已完成全部 621 页的独立重写。** 当前仓库树不再包含上述上游内容，当前 [LICENSE](LICENSE) 只保留本站自有内容的 MIT 许可，不再包含第三方段。下面的 621 页清单保留为历史基线，用于审计与追溯；旧 Git 提交仍包含上游内容，按 MIT 授权。
 
 ## 原始上游清单（621 页，历史基线）
 
-本清单是重写前的固定基线，用于审计。某页通过重写验收后，会从 `provenance.json` 的 `original_pages` 移入 `rewritten_pages`；本清单仍保留该 slug 作为历史记录。当前仍属上游的页面以 `provenance.json` 为准。
+本清单是重写前的固定基线，用于审计。某页通过重写验收后，会从 `provenance.json` 的 `original_pages` 移入 `rewritten_pages`；本清单仍保留该 slug 作为历史记录。当前 `original_pages` 已为空，表示 621 页全部完成重写。
 
 ### command/linux/（618 页）
 
@@ -668,7 +668,7 @@ kubectl
 1. 新增页面默认属于自有内容；如未来重新引入第三方内容，必须重新建立清单和许可声明。
 2. 历史上游页面的修改版仍是衍生作品，不能从历史基线中移除。
 3. 只有从 man page、`--help`、官方文档独立重写，且通过相似度检查，才能把 slug 从上游清单移入自有内容。
-4. 每次迁移后同步更新本文件、`LICENSE` 中的数量，并运行 `npm run verify`。
+4. 每次迁移后同步更新本文件与 README 中的清单、数量和重写进度，并运行 `npm run verify`。
 5. 本文件必须保留在仓库根目录，不要放进被 `.gitignore` 忽略的 `docs/`。
 
 ## 完全自有化计划（第 3 步）
@@ -691,15 +691,15 @@ kubectl
 
 优先重写搜索量和操作风险最高的页面：ls、grep、find、awk、sed、tar、cat、chmod、chown、ps、top、df、du、ssh、curl、systemctl、journalctl、git、cp、mv、rm、mkdir、ln、mount、ip、ss、dig、crontab、dmesg、lsof、strace、tail、nano、kill、pkill、free、vmstat、iostat、netstat、route、iptables、firewall-cmd、useradd、usermod、passwd、su、sudo、rsync、scp、tmux。
 
-已分 5 批完成，50 页全部通过 16-gram/8-gram 相似度检查（0 页命中），并从 `provenance.json` 的上游清单移入 `rewritten_pages`。剩余 568 个 Linux 页与 3 个 K8s 页。
+已分 5 批完成，50 页全部通过 16-gram/8-gram 相似度检查（0 页命中），并从 `provenance.json` 的上游清单移入 `rewritten_pages`；其余 568 个 Linux 页与 3 个 K8s 页已在后续阶段完成。
 
-### 阶段 3：中频 150 页
+### 阶段 3：中频 150 页（已完成 2026-10-18）
 
 按文件与文本、进程与资源、网络、磁盘与文件系统、开发与构建、权限与安全、数据库客户端分组，每批 15–25 页，约 8 批。优先处理仍被学习路径、速查表和排障页引用的页面。
 
-### 阶段 4：长尾 418 页与 3 个 K8s 页
+### 阶段 4：长尾 418 页与 3 个 K8s 页（已完成 2026-10-18）
 
-剩余长尾页按分类批量重写，每批 20–25 页，约 18–20 批。对长期无搜索价值、内容重复度高的页面，可评估合并或下线，但必须先处理站内链接。`docker`、`helm`、`kubectl` 三页优先于长尾页重写，因为它们被大量教程引用。
+长尾页按分类批量重写，每批 20–25 页，约 18–20 批。对长期无搜索价值、内容重复度高的页面，可评估合并或下线，但必须先处理站内链接。`docker`、`helm`、`kubectl` 三页优先于长尾页重写，因为它们被大量教程引用。
 
 ### 阶段 5：收尾与许可证切换（已完成 2026-10-18）
 

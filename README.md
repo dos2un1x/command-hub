@@ -239,7 +239,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 862 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop,以及 bcc-tools/火焰图/namespace/cgroup v2/page cache/IO 调度/网络栈/内存回收/eBPF 探针/sysdig 等性能与 eBPF 工具 |
+| Linux | 862 | 基础命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop,以及 bcc-tools/火焰图/namespace/cgroup v2/page cache/IO 调度/网络栈/内存回收/eBPF 探针/sysdig 等性能与 eBPF 工具 |
 | Kubernetes | 274 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版,以及 Crossplane/Karpenter/Tetragon/Kueue/YuniKorn/Gateway API/External Secrets 等现代平台工具 |
 | DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
 | 排障 | 134 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
@@ -437,10 +437,14 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。原始基线中 618 个 Linux 页面里,480 页与上游固定 commit 逐字节相同,138 页经过修改;修改版仍是衍生作品。原始基线 621 页已于 2026-10-18 全部独立重写;当前仓库树不再包含上游内容(旧 Git 提交仍按 MIT 授权)。完整清单与重写记录见 [PROVENANCE.md](PROVENANCE.md) 和 [provenance.json](provenance.json)。当前全站 1719 页 = 621 个重写页 + 1098 个新增页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
+当前 [LICENSE](LICENSE) 只包含本站自有内容的 MIT 许可(Copyright © 2026 dos2un1x)。
 
-原始上游的版权与 MIT 许可记录在 [PROVENANCE.md](PROVENANCE.md) 中;当前 [LICENSE](LICENSE) 只包含本站自有内容的 MIT 许可。[PROVENANCE.md](PROVENANCE.md) 同时保留上游固定 commit、621 页历史清单与自有内容边界;重写执行计划见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md),机器可读记录见 [provenance.json](provenance.json)。**分发本仓库或其内容时,不得移除 LICENSE 与 PROVENANCE.md。**
+本站早期以 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)的 621 个命令页作为历史基线:618 个 Linux 页,以及 `docker`、`helm`、`kubectl` 3 个 K8s 页。这 621 页已于 2026-10-18 全部按 clean-room 规则独立重写,当前仓库树不再包含上游内容;重写页与上游固定 commit 的 16 字中文 / 8 词英文连续片段检查为 0 命中。旧 Git 提交仍包含上游内容,继续按原 MIT 授权,不影响当前树的自有许可。
 
-其中 `gcc.md` 修正了一处上游缺陷:原标题误写为 `pullgcc`,导致产物名为 `pullgcc.html` 而链接指向 `gcc.html`,产生 404。现标题与文件名统一为 `gcc`。
+历史基线、固定 commit、621 页清单与授权边界见 [PROVENANCE.md](PROVENANCE.md),机器可读记录见 [provenance.json](provenance.json),重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md)。**分发本仓库或其内容时,请保留 LICENSE 与 PROVENANCE.md。**
 
-`kubectl`、`helm`、`docker` 三个页面已从 linux 迁至 k8s 分支(它们同属两边,放在 k8s 更符合浏览直觉)。旧 `/c/<slug>.html` 路径已永久弃用,不再维护跳转;页面迁移只影响当前分支内的新 URL。
+当前全站 1719 页 = 621 个重写页 + 1098 个新增页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
+
+其中 `gcc.md` 修正了早期基线中的一处缺陷:原标题误写为 `pullgcc`,导致产物名为 `pullgcc.html` 而链接指向 `gcc.html`,产生 404。现标题与文件名统一为 `gcc`。
+
+`kubectl`、`helm`、`docker` 三个页面位于 k8s 分支(它们同属两边,放在 k8s 更符合浏览直觉)。旧 `/c/<slug>.html` 路径已永久弃用,不再维护跳转;页面迁移只影响当前分支内的新 URL。
