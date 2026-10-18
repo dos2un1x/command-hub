@@ -2,8 +2,8 @@
   "site": {
     "name": "dos2unix 速查站",
     "baseUrl": "https://www.dos2unix.cn",
-    "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件、工具选型与迁移搭建。",
-    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,CI/CD,工具对比,教程,迁移,搭建",
+    "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件、AI/MLOps、工具选型与迁移搭建。",
+    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,AI,MLOps,GPU,大模型,推理,训练,CI/CD,工具对比,教程,迁移,搭建",
     "sloganLegacy": "最专业的 Linux、Kubernetes 与 DevOps 速查手册，包含命令、排障、工具对比与中间件实践。",
     "repo": "https://github.com/dos2un1x/command-hub",
     "author": "dos2un1x"
@@ -56,6 +56,13 @@
       "name": "教程",
       "desc": "迁移、搭建与实战步骤",
       "searchPlaceholder": "搜索教程或迁移方案",
+      "default": false
+    },
+    {
+      "id": "ai",
+      "name": "AI 与 MLOps",
+      "desc": "GPU、推理、训练与实验管理工具",
+      "searchPlaceholder": "搜索 AI 与 MLOps 工具",
       "default": false
     }
   ]

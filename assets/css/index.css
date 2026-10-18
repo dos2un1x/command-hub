@@ -242,8 +242,8 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 .home-page .header.home{width:min(760px,100%)}
 .home-branches{max-width:820px;margin:0 auto 24px;text-align:left}
 .home-branch-note{font-size:12px;color:#999}
-.home-branch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
-.home-branch-card{list-style:none}
+.home-branch-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.home-branch-card{grid-column:span 2;list-style:none}
 .home-branch-card a{display:flex;flex-direction:column;gap:5px;height:100%;padding:15px 16px;border:1px solid var(--color-header-border);border-radius:14px;background:rgba(127,127,127,.035);color:inherit;transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease}
 .home-branch-card a:hover{transform:translateY(-2px);border-color:rgba(33,150,243,.5);background:rgba(33,150,243,.06);box-shadow:0 8px 22px rgba(33,150,243,.12)}
 .home-branch-card a:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
@@ -252,15 +252,21 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 [data-color-mode*='dark'] .home-branch-desc{color:#aaa}
 .home-branch-meta{margin-top:auto;padding-top:8px;font-size:11px;color:#999}
 .home-branches .home-section-head{margin-bottom:12px}
-/* 第 7 个分支(教程)在 3 列网格最后一行单独出现,改为横向通栏,避免留白 */
-.home-branch-card:last-child:nth-child(3n+1){grid-column:span 3}
+/* 6 列网格:每张卡占 2 列,一行 3 张。
+   7 个分支时最后一张通栏;8 个分支时最后两张各占一半。 */
+.home-branch-card:last-child:nth-child(3n+1){grid-column:span 6}
 .home-branch-card:last-child:nth-child(3n+1) a{flex-direction:row;align-items:baseline;gap:16px;flex-wrap:wrap}
 .home-branch-card:last-child:nth-child(3n+1) .home-branch-name{margin:0}
 .home-branch-card:last-child:nth-child(3n+1) .home-branch-desc{flex:1;min-width:200px;margin:0}
 .home-branch-card:last-child:nth-child(3n+1) .home-branch-meta{margin:0;padding:0}
+.home-branch-card:nth-last-child(2):nth-child(3n+1),
+.home-branch-card:last-child:nth-child(3n+2){grid-column:span 3}
 @media screen and (max-width:840px){
   .home-branch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .home-branch-card:last-child:nth-child(3n+1){grid-column:auto}
+  .home-branch-card,
+  .home-branch-card:last-child:nth-child(3n+1),
+  .home-branch-card:nth-last-child(2):nth-child(3n+1),
+  .home-branch-card:last-child:nth-child(3n+2){grid-column:auto}
   .home-branch-card:last-child:nth-child(3n+1) a{flex-direction:column;align-items:stretch;gap:5px}
   .home-branch-card:last-child:nth-child(3n+1) .home-branch-desc{flex:none;min-width:0}
   .home-branch-card:last-child:nth-child(3n+1) .home-branch-meta{margin-top:auto;padding-top:8px}
