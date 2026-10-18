@@ -1,30 +1,74 @@
 <%- include('partials/head') %><div class="warpper home-page">
 <%- include('partials/topbar') %>
-<main class="home-intro">
-  <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>面向运维与开发的命令速查</p>
-  <h1>Linux 与 Kubernetes <span class="home-title-accent">命令速查</span></h1>
-  <p class="home-lead">本站收录 <%= total %> 个 Linux 与 Kubernetes 命令，提供语法、常用参数与使用示例。输入命令名即可快速查找，也可以从下面的热门命令开始。</p>
-  <ul class="home-stats" aria-label="站点内容统计">
-    <li><strong><%= total %></strong><span>命令</span></li>
-    <li><strong><%= branchCount %></strong><span>分支</span></li>
-    <li><strong><%= categoryCount %></strong><span>分类</span></li>
-  </ul>
-  <nav class="home-games" aria-label="站内小游戏">
-    <span class="home-games-label">小彩蛋</span>
-    <a href="snake.html">🎮 贪吃蛇</a>
-    <a href="tetris.html">🧱 俄罗斯方块</a>
-  </nav>
-  <section class="home-hot" aria-labelledby="hot-title">
-    <div class="home-section-head">
-      <h2 id="hot-title">热门命令</h2>
-      <a class="home-more" href="hot.html">查看全部 <%= total %> 个 →</a>
+<main class="hm-main">
+  <section class="hm-hero" aria-labelledby="home-title">
+    <div class="hm-hero-copy">
+      <p class="hm-eyebrow"><span class="hm-eyebrow-dot" aria-hidden="true"></span>FIELD NOTES / 06 BRANCHES</p>
+      <h1 id="home-title">从命令到排障，<br><span class="hm-title-accent">一套速查手册</span></h1>
+      <p class="hm-lead">六个分支，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比与中间件。按命令查语法，按报错找原因，按场景做选择。</p>
+      <ul class="hm-stats" aria-label="站点内容统计">
+        <li><strong><%= total %></strong><span>条目</span></li>
+        <li><strong><%= branchCount %></strong><span>分支</span></li>
+        <li><strong><%= categoryCount %></strong><span>分类</span></li>
+      </ul>
+      <div class="hm-actions">
+        <a class="hm-cta" href="hot.html">浏览全部条目 <span aria-hidden="true">→</span></a>
+        <a class="hm-cta-ghost" href="troubleshoot/">从排障开始 <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hm-games-inline" aria-label="站内小游戏">
+        <span class="hm-games-label">小彩蛋</span>
+        <a href="snake.html">🎮 贪吃蛇</a>
+        <a href="tetris.html">🧱 俄罗斯方块</a>
+      </div>
     </div>
-    <ul class="hot-commands">
-    <% hotCommands.forEach(function (page) { %>
-      <li><a href="<%= page.b %>/<%= page.n %>.html"><%= page.n %></a></li>
-    <% }); %>
-    </ul>
+    <aside class="hm-hero-aside" aria-label="站点版本信息">
+      <div class="hm-issue">
+        <span class="hm-issue-label">ISSUE</span>
+        <strong>06</strong>
+        <span class="hm-issue-sub">BRANCHES / 2026</span>
+      </div>
+      <p class="hm-quote">先定位，再修复。<br>先理解，再执行。</p>
+      <div class="hm-aside-meta">
+        <span>STATIC SITE</span>
+        <span>NO TRACKING</span>
+        <span>UPDATED 2026.10</span>
+      </div>
+    </aside>
   </section>
+
+  <section class="hm-branches" aria-labelledby="branches-title">
+    <div class="hm-section-head">
+      <h2 id="branches-title"><span>06</span> 分支索引</h2>
+      <p>按问题类型进入</p>
+    </div>
+    <ol class="hm-branch-grid">
+    <% branchCards.forEach(function (b, i) { %>
+      <li class="hm-branch-card">
+        <a href="<%= b.id %>/">
+          <span class="hm-branch-index"><%= String(i + 1).padStart(2, '0') %></span>
+          <span class="hm-branch-name"><%= b.name %></span>
+          <span class="hm-branch-desc"><%= b.desc %></span>
+          <% if (b.categories.length) { %><span class="hm-branch-cats"><%= b.categories.join(' · ') %></span><% } %>
+          <span class="hm-branch-meta"><%= b.count %> 个条目 · <%= b.categoryCount %> 个分类</span>
+          <span class="hm-branch-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    <% }); %>
+    </ol>
+  </section>
+
+  <section class="hm-index" aria-labelledby="hot-title">
+    <div class="hm-section-head">
+      <h2 id="hot-title"><span>QUICK</span> 高频入口</h2>
+      <a class="hm-more" href="hot.html">全部条目 →</a>
+    </div>
+    <ol class="hm-hot-grid">
+    <% hotCommands.forEach(function (page, i) { %>
+      <li><a href="<%= page.b %>/<%= page.n %>.html"><span class="hm-hot-index"><%= String(i + 1).padStart(2, '0') %></span><span class="hm-hot-name"><%= page.n %></span></a></li>
+    <% }); %>
+    </ol>
+  </section>
+
 </main>
 <%- include('partials/sitefooter') %>
 </div>

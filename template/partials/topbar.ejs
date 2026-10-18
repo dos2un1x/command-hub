@@ -1,8 +1,8 @@
 <div class="header<% if (isHome) { %> home<% } else { %> header_list<% } %>">
   <div class="header_inner">
       <div class="logo">
-          <a href="<%= relative_path %>index.html" title="命令搜索引擎" aria-label="命令搜索引擎首页">
-            <%- logo %>
+          <a href="<%= relative_path %>index.html" title="<%= site.name %>" aria-label="<%= site.name %>首页">
+            <span class="logo-wordmark" aria-hidden="true">dos2unix<span class="logo-slash">/</span><span class="logo-sub">速查</span></span>
           </a>
       </div>
       <%- include('branch-tabs') %>

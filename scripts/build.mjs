@@ -277,12 +277,12 @@ for (const [name, list] of byNameAll) {
 
 // 首页「热门命令」:按常见使用频率挑一批,过滤掉当前内容里不存在的
 const HOT_COMMAND_NAMES = [
-  'ls', 'cd', 'pwd', 'cat', 'grep', 'find', 'awk', 'sed', 'tar', 'chmod',
-  'chown', 'ps', 'top', 'kill', 'df', 'du', 'mount', 'ssh', 'scp', 'rsync',
-  'curl', 'wget', 'systemctl', 'journalctl', 'docker', 'kubectl', 'helm', 'git',
-  'vim', 'nano', 'less', 'head', 'tail', 'ln', 'cp', 'mv', 'rm', 'mkdir',
-  'touch', 'ping', 'ss', 'iptables', 'useradd', 'passwd', 'crontab', 'unzip',
-  'gzip', 'xargs', 'sort', 'uniq', 'wc', 'cut', 'tr', 'diff', 'make', 'gcc',
+  'ls', 'grep', 'find', 'awk', 'sed', 'tar', 'chmod', 'ps', 'top', 'df',
+  'du', 'ssh', 'curl', 'systemctl', 'journalctl', 'git', 'vim', 'nano',
+  'kubectl', 'helm', 'docker', 'github-actions', 'terraform',
+  'nginx', 'psql', 'redis-cli', 'kafka-topics',
+  'oom-killed', 'no-space-left', 'permission-denied', 'crashloopbackoff',
+  'connection-refused', 'kubectl-cheatsheet',
 ];
 const seenHot = new Set();
 const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
@@ -352,17 +352,48 @@ const total = items.length;
 const branchCount = branches.length;
 const categoryCount = [...categoriesByBranch.values()]
   .reduce((sum, c) => sum + c.list.length, 0);
+const branchCards = branches.map((b) => {
+  const cats = categoriesByBranch.get(b.id);
+  return {
+    id: b.id,
+    name: b.name,
+    desc: b.desc,
+    count: byBranch[b.id].length,
+    categoryCount: cats ? cats.list.length : 0,
+    categories: cats ? cats.list.slice(0, 3).map((c) => c.name) : [],
+  };
+});
 
 const BRANCH_SEO = {
   linux: {
     label: 'Linux 命令大全',
     intro: (n) =>
-      `收录 ${n} 个 Linux 常用命令，覆盖文件与目录、文本处理、网络、系统管理、磁盘与权限等场景，提供语法、参数与使用示例。`,
+      `收录 ${n} 个 Linux 条目，覆盖文件与目录、文本处理、网络、系统管理、磁盘、存储、权限与主机安全等场景，提供语法、参数与使用示例。`,
   },
   k8s: {
     label: 'Kubernetes 命令手册',
     intro: (n) =>
-      `收录 ${n} 个 Kubernetes 常用命令，覆盖集群管理、资源编排、故障排查与日常运维，提供语法、参数与使用示例。`,
+      `收录 ${n} 个 Kubernetes 条目，覆盖集群管理、资源编排、故障排查与日常运维，提供语法、参数与使用示例。`,
+  },
+  devops: {
+    label: 'DevOps 工具手册',
+    intro: (n) =>
+      `收录 ${n} 个 DevOps 条目，覆盖 CI/CD、发布自动化、云 CLI、IaC、容器、安全供应链与可观测性。`,
+  },
+  troubleshoot: {
+    label: '故障排查手册',
+    intro: (n) =>
+      `收录 ${n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、证书、Kubernetes 与中间件。`,
+  },
+  guide: {
+    label: '工具对比与速查表',
+    intro: (n) =>
+      `收录 ${n} 个指南条目，包含工具对比、选型建议与高频命令速查表，帮助在相似方案之间做决定。`,
+  },
+  middleware: {
+    label: '中间件手册',
+    intro: (n) =>
+      `收录 ${n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库与数据库连接池。`,
   },
 };
 const branchSeo = (b) =>
@@ -412,7 +443,7 @@ function base(extra) {
 // ── 4. 根页面 ───────────────────────────────────────────────
 const rootFooter = {
   footerCount: total,
-  footerLabel: `个命令，覆盖 ${branchCount} 个分支`,
+  footerLabel: `个条目，覆盖 ${branchCount} 个分支`,
 };
 
 await write(
@@ -421,16 +452,17 @@ await write(
     relative_path: '',
     current_path: '/index.html',
     currentBranch: null,
-    placeholder: '搜索所有分支的命令',
+    placeholder: '搜索命令、报错或工具',
     isHome: true,
-    describe: { n: 'Linux命令搜索引擎', d: site.sloganLegacy },
+    describe: { n: 'dos2unix 速查站', d: site.slogan },
     brand: site.name,
-    pageTitle: brandTitle('Linux 命令大全与在线速查'),
-    metaDescription: `收录 ${total} 个 Linux 与 Kubernetes 命令，提供语法、常用参数、示例与在线搜索，适合运维和开发日常速查。`,
-    metaKeywords: `Linux命令,Linux命令大全,Kubernetes命令,命令速查,${site.name}`,
+    pageTitle: brandTitle('命令、排障与工程实践速查'),
+    metaDescription: `收录 ${total} 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比与中间件，提供语法、示例与排错思路。`,
+    metaKeywords: site.keywords,
     canonicalUrl: `${baseUrl}/`,
     ogType: 'website',
     hotCommands,
+    branchCards,
     ...rootFooter,
   }))
 );
@@ -441,13 +473,13 @@ await write(
     relative_path: '',
     current_path: '/list.html',
     currentBranch: null,
-    placeholder: '搜索所有分支的命令',
+    placeholder: '搜索所有分支的条目',
     isHome: false,
-    describe: { n: '搜索', d: site.sloganLegacy },
+    describe: { n: '搜索', d: site.slogan },
     brand: site.name,
-    pageTitle: brandTitle('搜索命令'),
-    metaDescription: '搜索 Linux 与 Kubernetes 命令，输入命令名即可快速定位语法、常用参数与示例。',
-    metaKeywords: '命令搜索,Linux命令搜索,Kubernetes命令搜索',
+    pageTitle: brandTitle('搜索命令与排障'),
+    metaDescription: '搜索命令、报错、工具或中间件，输入关键词即可定位语法、示例与排错思路。',
+    metaKeywords: '命令搜索,报错搜索,运维搜索,DevOps',
     canonicalUrl: `${baseUrl}/list.html`,
     robots: 'noindex,follow',
     ogType: 'website',
@@ -461,13 +493,13 @@ await write(
     relative_path: '',
     current_path: '/hot.html',
     currentBranch: null,
-    placeholder: '搜索所有分支的命令',
+    placeholder: '搜索所有分支的条目',
     isHome: false,
-    describe: { n: '全部命令', d: `全部 ${total} 个命令，覆盖 ${branchCount} 个分支` },
+    describe: { n: '全部条目', d: `全部 ${total} 个条目，覆盖 ${branchCount} 个分支` },
     brand: site.name,
-    pageTitle: brandTitle(`全部命令列表（${total} 个）`),
-    metaDescription: `命令搜索引擎收录的全部 ${total} 个 Linux 与 Kubernetes 命令，按分支和字母排序，支持快速查找。`,
-    metaKeywords: 'Linux命令列表,Kubernetes命令列表,命令大全',
+    pageTitle: brandTitle(`全部条目列表（${total} 个）`),
+    metaDescription: `dos2unix 速查站收录的全部 ${total} 个条目，覆盖命令、排障、工具对比与中间件，按分支和字母排序。`,
+    metaKeywords: '命令列表,排障列表,DevOps工具,中间件,工具对比',
     canonicalUrl: `${baseUrl}/hot.html`,
     ogType: 'website',
     byBranch,
@@ -513,12 +545,12 @@ await write(
     relative_path: '',
     current_path: '/404.html',
     currentBranch: null,
-    placeholder: '搜索命令',
+    placeholder: '搜索命令、报错或工具',
     isHome: false,
     describe: { n: '页面不存在', d: '页面可能已迁移或删除' },
     brand: site.name,
     pageTitle: brandTitle('页面不存在'),
-    metaDescription: '你访问的页面可能已经迁移或删除，可以返回首页或搜索命令。',
+    metaDescription: '你访问的页面可能已经迁移或删除，可以返回首页或搜索命令与报错。',
     metaKeywords: '404,页面不存在',
     robots: 'noindex,follow',
     hotCommands,
@@ -536,13 +568,13 @@ for (const b of branches) {
       relative_path: '../',
       current_path: `/${b.id}/index.html`,
       currentBranch: b.id,
-      placeholder: b.searchPlaceholder || '搜索命令',
+      placeholder: b.searchPlaceholder || '搜索条目',
       isHome: false,
       describe: { n: b.name, d: b.desc },
       brand: b.name,
-      pageTitle: brandTitle(`${seo.label}（${count} 个命令）`),
+      pageTitle: brandTitle(`${seo.label}（${count} 个条目）`),
       metaDescription: `${seo.label}：${seo.intro(count)}`,
-      metaKeywords: `${b.name}命令,${b.name}命令大全,命令速查`,
+      metaKeywords: `${b.name},${seo.label},${b.name}速查,命令速查`,
       canonicalUrl: `${baseUrl}/${b.id}/`,
       ogType: 'website',
       branchH1: seo.label,
@@ -550,7 +582,7 @@ for (const b of branches) {
       categoryNav: categoryNavFor(b.id),
       items: byBranch[b.id],
       footerCount: count,
-      footerLabel: `个${b.name}命令`,
+      footerLabel: `个${b.name}条目`,
     }))
   );
 }

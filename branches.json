@@ -1,10 +1,10 @@
 {
   "site": {
-    "name": "命令搜索引擎",
+    "name": "dos2unix 速查站",
     "baseUrl": "https://www.dos2unix.cn",
-    "slogan": "最专业的命令大全，内容包含命令手册、详解、学习，值得收藏的命令速查手册。",
-    "keywords": "Linux,Command,命令大全,Linux命令手册,Kubernetes,k8s,运维",
-    "sloganLegacy": "最专业的Linux命令大全，内容包含Linux命令手册、详解、学习，值得收藏的Linux命令速查手册。",
+    "slogan": "命令、排障与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件与工具选型。",
+    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,CI/CD,工具对比",
+    "sloganLegacy": "最专业的 Linux、Kubernetes 与 DevOps 速查手册，包含命令、排障、工具对比与中间件实践。",
     "repo": "https://github.com/dos2un1x/command-hub",
     "author": "dos2un1x"
   },
