@@ -2,6 +2,10 @@
 
 本文件记录 command-hub 中第三方内容的来源、固定版本、完整页面清单，以及本站自有内容的边界。**本文件不是许可证**；许可证正文以 [LICENSE](LICENSE) 为准。
 
+- 机器可读清单：[provenance.json](provenance.json)（重写进度以其中的 `rewritten_pages` 为准）
+- 执行计划：[UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md)
+- 当前进度：仍属上游 621 页，已重写 0 页（每批完成后更新）
+
 ## 上游来源
 
 - 仓库：<https://github.com/jaywcjlove/linux-command>
