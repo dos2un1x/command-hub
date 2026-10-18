@@ -1,6 +1,6 @@
 # 命令速查站(多分支)
 
-Linux / Kubernetes / DevOps / 排障 命令速查站。支持多分支切换,新增分支不需要改代码。
+Linux / Kubernetes / DevOps / 排障 / 指南 多分支速查站。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
@@ -186,7 +186,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1179 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1192 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -194,21 +194,22 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1183 个 HTML、1131 个命令页、sitemap 1179 条、站内链接 30,702 条(校验零 404)。
+当前构建规模:1196 个 HTML、1141 个命令页、sitemap 1192 条、站内链接 32,200 条(校验零 404)。
 
-## 二级分类(Linux / Kubernetes / DevOps / 排障)
+## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南)
 
 `command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
-当前有四份:
+当前有五份:
 
 - `command/linux/categories.json`:15 个分类、777 条
 - `command/k8s/categories.json`:12 个分类、254 条
 - `command/devops/categories.json`:9 个分类、60 条
 - `command/troubleshoot/categories.json`:6 个分类、40 条
+- `command/guide/categories.json`:2 个分类、10 条
 
 构建时会校验:
 
@@ -253,6 +254,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | Kubernetes | 254 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版等 |
 | DevOps | 60 | GitHub Actions、GitLab CI、Jenkins、Argo/Tekton 生态、发布自动化,以及 AWS/GCP/Azure/阿里云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Docker Compose/Buildx、安全供应链与可观测性工具 |
 | 排障 | 40 | 按报错/现象组织:OOMKilled、磁盘满、inode 耗尽、连接拒绝/超时、DNS 失败、Permission denied、证书问题、CrashLoopBackOff、ImagePullBackOff、Pod Pending/Evicted、PVC Pending、中间件连接失败等 |
+| 指南 | 10 | 工具对比(iptables/nftables、curl/wget、Docker/Podman、Helm/Kustomize、systemd/sysvinit、cgroup v1/v2)与速查表(Linux 权限、K8s 排障、Git、网络排查) |
 
 Kubernetes 分支按方向划分:
 
@@ -307,13 +309,22 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  postgres-connection-failed kafka-consumer-lag
 ```
 
+指南分支分两类:
+
+```
+工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman
+           helm-vs-kustomize systemd-vs-sysvinit cgroup-v1-vs-v2
+速查表     linux-permission-cheatsheet k8s-troubleshooting-cheatsheet
+           git-cheatsheet network-troubleshooting-cheatsheet
+```
+
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
 
 > 各页面的 `### 注意` 小节记录的是**经核实的真实坑点**与常见误传的纠正,而非泛泛的最佳实践。
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 212 个页面(Linux 现为 777 页,含 72 个现代/冷门工具、21 个数据库客户端、39 个语言运行时工具、12 个 Git 进阶页和 15 个数据库服务端运维页),补写了 Linux 长尾页的“易错点与排错”,撰写了 Kubernetes 分支其余 251 页内容,新增 DevOps 分支 60 页(CI/CD、云 CLI、IaC、容器、安全与可观测性)以及排障分支 40 页(按报错与故障现象组织)。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 222 个页面(Linux 现为 777 页,含 72 个现代/冷门工具、21 个数据库客户端、39 个语言运行时工具、12 个 Git 进阶页和 15 个数据库服务端运维页),补写了 Linux 长尾页的“易错点与排错”,撰写了 Kubernetes 分支其余 251 页内容,新增 DevOps 分支 60 页(CI/CD、云 CLI、IaC、容器、安全与可观测性)、排障分支 40 页(按报错与故障现象组织)以及指南分支 10 页(工具对比与速查表)。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 
