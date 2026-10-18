@@ -13,30 +13,6 @@
     },
     {
       "b": "linux",
-      "s": "alias"
-    },
-    {
-      "b": "linux",
-      "s": "apk"
-    },
-    {
-      "b": "linux",
-      "s": "apt-get"
-    },
-    {
-      "b": "linux",
-      "s": "apt-key"
-    },
-    {
-      "b": "linux",
-      "s": "apt-sortpkgs"
-    },
-    {
-      "b": "linux",
-      "s": "aptitude"
-    },
-    {
-      "b": "linux",
       "s": "arp"
     },
     {
@@ -57,27 +33,11 @@
     },
     {
       "b": "linux",
-      "s": "as"
-    },
-    {
-      "b": "linux",
       "s": "axel"
     },
     {
       "b": "linux",
       "s": "badblocks"
-    },
-    {
-      "b": "linux",
-      "s": "bc"
-    },
-    {
-      "b": "linux",
-      "s": "beep"
-    },
-    {
-      "b": "linux",
-      "s": "bind"
     },
     {
       "b": "linux",
@@ -89,35 +49,7 @@
     },
     {
       "b": "linux",
-      "s": "break"
-    },
-    {
-      "b": "linux",
-      "s": "builtin"
-    },
-    {
-      "b": "linux",
-      "s": "bye"
-    },
-    {
-      "b": "linux",
-      "s": "cal"
-    },
-    {
-      "b": "linux",
       "s": "cdrecord"
-    },
-    {
-      "b": "linux",
-      "s": "chcon"
-    },
-    {
-      "b": "linux",
-      "s": "chroot"
-    },
-    {
-      "b": "linux",
-      "s": "clear"
     },
     {
       "b": "linux",
@@ -125,23 +57,7 @@
     },
     {
       "b": "linux",
-      "s": "command"
-    },
-    {
-      "b": "linux",
-      "s": "consoletype"
-    },
-    {
-      "b": "linux",
-      "s": "continue"
-    },
-    {
-      "b": "linux",
       "s": "convertquota"
-    },
-    {
-      "b": "linux",
-      "s": "createrepo"
     },
     {
       "b": "linux",
@@ -149,15 +65,7 @@
     },
     {
       "b": "linux",
-      "s": "dc"
-    },
-    {
-      "b": "linux",
       "s": "dd"
-    },
-    {
-      "b": "linux",
-      "s": "declare"
     },
     {
       "b": "linux",
@@ -173,63 +81,11 @@
     },
     {
       "b": "linux",
-      "s": "dircolors"
-    },
-    {
-      "b": "linux",
-      "s": "dirs"
-    },
-    {
-      "b": "linux",
-      "s": "dnf"
-    },
-    {
-      "b": "linux",
       "s": "dnsdomainname"
     },
     {
       "b": "linux",
       "s": "domainname"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-deb"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-divert"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-preconfigure"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-query"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-reconfigure"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-split"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-statoverride"
-    },
-    {
-      "b": "linux",
-      "s": "dpkg-trigger"
-    },
-    {
-      "b": "linux",
-      "s": "dris"
     },
     {
       "b": "linux",
@@ -245,14 +101,6 @@
     },
     {
       "b": "linux",
-      "s": "echo"
-    },
-    {
-      "b": "linux",
-      "s": "ed"
-    },
-    {
-      "b": "linux",
       "s": "edquota"
     },
     {
@@ -265,35 +113,7 @@
     },
     {
       "b": "linux",
-      "s": "emacs"
-    },
-    {
-      "b": "linux",
-      "s": "enable"
-    },
-    {
-      "b": "linux",
-      "s": "env"
-    },
-    {
-      "b": "linux",
       "s": "ethtool"
-    },
-    {
-      "b": "linux",
-      "s": "ex"
-    },
-    {
-      "b": "linux",
-      "s": "exec"
-    },
-    {
-      "b": "linux",
-      "s": "exit"
-    },
-    {
-      "b": "linux",
-      "s": "export"
     },
     {
       "b": "linux",
@@ -301,23 +121,7 @@
     },
     {
       "b": "linux",
-      "s": "expr"
-    },
-    {
-      "b": "linux",
-      "s": "false"
-    },
-    {
-      "b": "linux",
-      "s": "fc"
-    },
-    {
-      "b": "linux",
       "s": "fdisk"
-    },
-    {
-      "b": "linux",
-      "s": "figlet"
     },
     {
       "b": "linux",
@@ -326,10 +130,6 @@
     {
       "b": "linux",
       "s": "firewalld"
-    },
-    {
-      "b": "linux",
-      "s": "fishshell"
     },
     {
       "b": "linux",
@@ -361,34 +161,6 @@
     },
     {
       "b": "linux",
-      "s": "gcc"
-    },
-    {
-      "b": "linux",
-      "s": "gcov"
-    },
-    {
-      "b": "linux",
-      "s": "gdb"
-    },
-    {
-      "b": "linux",
-      "s": "getcap"
-    },
-    {
-      "b": "linux",
-      "s": "getenforce"
-    },
-    {
-      "b": "linux",
-      "s": "getsebool"
-    },
-    {
-      "b": "linux",
-      "s": "gpg"
-    },
-    {
-      "b": "linux",
       "s": "hcitool"
     },
     {
@@ -397,27 +169,11 @@
     },
     {
       "b": "linux",
-      "s": "help"
-    },
-    {
-      "b": "linux",
-      "s": "history"
-    },
-    {
-      "b": "linux",
       "s": "host"
     },
     {
       "b": "linux",
       "s": "hping3"
-    },
-    {
-      "b": "linux",
-      "s": "htdigest"
-    },
-    {
-      "b": "linux",
-      "s": "htpasswd"
     },
     {
       "b": "linux",
@@ -442,30 +198,6 @@
     {
       "b": "linux",
       "s": "iscsiadm"
-    },
-    {
-      "b": "linux",
-      "s": "jed"
-    },
-    {
-      "b": "linux",
-      "s": "joe"
-    },
-    {
-      "b": "linux",
-      "s": "ld"
-    },
-    {
-      "b": "linux",
-      "s": "ldd"
-    },
-    {
-      "b": "linux",
-      "s": "let"
-    },
-    {
-      "b": "linux",
-      "s": "local"
     },
     {
       "b": "linux",
@@ -505,18 +237,6 @@
     },
     {
       "b": "linux",
-      "s": "make"
-    },
-    {
-      "b": "linux",
-      "s": "mapfile"
-    },
-    {
-      "b": "linux",
-      "s": "mkcert"
-    },
-    {
-      "b": "linux",
       "s": "mke2fs"
     },
     {
@@ -537,43 +257,7 @@
     },
     {
       "b": "linux",
-      "s": "mysql"
-    },
-    {
-      "b": "linux",
-      "s": "mysqladmin"
-    },
-    {
-      "b": "linux",
-      "s": "mysqldump"
-    },
-    {
-      "b": "linux",
-      "s": "mysqlimport"
-    },
-    {
-      "b": "linux",
-      "s": "mysqlshow"
-    },
-    {
-      "b": "linux",
       "s": "ncdu"
-    },
-    {
-      "b": "linux",
-      "s": "nm"
-    },
-    {
-      "b": "linux",
-      "s": "objdump"
-    },
-    {
-      "b": "linux",
-      "s": "openssl"
-    },
-    {
-      "b": "linux",
-      "s": "pacman"
     },
     {
       "b": "linux",
@@ -582,42 +266,6 @@
     {
       "b": "linux",
       "s": "partprobe"
-    },
-    {
-      "b": "linux",
-      "s": "perl"
-    },
-    {
-      "b": "linux",
-      "s": "php"
-    },
-    {
-      "b": "linux",
-      "s": "pico"
-    },
-    {
-      "b": "linux",
-      "s": "pip"
-    },
-    {
-      "b": "linux",
-      "s": "popd"
-    },
-    {
-      "b": "linux",
-      "s": "printf"
-    },
-    {
-      "b": "linux",
-      "s": "protoize"
-    },
-    {
-      "b": "linux",
-      "s": "pushd"
-    },
-    {
-      "b": "linux",
-      "s": "pv"
     },
     {
       "b": "linux",
@@ -665,27 +313,7 @@
     },
     {
       "b": "linux",
-      "s": "read"
-    },
-    {
-      "b": "linux",
-      "s": "readelf"
-    },
-    {
-      "b": "linux",
-      "s": "readonly"
-    },
-    {
-      "b": "linux",
-      "s": "reposync"
-    },
-    {
-      "b": "linux",
       "s": "repquota"
-    },
-    {
-      "b": "linux",
-      "s": "resize"
     },
     {
       "b": "linux",
@@ -693,131 +321,11 @@
     },
     {
       "b": "linux",
-      "s": "restorecon"
-    },
-    {
-      "b": "linux",
-      "s": "return"
-    },
-    {
-      "b": "linux",
-      "s": "rpm"
-    },
-    {
-      "b": "linux",
-      "s": "rpm2cpio"
-    },
-    {
-      "b": "linux",
-      "s": "rpmbuild"
-    },
-    {
-      "b": "linux",
-      "s": "rpmdb"
-    },
-    {
-      "b": "linux",
-      "s": "rpmquery"
-    },
-    {
-      "b": "linux",
-      "s": "rpmsign"
-    },
-    {
-      "b": "linux",
-      "s": "rpmverify"
-    },
-    {
-      "b": "linux",
-      "s": "script"
-    },
-    {
-      "b": "linux",
-      "s": "scriptreplay"
-    },
-    {
-      "b": "linux",
-      "s": "seinfo"
-    },
-    {
-      "b": "linux",
-      "s": "semanage"
-    },
-    {
-      "b": "linux",
-      "s": "seq"
-    },
-    {
-      "b": "linux",
-      "s": "sesearch"
-    },
-    {
-      "b": "linux",
-      "s": "set"
-    },
-    {
-      "b": "linux",
-      "s": "setsebool"
-    },
-    {
-      "b": "linux",
-      "s": "sh"
-    },
-    {
-      "b": "linux",
-      "s": "shift"
-    },
-    {
-      "b": "linux",
-      "s": "shopt"
-    },
-    {
-      "b": "linux",
       "s": "slabtop"
     },
     {
       "b": "linux",
-      "s": "sleep"
-    },
-    {
-      "b": "linux",
       "s": "smartmontools"
-    },
-    {
-      "b": "linux",
-      "s": "smbpasswd"
-    },
-    {
-      "b": "linux",
-      "s": "source"
-    },
-    {
-      "b": "linux",
-      "s": "ssh-add"
-    },
-    {
-      "b": "linux",
-      "s": "ssh-agent"
-    },
-    {
-      "b": "linux",
-      "s": "ssh-copy-id"
-    },
-    {
-      "b": "linux",
-      "s": "ssh-keygen"
-    },
-    {
-      "b": "linux",
-      "s": "ssh-keyscan"
-    },
-    {
-      "b": "linux",
-      "s": "stty"
-    },
-    {
-      "b": "linux",
-      "s": "suspend"
     },
     {
       "b": "linux",
@@ -833,39 +341,11 @@
     },
     {
       "b": "linux",
-      "s": "test"
-    },
-    {
-      "b": "linux",
       "s": "time"
     },
     {
       "b": "linux",
-      "s": "times"
-    },
-    {
-      "b": "linux",
       "s": "tload"
-    },
-    {
-      "b": "linux",
-      "s": "tput"
-    },
-    {
-      "b": "linux",
-      "s": "trap"
-    },
-    {
-      "b": "linux",
-      "s": "true"
-    },
-    {
-      "b": "linux",
-      "s": "tty"
-    },
-    {
-      "b": "linux",
-      "s": "type"
     },
     {
       "b": "linux",
@@ -874,18 +354,6 @@
     {
       "b": "linux",
       "s": "umount"
-    },
-    {
-      "b": "linux",
-      "s": "unalias"
-    },
-    {
-      "b": "linux",
-      "s": "unprotoize"
-    },
-    {
-      "b": "linux",
-      "s": "unset"
     },
     {
       "b": "linux",
@@ -929,10 +397,6 @@
     },
     {
       "b": "linux",
-      "s": "vi"
-    },
-    {
-      "b": "linux",
       "s": "volname"
     },
     {
@@ -942,74 +406,6 @@
     {
       "b": "linux",
       "s": "watch"
-    },
-    {
-      "b": "linux",
-      "s": "whereis"
-    },
-    {
-      "b": "linux",
-      "s": "which"
-    },
-    {
-      "b": "linux",
-      "s": "xargs"
-    },
-    {
-      "b": "linux",
-      "s": "xauth"
-    },
-    {
-      "b": "linux",
-      "s": "xclip"
-    },
-    {
-      "b": "linux",
-      "s": "xhost"
-    },
-    {
-      "b": "linux",
-      "s": "xinit"
-    },
-    {
-      "b": "linux",
-      "s": "xlsatoms"
-    },
-    {
-      "b": "linux",
-      "s": "xlsclients"
-    },
-    {
-      "b": "linux",
-      "s": "xlsfonts"
-    },
-    {
-      "b": "linux",
-      "s": "xrandr"
-    },
-    {
-      "b": "linux",
-      "s": "xset"
-    },
-    {
-      "b": "linux",
-      "s": "yes"
-    },
-    {
-      "b": "linux",
-      "s": "yum"
-    },
-    {
-      "b": "k8s",
-      "s": "docker"
-    },
-    {
-      "b": "k8s",
-      "s": "helm"
-    },
-    {
-      "b": "k8s",
-      "s": "kubectl"
     }
   ],
   "rewritten_pages": [
@@ -2492,6 +1888,610 @@
     {
       "b": "linux",
       "s": "rsh"
+    },
+    {
+      "b": "k8s",
+      "s": "docker"
+    },
+    {
+      "b": "k8s",
+      "s": "helm"
+    },
+    {
+      "b": "k8s",
+      "s": "kubectl"
+    },
+    {
+      "b": "linux",
+      "s": "xauth"
+    },
+    {
+      "b": "linux",
+      "s": "xclip"
+    },
+    {
+      "b": "linux",
+      "s": "xhost"
+    },
+    {
+      "b": "linux",
+      "s": "xinit"
+    },
+    {
+      "b": "linux",
+      "s": "xlsatoms"
+    },
+    {
+      "b": "linux",
+      "s": "xlsclients"
+    },
+    {
+      "b": "linux",
+      "s": "xlsfonts"
+    },
+    {
+      "b": "linux",
+      "s": "xrandr"
+    },
+    {
+      "b": "linux",
+      "s": "xset"
+    },
+    {
+      "b": "linux",
+      "s": "as"
+    },
+    {
+      "b": "linux",
+      "s": "ed"
+    },
+    {
+      "b": "linux",
+      "s": "emacs"
+    },
+    {
+      "b": "linux",
+      "s": "ex"
+    },
+    {
+      "b": "linux",
+      "s": "gcc"
+    },
+    {
+      "b": "linux",
+      "s": "gcov"
+    },
+    {
+      "b": "linux",
+      "s": "gdb"
+    },
+    {
+      "b": "linux",
+      "s": "jed"
+    },
+    {
+      "b": "linux",
+      "s": "joe"
+    },
+    {
+      "b": "linux",
+      "s": "ld"
+    },
+    {
+      "b": "linux",
+      "s": "ldd"
+    },
+    {
+      "b": "linux",
+      "s": "rpmsign"
+    },
+    {
+      "b": "linux",
+      "s": "rpmverify"
+    },
+    {
+      "b": "linux",
+      "s": "yum"
+    },
+    {
+      "b": "linux",
+      "s": "beep"
+    },
+    {
+      "b": "linux",
+      "s": "cal"
+    },
+    {
+      "b": "linux",
+      "s": "figlet"
+    },
+    {
+      "b": "linux",
+      "s": "pv"
+    },
+    {
+      "b": "linux",
+      "s": "resize"
+    },
+    {
+      "b": "linux",
+      "s": "make"
+    },
+    {
+      "b": "linux",
+      "s": "nm"
+    },
+    {
+      "b": "linux",
+      "s": "objdump"
+    },
+    {
+      "b": "linux",
+      "s": "perl"
+    },
+    {
+      "b": "linux",
+      "s": "php"
+    },
+    {
+      "b": "linux",
+      "s": "pico"
+    },
+    {
+      "b": "linux",
+      "s": "protoize"
+    },
+    {
+      "b": "linux",
+      "s": "readelf"
+    },
+    {
+      "b": "linux",
+      "s": "unprotoize"
+    },
+    {
+      "b": "linux",
+      "s": "vi"
+    },
+    {
+      "b": "linux",
+      "s": "alias"
+    },
+    {
+      "b": "linux",
+      "s": "bc"
+    },
+    {
+      "b": "linux",
+      "s": "bind"
+    },
+    {
+      "b": "linux",
+      "s": "break"
+    },
+    {
+      "b": "linux",
+      "s": "builtin"
+    },
+    {
+      "b": "linux",
+      "s": "bye"
+    },
+    {
+      "b": "linux",
+      "s": "clear"
+    },
+    {
+      "b": "linux",
+      "s": "command"
+    },
+    {
+      "b": "linux",
+      "s": "consoletype"
+    },
+    {
+      "b": "linux",
+      "s": "continue"
+    },
+    {
+      "b": "linux",
+      "s": "popd"
+    },
+    {
+      "b": "linux",
+      "s": "printf"
+    },
+    {
+      "b": "linux",
+      "s": "pushd"
+    },
+    {
+      "b": "linux",
+      "s": "read"
+    },
+    {
+      "b": "linux",
+      "s": "readonly"
+    },
+    {
+      "b": "linux",
+      "s": "return"
+    },
+    {
+      "b": "linux",
+      "s": "script"
+    },
+    {
+      "b": "linux",
+      "s": "scriptreplay"
+    },
+    {
+      "b": "linux",
+      "s": "seq"
+    },
+    {
+      "b": "linux",
+      "s": "set"
+    },
+    {
+      "b": "linux",
+      "s": "sh"
+    },
+    {
+      "b": "linux",
+      "s": "shift"
+    },
+    {
+      "b": "linux",
+      "s": "shopt"
+    },
+    {
+      "b": "linux",
+      "s": "sleep"
+    },
+    {
+      "b": "linux",
+      "s": "source"
+    },
+    {
+      "b": "linux",
+      "s": "stty"
+    },
+    {
+      "b": "linux",
+      "s": "suspend"
+    },
+    {
+      "b": "linux",
+      "s": "test"
+    },
+    {
+      "b": "linux",
+      "s": "times"
+    },
+    {
+      "b": "linux",
+      "s": "tput"
+    },
+    {
+      "b": "linux",
+      "s": "dc"
+    },
+    {
+      "b": "linux",
+      "s": "declare"
+    },
+    {
+      "b": "linux",
+      "s": "dircolors"
+    },
+    {
+      "b": "linux",
+      "s": "dirs"
+    },
+    {
+      "b": "linux",
+      "s": "dris"
+    },
+    {
+      "b": "linux",
+      "s": "echo"
+    },
+    {
+      "b": "linux",
+      "s": "enable"
+    },
+    {
+      "b": "linux",
+      "s": "env"
+    },
+    {
+      "b": "linux",
+      "s": "exec"
+    },
+    {
+      "b": "linux",
+      "s": "exit"
+    },
+    {
+      "b": "linux",
+      "s": "export"
+    },
+    {
+      "b": "linux",
+      "s": "expr"
+    },
+    {
+      "b": "linux",
+      "s": "false"
+    },
+    {
+      "b": "linux",
+      "s": "fc"
+    },
+    {
+      "b": "linux",
+      "s": "fishshell"
+    },
+    {
+      "b": "linux",
+      "s": "help"
+    },
+    {
+      "b": "linux",
+      "s": "history"
+    },
+    {
+      "b": "linux",
+      "s": "let"
+    },
+    {
+      "b": "linux",
+      "s": "local"
+    },
+    {
+      "b": "linux",
+      "s": "mapfile"
+    },
+    {
+      "b": "linux",
+      "s": "restorecon"
+    },
+    {
+      "b": "linux",
+      "s": "seinfo"
+    },
+    {
+      "b": "linux",
+      "s": "semanage"
+    },
+    {
+      "b": "linux",
+      "s": "sesearch"
+    },
+    {
+      "b": "linux",
+      "s": "setsebool"
+    },
+    {
+      "b": "linux",
+      "s": "smbpasswd"
+    },
+    {
+      "b": "linux",
+      "s": "ssh-add"
+    },
+    {
+      "b": "linux",
+      "s": "ssh-agent"
+    },
+    {
+      "b": "linux",
+      "s": "ssh-copy-id"
+    },
+    {
+      "b": "linux",
+      "s": "ssh-keygen"
+    },
+    {
+      "b": "linux",
+      "s": "ssh-keyscan"
+    },
+    {
+      "b": "linux",
+      "s": "mysql"
+    },
+    {
+      "b": "linux",
+      "s": "mysqladmin"
+    },
+    {
+      "b": "linux",
+      "s": "mysqldump"
+    },
+    {
+      "b": "linux",
+      "s": "mysqlimport"
+    },
+    {
+      "b": "linux",
+      "s": "mysqlshow"
+    },
+    {
+      "b": "linux",
+      "s": "apk"
+    },
+    {
+      "b": "linux",
+      "s": "apt-get"
+    },
+    {
+      "b": "linux",
+      "s": "apt-key"
+    },
+    {
+      "b": "linux",
+      "s": "apt-sortpkgs"
+    },
+    {
+      "b": "linux",
+      "s": "aptitude"
+    },
+    {
+      "b": "linux",
+      "s": "createrepo"
+    },
+    {
+      "b": "linux",
+      "s": "dnf"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-deb"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-divert"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-preconfigure"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-query"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-reconfigure"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-split"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-statoverride"
+    },
+    {
+      "b": "linux",
+      "s": "dpkg-trigger"
+    },
+    {
+      "b": "linux",
+      "s": "pacman"
+    },
+    {
+      "b": "linux",
+      "s": "pip"
+    },
+    {
+      "b": "linux",
+      "s": "reposync"
+    },
+    {
+      "b": "linux",
+      "s": "rpm"
+    },
+    {
+      "b": "linux",
+      "s": "rpm2cpio"
+    },
+    {
+      "b": "linux",
+      "s": "rpmbuild"
+    },
+    {
+      "b": "linux",
+      "s": "rpmdb"
+    },
+    {
+      "b": "linux",
+      "s": "rpmquery"
+    },
+    {
+      "b": "linux",
+      "s": "trap"
+    },
+    {
+      "b": "linux",
+      "s": "true"
+    },
+    {
+      "b": "linux",
+      "s": "tty"
+    },
+    {
+      "b": "linux",
+      "s": "type"
+    },
+    {
+      "b": "linux",
+      "s": "unalias"
+    },
+    {
+      "b": "linux",
+      "s": "unset"
+    },
+    {
+      "b": "linux",
+      "s": "whereis"
+    },
+    {
+      "b": "linux",
+      "s": "which"
+    },
+    {
+      "b": "linux",
+      "s": "xargs"
+    },
+    {
+      "b": "linux",
+      "s": "yes"
+    },
+    {
+      "b": "linux",
+      "s": "chcon"
+    },
+    {
+      "b": "linux",
+      "s": "chroot"
+    },
+    {
+      "b": "linux",
+      "s": "getcap"
+    },
+    {
+      "b": "linux",
+      "s": "getenforce"
+    },
+    {
+      "b": "linux",
+      "s": "getsebool"
+    },
+    {
+      "b": "linux",
+      "s": "gpg"
+    },
+    {
+      "b": "linux",
+      "s": "htdigest"
+    },
+    {
+      "b": "linux",
+      "s": "htpasswd"
+    },
+    {
+      "b": "linux",
+      "s": "mkcert"
+    },
+    {
+      "b": "linux",
+      "s": "openssl"
     }
   ],
   "last_updated": "2026-10-18"
