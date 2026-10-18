@@ -38,7 +38,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染八分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
+`template/index.ejs` 渲染八分支入口,采用蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
 
 首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为八个并列入口;页脚保留“全部条目”“故障诊断向导”“每日复习”、收藏提示、备案号与署名。
 
@@ -147,10 +147,6 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 `id` 必须与目录名一致。`"default": true` 只能有一个。
 
-### 旧 `/c/<slug>.html` 已弃用
-
-旧站路径 `/c/<slug>.html` 已永久弃用，不再生成 301、跳转页或兼容配置；访问旧 URL 返回 404 是预期行为。页面迁移只影响当前分支内的新 URL。
-
 ## 校验与发布
 
 ```bash
@@ -164,9 +160,6 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 `zip` 并排除 `__MACOSX`/`.DS_Store`(Linux/Windows 解包不会多出一堆 `._*`),
 完成后还会自检条目数与解压体积。`public/` 与 `public.zip` 均为本地暂存产物,
 每次发布重新生成。
-
-> 保真度校验(`fidelity.mjs`)已在迁移完成后退役:它的比对基线是旧站产物 `public/c/*.html`,
-> 该目录已于 2026-10-01 随新站上线清理。历史实现见 commit `96d0bfa`。
 
 ## SEO 产物
 
@@ -435,16 +428,19 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 > 各页面的 `### 注意` 小节记录的是**经核实的真实坑点**与常见误传的纠正,而非泛泛的最佳实践。
 
-## 内容来源与许可
+## 内容与许可
 
-当前 [LICENSE](LICENSE) 只包含本站自有内容的 MIT 许可(Copyright © 2026 dos2un1x)。
+本站内容（除另有标注外）采用 [LICENSE](LICENSE) 的 MIT 许可，Copyright © 2026 dos2un1x。
 
-本站早期以 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)的 621 个命令页作为历史基线:618 个 Linux 页,以及 `docker`、`helm`、`kubectl` 3 个 K8s 页。这 621 页已于 2026-10-18 全部按 clean-room 规则独立重写,当前仓库树不再包含上游内容;重写页与上游固定 commit 的 16 字中文 / 8 词英文连续片段检查为 0 命中。旧 Git 提交仍包含上游内容,继续按原 MIT 授权,不影响当前树的自有许可。
+全站 1719 页，按 8 个分支、71 个分类组织：
 
-历史基线、固定 commit、621 页清单与授权边界见 [PROVENANCE.md](PROVENANCE.md),机器可读记录见 [provenance.json](provenance.json),重写规则与批次见 [UPSTREAM-REWRITE-PLAN.md](UPSTREAM-REWRITE-PLAN.md)。**分发本仓库或其内容时,请保留 LICENSE 与 PROVENANCE.md。**
+- Linux：862 页
+- Kubernetes：274 页
+- DevOps：97 页
+- 排障：134 页
+- 指南：120 页
+- 中间件：71 页
+- 教程：77 页
+- AI 与 MLOps：84 页
 
-当前全站 1719 页 = 621 个重写页 + 1098 个新增页:Linux 244 页(现代/冷门工具、数据库客户端、语言运行时、Git 进阶、数据库服务端运维、存储/网络/终端、主机安全、LUKS/DRBD/GlusterFS、Doris/StarRocks/Druid/Pinot、OpenSCAP/SSSD/PAM、性能与 eBPF 工具),Kubernetes 271 页,DevOps 97 页,排障 134 页,指南 120 页,中间件 71 页,教程 77 页,AI 与 MLOps 84 页。其中 P8 新增 117 页:AI 30 页、教程 20 页、排障 22 页、指南 20 页、DevOps 15 页、Linux 10 页;P9 试点新增 Kubernetes 学习路径 1 页,并给 20 个高频页补“读完自测”、首页补“我想…”场景入口;P10 新增 26 个内容页(7 条学习路径与总入口、7 个心智模型、12 个故障演练)、`/review.html` 复习页,并给 40 个高频页补自测;P11 新增 60 页(AI 20、SRE 与平台工程 15、运行时与数据排障 15、Linux 性能与 eBPF 10);P12 新增 43 页(可观测性/数据库/网络三条路径与心智模型、1 条演练路径、10 个进阶演练、8 个 Java 中间件页、10 个 AI 评估与 Agent 页、8 个速查表),给 99 个高频页补自测,新增 `/diagnose.html`,并升级复习页的分支筛选、错题优先、掌握进度与每日一题。
-
-其中 `gcc.md` 修正了早期基线中的一处缺陷:原标题误写为 `pullgcc`,导致产物名为 `pullgcc.html` 而链接指向 `gcc.html`,产生 404。现标题与文件名统一为 `gcc`。
-
-`kubectl`、`helm`、`docker` 三个页面位于 k8s 分支(它们同属两边,放在 k8s 更符合浏览直觉)。旧 `/c/<slug>.html` 路径已永久弃用,不再维护跳转;页面迁移只影响当前分支内的新 URL。
+引用第三方工具或文档时，页面内保留官方来源链接；正文、示例取舍与排错说明由本站组织。分发或复用内容时请保留 LICENSE。

@@ -1,14 +1,12 @@
 /**
  * 命令站搜索逻辑(多分支版)
  *
- * 与上游的差异:
- *  1. 不再用 origin + pathname 反算站点根。上游正则写死 "/c/",无法泛化到分支路径;
- *     而任何泛化版本都会遇到同一歧义 —— "/base/list.html" 中的 "base" 是部署基路径
- *     还是分支名,从 URL 无从判断。改为由构建期注入相对前缀(#root_prefix),
- *     既准确又天然支持子路径部署。
- *  2. 链接由 `${root}/c${p}.html` 改为 `${prefix}${p}.html` —— p 已是完整路径(/linux/helm)。
- *  3. 结果追加分支徽标(显示名查 branches,而非直接显示 id)。
- *  4. 查询串与结果文本做正则转义与 HTML 转义(见下方 escapeRegExp / escapeHtml)。
+ * 站点根前缀由构建期注入(#root_prefix),不从 origin/pathname 反推:
+ * 在 "/base/list.html" 里,"base" 是部署基路径还是分支名,仅凭 URL 无法判断;
+ * 构建期知道答案,直接注入前缀,同时也支持子路径部署。
+ * 链接由 `${prefix}${p}.html` 生成,p 已是完整路径(/linux/helm)。
+ * 结果追加分支徽标(显示名查 branches,而非直接显示 id)。
+ * 查询串与结果文本做正则转义与 HTML 转义(见下方 escapeRegExp / escapeHtml)。
  */
 var sortArray = function (a, b) {
   return a.nIdx - b.nIdx;
@@ -18,7 +16,7 @@ function indexOfCatch(i) {
   return i > -1;
 }
 
-// 转义正则元字符。上游直接把用户输入拼进 RegExp,输入 "(" 或 "[" 会抛
+// 转义正则元字符。用户输入会拼进 RegExp,输入 "(" 或 "[" 会抛
 // SyntaxError 并让整个搜索失效。
 function escapeRegExp(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -60,9 +58,8 @@ new (class {
 
     // 站内链接一律用构建期注入的相对前缀('' 或 '../'),不做任何路径推断。
     //
-    // 上游用 origin + pathname 反算站点根,其正则写死了 "/c/",无法泛化到分支路径;
-    // 而任何泛化版本都会遇到同一个歧义:在 "/base/list.html" 里,"base" 究竟是
-    // 部署基路径还是分支名,从 URL 本身无从判断。构建期知道答案,直接注入即可,
+    // 不用 origin + pathname 反推站点根:在 "/base/list.html" 里,"base" 究竟是
+    // 部署基路径还是分支名,从 URL 本身无从判断。构建期知道答案,直接注入前缀,
     // 同时也天然支持子路径部署(GitHub Pages 等)。
     const prefixEl = $('root_prefix');
     this.root_prefix = prefixEl ? prefixEl.value : '';

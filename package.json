@@ -1,6 +1,6 @@
 {
   "name": "command-hub",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "description": "多分支命令速查站(Linux / Kubernetes / ...)",
   "type": "module",
@@ -10,7 +10,6 @@
     "validate": "node scripts/validate.mjs",
     "check-links": "node scripts/check-links.mjs",
     "category-map": "node scripts/render-category-map.mjs",
-    "provenance": "node scripts/provenance.mjs",
     "baidu:push": "node scripts/baidu-push.mjs",
     "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",
     "package": "npm run verify && node scripts/package.mjs",

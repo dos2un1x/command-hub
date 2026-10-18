@@ -19,7 +19,7 @@ const OUT_DIR = path.join(ROOT, 'build');
 const V = Date.now();
 const esc = (s) => ejs.escapeXML(String(s == null ? '' : s));
 
-/** 上游 sanitizeCommandName:剥离 BOM 与零宽字符 */
+/** 清理命令名：剥离 BOM 与零宽字符 */
 function sanitizeCommandName(value) {
   return String(value || '')
     .replace(/^﻿/, '')

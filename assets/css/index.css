@@ -316,3 +316,86 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 @media (prefers-reduced-motion:reduce){
   .home-branch-card a{transition:none}
 }
+
+/* ===== 内页顶栏：搜索框优先 =====
+   旧布局把 logo、8 个分支标签和搜索框挤在同一行，而 header_inner 最宽只有
+   920px、分支标签固定占 650px，宽屏下输入框实测只剩 26px。现在固定为两行：
+   第一行 logo + 搜索框 + GitHub，第二行分支标签；窄屏标签横向滚动，不换行。
+   顶栏同时由 fixed 改为 sticky，占据文档流高度，移动端内容不会被顶栏遮挡。 */
+.header.header_list{
+  position:sticky;
+  top:0;
+  width:100%;
+}
+.header_list .header_inner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  row-gap:8px;
+}
+.header_list .logo{flex:0 0 auto;padding-right:24px}
+.header_list .header_inner .search{
+  flex:1 1 320px;
+  min-width:240px;
+  display:flex;
+  align-items:center;
+}
+.header_list .search .query{
+  display:block;
+  flex:1 1 auto;
+  width:auto;
+  min-width:0;
+  height:40px;
+  padding:0 14px;
+  font-size:14px;
+  font-weight:500;
+  border:1px solid var(--color-header-border);
+  border-radius:12px 0 0 12px;
+  background:rgba(127,127,127,.055);
+}
+.header_list .search .query:focus{
+  border-color:#2196f3;
+  box-shadow:0 0 0 3px rgba(33,150,243,.16);
+}
+.header_list .search .enter-input{display:flex;flex:0 0 auto}
+.header_list .search .enter-input button{
+  left:0;
+  height:40px;
+  padding:0 20px;
+  font-size:14px;
+  font-weight:600;
+  color:#fff;
+  border:1px solid transparent;
+  border-radius:0 12px 12px 0;
+  background:linear-gradient(135deg,#2196f3,#6366f1);
+}
+.header_list .search .enter-input button:hover{
+  color:#fff;
+  border-color:transparent;
+  background:linear-gradient(135deg,#1d86e0,#5457e5);
+}
+.header_list .search .search-list{top:44px;border-radius:12px;overflow:hidden}
+.header_list .branches{
+  order:3;
+  display:flex;
+  flex:0 0 100%;
+  width:100%;
+  margin:0;
+  flex-wrap:nowrap;
+  justify-content:flex-start;
+  gap:6px;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.header_list .branches::-webkit-scrollbar{display:none}
+.header_list .branch-tab{flex:0 0 auto}
+.header_list .github-link{margin-left:12px}
+/* sticky 顶栏已占位，内页只需保留正常的内容上边距。 */
+.hotlist,.search_list,.markdown-body{padding-top:28px}
+@media screen and (max-width:560px){
+  .header_list .header_inner .search{flex:1 1 100%;min-width:0;margin-top:4px}
+  .header_list .logo{padding-right:0}
+  .hotlist,.search_list,.markdown-body{padding-top:24px}
+}
