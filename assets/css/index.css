@@ -252,8 +252,18 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 [data-color-mode*='dark'] .home-branch-desc{color:#aaa}
 .home-branch-meta{margin-top:auto;padding-top:8px;font-size:11px;color:#999}
 .home-branches .home-section-head{margin-bottom:12px}
+/* 第 7 个分支(教程)在 3 列网格最后一行单独出现,改为横向通栏,避免留白 */
+.home-branch-card:last-child:nth-child(3n+1){grid-column:span 3}
+.home-branch-card:last-child:nth-child(3n+1) a{flex-direction:row;align-items:baseline;gap:16px;flex-wrap:wrap}
+.home-branch-card:last-child:nth-child(3n+1) .home-branch-name{margin:0}
+.home-branch-card:last-child:nth-child(3n+1) .home-branch-desc{flex:1;min-width:200px;margin:0}
+.home-branch-card:last-child:nth-child(3n+1) .home-branch-meta{margin:0;padding:0}
 @media screen and (max-width:840px){
   .home-branch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-branch-card:last-child:nth-child(3n+1){grid-column:auto}
+  .home-branch-card:last-child:nth-child(3n+1) a{flex-direction:column;align-items:stretch;gap:5px}
+  .home-branch-card:last-child:nth-child(3n+1) .home-branch-desc{flex:none;min-width:0}
+  .home-branch-card:last-child:nth-child(3n+1) .home-branch-meta{margin-top:auto;padding-top:8px}
 }
 @media screen and (max-width:479px){
   .home-branch-grid{grid-template-columns:1fr}

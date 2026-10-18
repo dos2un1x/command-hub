@@ -2,8 +2,8 @@
   "site": {
     "name": "dos2unix 速查站",
     "baseUrl": "https://www.dos2unix.cn",
-    "slogan": "命令、排障与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件与工具选型。",
-    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,CI/CD,工具对比",
+    "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件、工具选型与迁移搭建。",
+    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,CI/CD,工具对比,教程,迁移,搭建",
     "sloganLegacy": "最专业的 Linux、Kubernetes 与 DevOps 速查手册，包含命令、排障、工具对比与中间件实践。",
     "repo": "https://github.com/dos2un1x/command-hub",
     "author": "dos2un1x"

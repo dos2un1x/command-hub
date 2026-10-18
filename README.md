@@ -1,6 +1,6 @@
 # 命令速查站(多分支)
 
-Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 多分支速查站。支持多分支切换,新增分支不需要改代码。
+Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 多分支速查站。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
@@ -36,9 +36,9 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染六分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、六个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入。
+`template/index.ejs` 渲染七分支入口,沿用上一版的蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、七个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入。
 
-首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件作为六个并列入口;页脚只保留“全部条目”、收藏提示、备案号与署名。
+首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件、教程作为七个并列入口;页脚只保留“全部条目”、收藏提示、备案号与署名。
 
 ## 贪吃蛇小游戏
 
@@ -186,7 +186,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1298 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、分类页与全部命令页(1421 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 - `deploy/nginx/legacy-redirects.conf`:老 `/c/<slug>.html` → 新地址的 301 规则(有 nginx 权限时使用)
@@ -194,23 +194,24 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1302 个 HTML、1241 个命令页、sitemap 1298 条、站内链接 36,316 条(校验零 404)。
+当前构建规模:1425 个 HTML、1361 个命令页、sitemap 1421 条、站内链接 41,148 条(校验零 404)。
 
-## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件)
+## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程)
 
 `command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
-当前有六份:
+当前有七份:
 
-- `command/linux/categories.json`:15 个分类、807 条
+- `command/linux/categories.json`:15 个分类、827 条
 - `command/k8s/categories.json`:12 个分类、254 条
 - `command/devops/categories.json`:9 个分类、67 条
-- `command/troubleshoot/categories.json`:6 个分类、62 条
-- `command/guide/categories.json`:2 个分类、30 条
-- `command/middleware/categories.json`:5 个分类、21 条
+- `command/troubleshoot/categories.json`:6 个分类、97 条
+- `command/guide/categories.json`:2 个分类、60 条
+- `command/middleware/categories.json`:5 个分类、41 条
+- `command/tutorial/categories.json`:2 个分类、15 条
 
 构建时会校验:
 
@@ -251,12 +252,13 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 
 | 分支 | 页面 | 说明 |
 |---|---|---|
-| Linux | 807 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,以及存储(btrfs/zfs/mdadm/NFS/iSCSI)、网络(WireGuard/IPsec/FRR/VXLAN/OVS)、终端效率和主机安全工具 |
+| Linux | 827 | 上游命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,以及 CMake/Ninja/Valgrind/DuckDB/Trino 等开发与数据工具 |
 | Kubernetes | 254 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版等 |
 | DevOps | 67 | GitHub Actions、GitLab CI、Jenkins、发布自动化、AWS/GCP/Azure/阿里云/腾讯云/华为云/火山引擎 CLI、Terraform/OpenTofu/Pulumi/Ansible、容器、安全供应链与可观测性工具 |
-| 排障 | 62 | 按报错/现象组织:系统、磁盘、网络、权限证书、Nginx、MySQL/PostgreSQL、Redis/Kafka、K8s 控制面与中间件连接问题 |
-| 指南 | 30 | 16 个工具对比 + 14 个速查表,覆盖 Nginx/HAProxy、ext4/XFS、Btrfs/ZFS、PostgreSQL/MySQL、Kafka/Pulsar、Argo CD/Flux、Terraform/Ansible 等 |
-| 中间件 | 21 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PgBouncer/ProxySQL/MySQL Router |
+| 排障 | 97 | 按报错/现象组织:系统、磁盘、网络、权限证书、Nginx、MySQL/PostgreSQL、Redis/Kafka、K8s 控制面与中间件连接问题 |
+| 指南 | 60 | 31 个工具对比 + 29 个速查表,覆盖 Nginx/HAProxy、ext4/XFS、Btrfs/ZFS、PostgreSQL/MySQL、Kafka/Pulsar/RabbitMQ、Argo CD/Flux、Terraform/Ansible,以及 awk/sed/find/jq/PromQL/LogQL 等 |
+| 中间件 | 41 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PgBouncer/ProxySQL/MySQL Router,以及 Kafka Connect/Debezium/Patroni/Redis Cluster 等 |
+| 教程 | 15 | 迁移与升级(Docker→containerd、iptables→nftables、MySQL/PostgreSQL 升级、ELK→Loki 等)与搭建实战(Kubernetes/Kafka/PostgreSQL HA/Redis Cluster/可观测性/CI/CD) |
 
 Kubernetes 分支按方向划分:
 
@@ -311,18 +313,24 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  postgres-connection-failed kafka-consumer-lag
 ```
 
-指南分支分两类:
+指南分支分两类(共 31 个工具对比 + 29 个速查表):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
            systemd-vs-sysvinit cgroup-v1-vs-v2 nginx-vs-caddy haproxy-vs-nginx
            ext4-vs-xfs btrfs-vs-zfs psql-vs-mysql kafka-vs-pulsar nats-vs-kafka
            argocd-vs-flux ansible-vs-terraform prometheus-vs-victoriametrics
+           kafka-vs-rabbitmq redis-vs-memcached mysql-vs-mariadb envoy-vs-nginx
+           traefik-vs-nginx terraform-vs-cloudformation 等
 速查表     linux-permission-cheatsheet k8s-troubleshooting-cheatsheet
            git-cheatsheet network-troubleshooting-cheatsheet bash-cheatsheet
            kubectl-cheatsheet docker-cheatsheet terraform-cheatsheet
            ansible-cheatsheet ssh-cheatsheet tcpdump-cheatsheet
            systemd-cheatsheet vim-cheatsheet tmux-cheatsheet
+           awk-cheatsheet sed-cheatsheet find-cheatsheet grep-cheatsheet
+           jq-cheatsheet yq-cheatsheet openssl-cheatsheet curl-cheatsheet
+           promql-cheatsheet logql-cheatsheet nginx-cheatsheet redis-cheatsheet
+           mysql-cheatsheet postgres-cheatsheet kafka-cheatsheet
 ```
 
 中间件分支按服务划分:
@@ -330,9 +338,27 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
 ```
 日志与搜索     elasticsearch opensearch logstash kibana filebeat vector
 消息与协调     kafka-broker zookeeper schema-registry ksql rabbitmq
+               kafka-connect mirrormaker debezium redpanda
 网关与接入     nginx haproxy keepalived keycloak oauth2-proxy
+               varnish openresty
 制品与仓库     nexus jfrog
 数据与连接池   pgbouncer proxysql mysql-router
+高可用与备份   patroni orchestrator redis-cluster mongodb-replica-set mysql-shell
+               elasticsearch-cluster clickhouse-keeper tempo opensearch-dashboards
+               pgbackrest wal-g percona-xtrabackup
+缓存与云托管   memcached mongodb-atlas
+```
+
+教程分支分两类:
+
+```
+迁移与升级   migrate-docker-to-containerd migrate-iptables-to-nftables
+             migrate-cgroup-v1-to-v2 migrate-mysql57-to-mysql8
+             migrate-postgresql-major-version migrate-nginx-to-caddy
+             migrate-helm-to-kustomize migrate-jenkins-to-github-actions
+             migrate-elk-to-loki
+搭建与实战   build-k8s-cluster build-kafka-cluster build-postgresql-ha
+             build-redis-cluster build-observability-stack build-cicd-pipeline
 ```
 
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
@@ -341,7 +367,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
 
 ## 内容来源与许可
 
-上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 322 个页面(Linux 现为 807 页,含 72 个现代/冷门工具、21 个数据库客户端、39 个语言运行时工具、12 个 Git 进阶页、15 个数据库服务端运维页、22 个存储/网络/终端工具和 8 个主机安全工具),补写了 Linux 长尾页的“易错点与排错”,撰写了 Kubernetes 分支其余 251 页内容,新增 DevOps 分支 67 页(CI/CD、云 CLI、IaC、容器、安全与可观测性)、排障分支 62 页(按报错与故障现象组织)、指南分支 30 页(16 个工具对比 + 14 个速查表)以及中间件分支 21 页(日志、消息、网关、制品与连接池)。
+上游 [jaywcjlove/linux-command](https://github.com/jaywcjlove/linux-command)(MIT)共有 621 个命令页:其中 618 页留在 `command/linux/`,`kubectl`、`helm`、`docker` 三页已迁至 `command/k8s/`。本仓库在此基础上新增了 442 个页面(Linux 现为 827 页,含 72 个现代/冷门工具、21 个数据库客户端、39 个语言运行时工具、12 个 Git 进阶页、15 个数据库服务端运维页、22 个存储/网络/终端工具、8 个主机安全工具和 20 个构建/调试/数据工具),补写了 Linux 长尾页的“易错点与排错”,撰写了 Kubernetes 分支其余 251 页内容,新增 DevOps 分支 67 页(CI/CD、云 CLI、IaC、容器、安全与可观测性)、排障分支 97 页(按报错与故障现象组织)、指南分支 60 页(31 个工具对比 + 29 个速查表)、中间件分支 41 页(日志、消息、网关、高可用与备份)以及教程分支 15 页(迁移与搭建专题)。
 
 上游的版权声明与许可正文已完整复刻在 [LICENSE](LICENSE) 中 —— 该文件同时给出本站自有部分的许可,并逐条写明各自覆盖哪些路径。**分发本仓库或其内容时,不得移除 LICENSE。**
 

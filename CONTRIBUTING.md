@@ -72,6 +72,10 @@
 - **对比页**:`## 结论先行` → `## 核心差异`(表格)→ `## 怎么选` → `## 注意` → 可选 `## 相关命令`。结论要明确,差异要能指导选择,不写中立无用的“各有优劣”。
 - **速查表**:`## 常用命令` / `## 场景速查`(或 `## 分层排查`)→ `## 易错点` → 可选 `## 相关命令`。命令按使用场景分组,每页控制在 40–60 行。
 
+### 教程分支的写法
+
+教程页按“适用场景 → 前置条件 → 步骤 → 验证 → 回滚 → 常见坑 → 相关命令”组织,每页 60–100 行。步骤要可执行,验证和回滚必须写清楚;不要只贴命令而不说明前置条件和影响范围。
+
 ### 其他约定
 
 | 项 | 约定 |
@@ -129,16 +133,17 @@
 
 同名跨分支时(如 `pv`、`service`),老 URL 指向**默认分支**的那个。
 
-## 新增页面必须归类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件)
+## 新增页面必须归类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程)
 
-六个分支都已接入二级分类,页面必须在对应文件里归类:
+七个分支都已接入二级分类,页面必须在对应文件里归类:
 
-- `command/linux/categories.json`:15 个分类、807 条
+- `command/linux/categories.json`:15 个分类、827 条
 - `command/k8s/categories.json`:12 个分类、254 条
 - `command/devops/categories.json`:9 个分类、67 条
-- `command/troubleshoot/categories.json`:6 个分类、62 条
-- `command/guide/categories.json`:2 个分类、30 条
-- `command/middleware/categories.json`:5 个分类、21 条
+- `command/troubleshoot/categories.json`:6 个分类、97 条
+- `command/guide/categories.json`:2 个分类、60 条
+- `command/middleware/categories.json`:5 个分类、41 条
+- `command/tutorial/categories.json`:2 个分类、15 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。

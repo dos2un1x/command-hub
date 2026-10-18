@@ -283,6 +283,8 @@ const HOT_COMMAND_NAMES = [
   'nginx', 'psql', 'redis-cli', 'kafka-topics',
   'oom-killed', 'no-space-left', 'permission-denied', 'crashloopbackoff',
   'connection-refused', 'kubectl-cheatsheet',
+  'build-k8s-cluster', 'migrate-docker-to-containerd',
+  'build-postgresql-ha', 'migrate-iptables-to-nftables',
 ];
 const seenHot = new Set();
 const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
@@ -395,6 +397,11 @@ const BRANCH_SEO = {
     intro: (n) =>
       `收录 ${n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库与数据库连接池。`,
   },
+  tutorial: {
+    label: '迁移与搭建教程',
+    intro: (n) =>
+      `收录 ${n} 个教程条目，覆盖组件迁移、版本升级，以及 Kubernetes、Kafka、Redis、PostgreSQL 高可用和可观测性搭建。`,
+  },
 };
 const branchSeo = (b) =>
   BRANCH_SEO[b.id] || {
@@ -457,7 +464,7 @@ await write(
     describe: { n: 'dos2unix 速查站', d: site.slogan },
     brand: site.name,
     pageTitle: brandTitle('命令、排障与工程实践速查'),
-    metaDescription: `收录 ${total} 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比与中间件，提供语法、示例与排错思路。`,
+    metaDescription: `收录 ${total} 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比、中间件与迁移搭建教程，提供语法、示例与排错思路。`,
     metaKeywords: site.keywords,
     canonicalUrl: `${baseUrl}/`,
     ogType: 'website',
@@ -498,7 +505,7 @@ await write(
     describe: { n: '全部条目', d: `全部 ${total} 个条目，覆盖 ${branchCount} 个分支` },
     brand: site.name,
     pageTitle: brandTitle(`全部条目列表（${total} 个）`),
-    metaDescription: `dos2unix 速查站收录的全部 ${total} 个条目，覆盖命令、排障、工具对比与中间件，按分支和字母排序。`,
+    metaDescription: `dos2unix 速查站收录的全部 ${total} 个条目，覆盖命令、排障、工具对比、中间件与迁移搭建教程，按分支和字母排序。`,
     metaKeywords: '命令列表,排障列表,DevOps工具,中间件,工具对比',
     canonicalUrl: `${baseUrl}/hot.html`,
     ogType: 'website',
