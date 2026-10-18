@@ -50,6 +50,13 @@
       "desc": "日志、消息、网关与接入服务",
       "searchPlaceholder": "搜索中间件命令",
       "default": false
+    },
+    {
+      "id": "tutorial",
+      "name": "教程",
+      "desc": "迁移、搭建与实战步骤",
+      "searchPlaceholder": "搜索教程或迁移方案",
+      "default": false
     }
   ]
 }
