@@ -65,6 +65,7 @@
 - Kubernetes 页面保持完整四段式(`补充说明` / `注意` / `相关命令` / `参考链接`)。
 - DevOps 页面保持工具速查风格:配置片段 + 真实坑点,命令与配置文件都用 ` ```shell ` 围栏。
 - 排障页面按“现象 → 快速定位 → 常见根因 → 修复 → 相关命令”组织,面向**具体报错或故障现象**,而不是介绍某个工具。
+- 中间件页面沿用 DevOps 工具速查风格:服务端启动/配置 + 真实坑点,命令与配置片段都用 ` ```shell ` 围栏。
 
 ### 指南分支的两种写法
 
@@ -128,15 +129,16 @@
 
 同名跨分支时(如 `pv`、`service`),老 URL 指向**默认分支**的那个。
 
-## 新增页面必须归类(Linux / Kubernetes / DevOps / 排障 / 指南)
+## 新增页面必须归类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件)
 
-五个分支都已接入二级分类,页面必须在对应文件里归类:
+六个分支都已接入二级分类,页面必须在对应文件里归类:
 
-- `command/linux/categories.json`:15 个分类、777 条
+- `command/linux/categories.json`:15 个分类、807 条
 - `command/k8s/categories.json`:12 个分类、254 条
-- `command/devops/categories.json`:9 个分类、60 条
-- `command/troubleshoot/categories.json`:6 个分类、40 条
-- `command/guide/categories.json`:2 个分类、10 条
+- `command/devops/categories.json`:9 个分类、67 条
+- `command/troubleshoot/categories.json`:6 个分类、62 条
+- `command/guide/categories.json`:2 个分类、30 条
+- `command/middleware/categories.json`:5 个分类、21 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。
