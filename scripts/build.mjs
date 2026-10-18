@@ -214,7 +214,7 @@ const reviewQuestions = items.flatMap((it) =>
     a: plainText(qa.a),
     n: it.n,
     d: it.d,
-    p: `/${it.b}/${it.n}.html`,
+    p: `${it.b}/${it.n}.html`,
     b: it.b,
   }))
 );
