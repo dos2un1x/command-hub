@@ -36,6 +36,13 @@
       "desc": "常见报错与故障排查",
       "searchPlaceholder": "搜索报错或故障",
       "default": false
+    },
+    {
+      "id": "guide",
+      "name": "指南",
+      "desc": "工具对比与常用速查表",
+      "searchPlaceholder": "搜索对比或速查",
+      "default": false
     }
   ]
 }
