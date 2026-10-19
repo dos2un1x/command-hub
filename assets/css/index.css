@@ -403,3 +403,43 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 @media screen and (min-width:760px){
   .header_list .branches{justify-content:center}
 }
+
+/* 首页移动端分支标签：多行时不再套一层大胶囊，改为 3 列等宽网格。 */
+@media screen and (max-width:760px){
+  .home-page .header.home .branches{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    width:100%;
+    max-width:520px;
+    margin:12px auto 16px;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+  }
+  .home-page .branch-tab{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:6px 8px;
+    border:1px solid var(--color-header-border);
+    border-radius:12px;
+    background:rgba(127,127,127,.045);
+    font-size:12.5px;
+    line-height:1.2;
+    opacity:.78;
+  }
+  .home-page .branch-tab:hover{background:rgba(33,150,243,.08);border-color:rgba(33,150,243,.3);opacity:1}
+  .home-page .branch-tab.is-active{
+    background:linear-gradient(135deg,#2196f3,#6366f1);
+    border-color:transparent;
+    color:#fff;
+    opacity:1;
+    box-shadow:0 6px 16px rgba(33,150,243,.22);
+  }
+}
+@media screen and (max-width:360px){
+  .home-page .branch-tab{font-size:11.5px;padding:6px 4px}
+}
