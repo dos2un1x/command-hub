@@ -381,6 +381,8 @@ const HOT_COMMAND_NAMES = [
   'build-k8s-cluster', 'migrate-docker-to-containerd',
   'build-postgresql-ha', 'migrate-iptables-to-nftables',
   'nvidia-smi', 'ollama', 'vllm', 'huggingface-cli', 'torchrun', 'mlflow',
+  'dir', 'robocopy', 'ipconfig', 'Get-ChildItem', 'wsl', 'launchctl', 'brew',
+  'windows-shortcuts', 'vim-basics',
 ];
 const seenHot = new Set();
 const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
@@ -389,7 +391,7 @@ const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
     seenHot.add(it.n);
     return true;
   })
-  .slice(0, 42);
+  .slice(0, 52);
 
 const byBranch = {};
 for (const b of branches) byBranch[b.id] = [];
@@ -407,6 +409,9 @@ await FS.cp(path.join(ASSETS_DIR, 'img'), path.join(OUT_DIR, 'img'), { recursive
 await FS.cp(path.join(ASSETS_DIR, 'css'), path.join(OUT_DIR, 'css'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'js'), path.join(OUT_DIR, 'js'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'data'), path.join(OUT_DIR, 'data'), { recursive: true });
+// 浏览器标签图标以 images/favicon.ico 为准，复制到产物根目录的 images/。
+await FS.mkdir(path.join(OUT_DIR, 'images'), { recursive: true });
+await FS.copyFile(path.join(ROOT, 'images', 'favicon.ico'), path.join(OUT_DIR, 'images', 'favicon.ico'));
 await FS.rm(path.join(OUT_DIR, 'js', 'github-corners.js'), { force: true });
 await FS.rm(path.join(OUT_DIR, 'css', 'index.legacy.css'), { force: true });
 
@@ -466,7 +471,7 @@ const BRANCH_SEO = {
   guide: {
     label: '学习路径、工具对比与速查表',
     intro: (n) =>
-      `收录 ${n} 个指南条目，包含十条领域学习路径、心智模型、工具对比、选型建议、高频命令速查表和上线检查清单，帮助先建立方向，再在相似方案之间做决定。`,
+      `收录 ${n} 个指南条目，包含十二条领域学习路径、心智模型、工具对比、选型建议、Vim 编辑器、系统与软件快捷键、高频命令速查表和上线检查清单，帮助先建立方向，再在相似方案之间做决定。`,
   },
   middleware: {
     label: '中间件手册',
@@ -482,6 +487,16 @@ const BRANCH_SEO = {
     label: 'AI 与 MLOps 工具手册',
     intro: (n) =>
       `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪、评估、Agent 与安全。`,
+  },
+  windows: {
+    label: 'Windows 命令手册',
+    intro: (n) =>
+      `收录 ${n} 个 Windows 条目，覆盖 CMD、PowerShell、WSL、网络与 Windows Server/AD，提供语法、参数、示例与风险提示。`,
+  },
+  macos: {
+    label: 'macOS 命令手册',
+    intro: (n) =>
+      `收录 ${n} 个 macOS 条目，覆盖 BSD 文件命令、launchctl、系统维护、网络与开发工具，标注与 Linux 的差异。`,
   },
 };
 const branchSeo = (b) =>
@@ -545,7 +560,7 @@ await write(
     describe: { n: 'dos2unix 速查站', d: site.slogan },
     brand: site.name,
     pageTitle: brandTitle('命令、排障与工程实践速查'),
-    metaDescription: `收录 ${total} 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程与 AI/MLOps，提供语法、示例与排错思路。`,
+    metaDescription: `收录 ${total} 个条目，覆盖 Linux、Windows、macOS、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程、AI/MLOps、Vim 与快捷键，提供语法、示例与排错思路。`,
     metaKeywords: site.keywords,
     canonicalUrl: `${baseUrl}/`,
     ogType: 'website',

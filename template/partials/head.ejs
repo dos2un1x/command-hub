@@ -27,7 +27,7 @@ const _ogType = (typeof ogType !== 'undefined' && ogType) ? ogType : 'website';
     <meta property="og:url" content="<%= _canonical %>">
     <meta property="og:site_name" content="<%= site.name %>">
     <meta property="og:locale" content="zh_CN">
-<% } %>    <link rel="shortcut icon" href="<%= relative_path %>img/favicon.ico">
+<% } %>    <link rel="shortcut icon" href="<%= relative_path %>images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="<%= relative_path %>css/index.css?v=<%= v %>">
     <script src="<%= relative_path %>js/dark-mode.min.js"></script><% if (typeof extraCss !== 'undefined' && extraCss) { %><% extraCss.forEach(function (href) { %>
     <link rel="stylesheet" type="text/css" href="<%= href %>"><% }) %><% } %>

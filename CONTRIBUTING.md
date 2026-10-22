@@ -67,6 +67,9 @@
 - 排障页面按“现象 → 快速定位 → 常见根因 → 修复 → 相关命令”组织,面向**具体报错或故障现象**,而不是介绍某个工具。
 - 中间件页面沿用 DevOps 工具速查风格:服务端启动/配置 + 真实坑点,命令与配置片段都用 ` ```shell ` 围栏。
 - AI 与 MLOps 页面沿用工具速查风格:安装/启动/调用 + 显存、并发、版本差异等真实坑点。涉及 GPU 的页面要写明显存估算、可见设备和驱动兼容性;涉及推理服务的页面要写清上下文长度、并发和健康检查。
+- Windows 页面沿用 Linux 紧凑速查风格(40–120 行),CMD 提示符写 `C:\>`,PowerShell 页写 `PS C:\>`;危险命令(`diskpart clean`、`bcdedit`、`reg delete`、`wbadmin`)必须在示例前写影响范围与恢复方式。
+- macOS 页面沿用紧凑速查风格,提示符写 `%`;要标注 BSD 与 GNU 选项差异,以及 Apple Silicon/Intel、macOS 版本差异。危险命令(`csrutil disable`、`diskutil eraseDisk`、`launchctl unload -w`)必须在示例前写影响范围与恢复方式。
+- PowerShell cmdlet 页面使用官方大小写作为文件名与标题(如 `Get-ChildItem.md`);示例默认兼容 Windows PowerShell 5.1,7.x 差异单独标注,不默认展示跳过证书校验或关闭执行策略的参数。
 
 ### 指南分支的四种写法
 
@@ -74,6 +77,10 @@
 - **速查表**:`## 常用命令` / `## 场景速查`(或 `## 分层排查`)→ `## 易错点` → 可选 `## 相关命令`。命令按使用场景分组,每页控制在 40–60 行。
 - **路线图/检查清单**:`## 使用方式` → `## 检查清单`(按阶段或维度分组,用 `- [ ]`)→ `## 常见误区` → `## 相关条目`。每项要可执行、可判断,不要写成泛泛的原则;相关条目指向站内已有页面,形成内链。
 - **学习路径**:`## 使用方式` → 3–4 个阶段(每阶段含目标、阅读顺序、动手任务、过关标准)→ `## 常见误区` → `## 读完自测` → `## 相关条目`。阅读顺序只挑必要页面,用真实站内链接;每阶段必须有可执行的动手任务,不要写成“读完这些页面”的清单。
+- **Windows 系统操作**:`## 适用场景` → `## 前置条件` → `## 操作步骤` → `## 验证` → `## 回滚与风险` → `## 相关命令` → `## 参考链接` → `## 读完自测`。注册表、磁盘、恢复类操作必须写备份与不可逆风险。
+- **PowerShell 概念**:`## 适用场景` → `## 核心概念` → `## 常用操作` → `## 易错点` → `## 相关命令` → `## 参考链接` → `## 读完自测`,并标注 5.1/7.x 差异。
+- **Vim 系列**:基础页讲模式、移动、编辑、保存退出;进阶页讲搜索替换、文本对象、寄存器、宏、分屏与折叠;配置页讲 `.vimrc`、键位、插件管理与 LSP;对比页结论先行。
+- **快捷键**:按场景分组的表格,列统一为“快捷键 | 作用 | 备注”;每页至少 25 组,标注平台差异与容易误按的组合。
 
 ### 教程分支的写法
 
@@ -183,15 +190,17 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 页面可以在分支间迁移，更新 `categories.json` 与站内链接即可。
 
-## 新增页面必须归类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
+## 新增页面必须归类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
-八个分支都已接入二级分类,页面必须在对应文件里归类:
+十个分支都已接入二级分类,页面必须在对应文件里归类:
 
 - `command/linux/categories.json`:16 个分类、862 条
+- `command/windows/categories.json`:6 个分类、89 条
+- `command/macos/categories.json`:5 个分类、58 条
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:10 个分类、97 条
 - `command/troubleshoot/categories.json`:8 个分类、134 条
-- `command/guide/categories.json`:4 个分类、120 条
+- `command/guide/categories.json`:8 个分类、155 条
 - `command/middleware/categories.json`:11 个分类、71 条
 - `command/tutorial/categories.json`:3 个分类、77 条
 - `command/ai/categories.json`:7 个分类、84 条

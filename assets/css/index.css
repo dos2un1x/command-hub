@@ -101,10 +101,10 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 /* 首页分支标签统一为圆角标签：PC 单行，移动端 3 列网格。 */
 .home-page .header.home .branches{
   display:flex;
-  flex-wrap:nowrap;
+  flex-wrap:wrap;
   align-items:center;
   justify-content:center;
-  gap:2px;
+  gap:2px 8px;
   width:100%;
   max-width:100%;
   margin:8px auto 14px;
@@ -118,10 +118,10 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  flex:1 1 0;
+  flex:0 0 auto;
   min-width:0;
   min-height:34px;
-  padding:6px 3px 9px;
+  padding:6px 8px 9px;
   border:0;
   border-radius:0;
   background:transparent;
@@ -129,8 +129,9 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
   font-size:clamp(11px,.95vw,12px);
   line-height:1.2;
   opacity:.66;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
   transition:color .15s,opacity .15s,background .15s;
 }
 .home-page .branch-tab:hover{background:transparent;color:#2196f3;opacity:1}

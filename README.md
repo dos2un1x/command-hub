@@ -1,6 +1,6 @@
 # 命令速查站(多分支)
 
-Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps 多分支速查站。支持多分支切换,新增分支不需要改代码。
+Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps 多分支速查站。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
@@ -38,22 +38,31 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染八分支入口,采用蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、八个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
+`template/index.ejs` 渲染十分支入口,采用蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、十个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
 
-首页不按单一命令站组织,而是把 Linux、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为八个并列入口;页脚保留“全部条目”“故障诊断向导”“每日复习”、收藏提示、备案号与署名。
+首页不按单一命令站组织,而是把 Linux、Windows、macOS、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为十个并列入口;页脚保留“全部条目”“故障诊断向导”“每日复习”、收藏提示、备案号与署名。
 
 ## 学习层
 
 站点在“查”之外提供一条“学”的路径,相关页面集中在指南分支的“学习路径”类目:
 
-- `/guide/learning-paths.html`:总入口,列出 10 条领域路径、10 个心智模型和 22 个故障演练,并给出六周推进建议。
-- 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(8–10 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`;另有可观测性、数据库、网络三条跨域路径。
+- `/guide/learning-paths.html`:总入口,列出 12 条领域路径、12 个心智模型和 22 个故障演练,并给出六周推进建议。
+- 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(通常 7–13 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`;另有可观测性、数据库、网络三条跨域路径。
 - 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`、`observability-mental-model`。
 - 故障演练:教程分支 `lab` 类目的 22 页(12 个基础 + 10 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;`lab-learning-path` 给出四周基础计划和进阶插入方式。
-- 读完自测:289 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 867 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 读完自测:473 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 1419 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
 新增工具或概念页时,建议在页尾补 `## 读完自测`;学习路径、心智模型和故障演练的写法见 CONTRIBUTING。所有内容页的站内链接统一用相对路径(`../k8s/pod.html`),因此 `public/` 可以在站点根、子路径或本地 `file://` 下直接预览。
+
+## Windows、macOS、Vim 与快捷键
+
+- **Windows 分支**:CMD 文件/系统/网络命令、21 个 PowerShell 核心 cmdlet、WSL 与 `wslconfig`,以及 Windows Server/AD 的 `dcdiag`、`repadmin`、`dsquery`、`diskpart`、`wbadmin` 等。系统操作、注册表、防火墙、计划任务、更新、磁盘、恢复、远程桌面和用户账户放在指南分支的「Windows 与 PowerShell」分类。
+- **macOS 分支**:BSD 文件命令、`launchctl`/`pmset`/`softwareupdate`/`tmutil`/`csrutil` 等系统命令、网络工具、Xcode 命令行工具与 Homebrew、`diskutil`/`hdiutil` 磁盘维护;指南分支提供 macOS 学习路径、心智模型与 Linux↔macOS 对照。
+- **Vim 系列**:`vim-basics`、`vim-advanced`、`vim-config-plugins`、`vim-vs-neovim`,并扩写了 `vim-cheatsheet` 与 `linux/vi`。
+- **快捷键**:Windows、macOS、Linux 桌面、终端、浏览器、VS Code、Office 七页,统一按场景表格组织,标注平台差异与容易误按的组合。
+
+所有新页都补了 3 道「读完自测」,并自动进入 `/review.html` 题库。
 
 ## 贪吃蛇小游戏
 
@@ -166,29 +175,31 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(1801 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2000 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 
 标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:1806 个 HTML、1719 个内容页、sitemap 1801 条、站内链接 59,133 条(校验零 404)。
+当前构建规模:2005 个 HTML、1901 个内容页、sitemap 2000 条、站内链接 70,395 条(校验零 404)。
 
-## 二级分类(Linux / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
+## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
 `command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
-当前有八份:
+当前有十份:
 
 - `command/linux/categories.json`:16 个分类、862 条
+- `command/windows/categories.json`:6 个分类、89 条
+- `command/macos/categories.json`:5 个分类、58 条
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:10 个分类、97 条
 - `command/troubleshoot/categories.json`:8 个分类、134 条
-- `command/guide/categories.json`:4 个分类、120 条
+- `command/guide/categories.json`:8 个分类、155 条
 - `command/middleware/categories.json`:11 个分类、71 条
 - `command/tutorial/categories.json`:3 个分类、77 条
 - `command/ai/categories.json`:7 个分类、84 条
@@ -233,10 +244,11 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | 分支 | 页面 | 说明 |
 |---|---|---|
 | Linux | 862 | 基础命令集 + 现代 CLI/诊断/开发/网络/备份/密钥/数据/系统工具,数据库客户端与语言运行时,Git 进阶与数据库服务端运维,存储/网络/终端效率/主机安全,LUKS/DRBD/GlusterFS 与 Doris/StarRocks/Druid/Pinot,OpenSCAP/SSSD/PAM/Firejail/TargetCLI/NBD/BIRD/StrongSwan 与 ripgrep/btop,以及 bcc-tools/火焰图/namespace/cgroup v2/page cache/IO 调度/网络栈/内存回收/eBPF 探针/sysdig 等性能与 eBPF 工具 |
-| Kubernetes | 274 | 集群与节点、工作负载、网络、存储、安全、可观测性、CI/CD、服务网格、Operator、发行版,以及 Crossplane/Karpenter/Tetragon/Kueue/YuniKorn/Gateway API/External Secrets 等现代平台工具 |
+| Windows | 89 | CMD 文件/系统/网络命令、21 个 PowerShell 核心 cmdlet、WSL 与 wslconfig、Windows Server/AD 的 dcdiag/repadmin/dsquery/diskpart/wbadmin 等诊断与运维命令 |
+| macOS | 58 | BSD 文件命令、launchctl/pmset/softwareupdate/tmutil/csrutil 等系统命令、ifconfig/tcpdump/dscacheutil 等网络工具、Xcode 命令行工具与 Homebrew、diskutil/hdiutil 磁盘维护 |
 | DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
 | 排障 | 134 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
-| 指南 | 120 | 41 个工具对比 + 42 个速查表 + 15 个路线图/检查清单 + 22 个学习路径与心智模型(10 条领域路径、1 个总入口、10 个心智模型、1 条演练路径),覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| 指南 | 155 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照;包含 12 条领域路径、12 个心智模型和 22 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 71 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PostgreSQL/PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB,以及 RocketMQ/Dubbo/ShardingSphere/Seata/Canal/Arthas 等 Java 生态中间件 |
 | 教程 | 77 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 22 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd 等) |
 | AI 与 MLOps | 84 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册 |
@@ -432,13 +444,15 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 本站内容（除另有标注外）采用 [LICENSE](LICENSE) 的 MIT 许可，Copyright © 2026 dos2un1x。
 
-全站 1719 页，按 8 个分支、71 个分类组织：
+全站 1901 页，按 10 个分支、86 个分类组织：
 
 - Linux：862 页
+- Windows：89 页
+- macOS：58 页
 - Kubernetes：274 页
 - DevOps：97 页
 - 排障：134 页
-- 指南：120 页
+- 指南：155 页
 - 中间件：71 页
 - 教程：77 页
 - AI 与 MLOps：84 页

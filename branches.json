@@ -2,8 +2,8 @@
   "site": {
     "name": "dos2unix 速查站",
     "baseUrl": "https://www.dos2unix.cn",
-    "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Kubernetes、DevOps、中间件、AI/MLOps、工具选型与迁移搭建。",
-    "keywords": "Linux,命令速查,Kubernetes,K8s,DevOps,故障排查,运维,中间件,AI,MLOps,GPU,大模型,推理,训练,CI/CD,工具对比,教程,迁移,搭建",
+    "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Windows、macOS、Kubernetes、DevOps、中间件、AI/MLOps、Vim 与快捷键。",
+    "keywords": "Linux,Windows,macOS,命令速查,CMD,PowerShell,WSL,Kubernetes,K8s,DevOps,故障排查,运维,中间件,AI,MLOps,GPU,大模型,推理,训练,CI/CD,工具对比,教程,迁移,搭建,Vim,快捷键,键盘快捷键",
     "sloganLegacy": "最专业的 Linux、Kubernetes 与 DevOps 速查手册，包含命令、排障、工具对比与中间件实践。",
     "repo": "https://github.com/dos2un1x/command-hub",
     "author": "dos2un1x"
@@ -71,7 +71,7 @@
         "branch": "guide",
         "slug": "learning-paths",
         "title": "学习路径总览",
-        "desc": "十条路径、十个心智模型与二十二个故障演练"
+        "desc": "十二条路径、十二个心智模型与二十二个故障演练"
       }
     },
     {
@@ -98,6 +98,32 @@
         "slug": "lab-learning-path",
         "title": "故障演练学习路径",
         "desc": "基础演练排成四周计划，进阶演练按故障域扩展"
+      }
+    },
+    {
+      "id": "windows",
+      "name": "Windows",
+      "desc": "CMD、PowerShell、WSL 与 Windows Server 命令速查",
+      "searchPlaceholder": "搜索 Windows 命令",
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "windows-learning-path",
+        "title": "Windows 学习路径",
+        "desc": "四个阶段：CMD 基础 → PowerShell → 系统与网络 → WSL 与 Server"
+      }
+    },
+    {
+      "id": "macos",
+      "name": "macOS",
+      "desc": "macOS 命令、系统维护与开发工具速查",
+      "searchPlaceholder": "搜索 macOS 命令",
+      "default": false,
+      "learningPath": {
+        "branch": "guide",
+        "slug": "macos-learning-path",
+        "title": "macOS 学习路径",
+        "desc": "四个阶段：BSD 文件命令 → 系统与服务 → 网络与安全 → 开发与维护"
       }
     },
     {

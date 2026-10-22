@@ -1,9 +1,9 @@
 <%- include('partials/head') %><div class="warpper home-page">
 <%- include('partials/topbar') %>
 <main class="home-intro">
-  <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>面向运维与开发的八分支速查</p>
+  <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>面向运维、开发与桌面用户的多分支速查</p>
   <h1>从命令到排障，<span class="home-title-accent">一套速查</span></h1>
-  <p class="home-lead">本站收录 <%= total %> 个条目，覆盖 Linux、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程与 AI/MLOps。先按目的选入口，再按分支深入；按命令查语法，按报错找原因，按场景做选择。</p>
+  <p class="home-lead">本站收录 <%= total %> 个条目，覆盖 Linux、Windows、macOS、Kubernetes、DevOps、故障排查、工具对比、中间件、迁移搭建教程、AI/MLOps、Vim 与常用快捷键。先按目的选入口，再按分支深入；按命令查语法，按报错找原因，按场景做选择。</p>
   <ul class="home-stats" aria-label="站点内容统计">
     <li><strong><%= total %></strong><span>条目</span></li>
     <li><strong><%= branchCount %></strong><span>分支</span></li>
@@ -31,7 +31,7 @@
         <a href="guide/learning-paths.html">
           <span class="home-scenario-kicker">学</span>
           <span class="home-scenario-title">学一个领域</span>
-          <span class="home-scenario-desc">十条学习路径：从心智模型到动手任务</span>
+          <span class="home-scenario-desc">十二条学习路径：从心智模型到动手任务</span>
         </a>
       </li>
       <li class="home-scenario-card">
@@ -59,7 +59,7 @@
   </section>
   <section class="home-branches" aria-labelledby="branches-title">
     <div class="home-section-head">
-      <h2 id="branches-title">八分支入口</h2>
+      <h2 id="branches-title">全部分支入口（<%= branchCount %>）</h2>
       <span class="home-branch-note">按问题类型进入</span>
     </div>
     <ul class="home-branch-grid">
