@@ -6,7 +6,20 @@
     "keywords": "Linux,Windows,macOS,命令速查,CMD,PowerShell,WSL,Kubernetes,K8s,DevOps,故障排查,运维,中间件,AI,MLOps,GPU,大模型,推理,训练,CI/CD,工具对比,教程,迁移,搭建,Vim,快捷键,键盘快捷键",
     "sloganLegacy": "最专业的 Linux、Kubernetes 与 DevOps 速查手册，包含命令、排障、工具对比与中间件实践。",
     "repo": "https://github.com/dos2un1x/command-hub",
-    "author": "dos2un1x"
+    "author": "dos2un1x",
+    "hotCommands": [
+      "ls", "grep", "find", "awk", "sed", "tar", "chmod", "ps", "top", "df",
+      "du", "ssh", "curl", "systemctl", "journalctl", "git", "vim", "nano",
+      "kubectl", "helm", "docker", "github-actions", "terraform",
+      "nginx", "psql", "redis-cli", "kafka-topics",
+      "oom-killed", "no-space-left", "permission-denied", "crashloopbackoff",
+      "connection-refused", "kubectl-cheatsheet",
+      "build-k8s-cluster", "migrate-docker-to-containerd",
+      "build-postgresql-ha", "migrate-iptables-to-nftables",
+      "nvidia-smi", "ollama", "vllm", "huggingface-cli", "torchrun", "mlflow",
+      "dir", "robocopy", "ipconfig", "Get-ChildItem", "wsl", "launchctl", "brew",
+      "windows-shortcuts", "vim-basics"
+    ]
   },
   "branches": [
     {
@@ -15,6 +28,10 @@
       "desc": "Linux 命令大全",
       "searchPlaceholder": "搜索 Linux 命令",
       "default": true,
+      "seo": {
+        "label": "Linux 命令大全",
+        "intro": "收录 {n} 个 Linux 条目，覆盖文件与目录、文本处理、网络、系统管理、磁盘、存储、权限与主机安全等场景，提供语法、参数与使用示例。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "linux-learning-path",
@@ -28,6 +45,10 @@
       "desc": "Kubernetes 运维手册",
       "searchPlaceholder": "搜索 Kubernetes 命令",
       "default": false,
+      "seo": {
+        "label": "Kubernetes 命令手册",
+        "intro": "收录 {n} 个 Kubernetes 条目，覆盖集群管理、资源编排、故障排查与日常运维，提供语法、参数与使用示例。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "k8s-learning-path",
@@ -41,6 +62,10 @@
       "desc": "CI/CD、发布自动化与云原生工具",
       "searchPlaceholder": "搜索 DevOps 工具",
       "default": false,
+      "seo": {
+        "label": "DevOps 工具手册",
+        "intro": "收录 {n} 个 DevOps 条目，覆盖 CI/CD、发布自动化、云 CLI、IaC、容器、供应链安全、平台工程与可观测性。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "devops-learning-path",
@@ -54,6 +79,11 @@
       "desc": "常见报错与故障排查",
       "searchPlaceholder": "搜索报错或故障",
       "default": false,
+      "unit": "条目",
+      "seo": {
+        "label": "故障排查手册",
+        "intro": "收录 {n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、JVM/Go/Node、Kubernetes 与中间件。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "troubleshoot-learning-path",
@@ -67,11 +97,17 @@
       "desc": "工具对比与常用速查表",
       "searchPlaceholder": "搜索对比或速查",
       "default": false,
+      "content": true,
+      "unit": "条目",
+      "seo": {
+        "label": "学习路径、工具对比与速查表",
+        "intro": "收录 {n} 个指南条目，包含领域学习路径、心智模型、工具对比、选型建议、Vim 编辑器、系统与软件快捷键、高频命令速查表和上线检查清单，帮助先建立方向，再在相似方案之间做决定。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "learning-paths",
         "title": "学习路径总览",
-        "desc": "十二条路径、十二个心智模型与二十二个故障演练"
+        "desc": "学习路径、心智模型与故障演练"
       }
     },
     {
@@ -80,6 +116,10 @@
       "desc": "日志、消息、网关、数据与 Java 生态",
       "searchPlaceholder": "搜索中间件命令",
       "default": false,
+      "seo": {
+        "label": "中间件手册",
+        "intro": "收录 {n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库、数据库连接池、Java 生态与向量检索。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "middleware-learning-path",
@@ -93,6 +133,12 @@
       "desc": "迁移、搭建与实战步骤",
       "searchPlaceholder": "搜索教程或迁移方案",
       "default": false,
+      "content": true,
+      "unit": "条目",
+      "seo": {
+        "label": "迁移、搭建与故障演练",
+        "intro": "收录 {n} 个教程条目，覆盖组件迁移、版本升级，以及 Kubernetes、Kafka、Redis、PostgreSQL 高可用、可观测性、密钥管理、发布策略搭建与本地故障演练。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "lab-learning-path",
@@ -106,6 +152,10 @@
       "desc": "CMD、PowerShell、WSL 与 Windows Server 命令速查",
       "searchPlaceholder": "搜索 Windows 命令",
       "default": false,
+      "seo": {
+        "label": "Windows 命令手册",
+        "intro": "收录 {n} 个 Windows 条目，覆盖 CMD、PowerShell、WSL、网络与 Windows Server/AD，提供语法、参数、示例与风险提示。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "windows-learning-path",
@@ -119,6 +169,10 @@
       "desc": "macOS 命令、系统维护与开发工具速查",
       "searchPlaceholder": "搜索 macOS 命令",
       "default": false,
+      "seo": {
+        "label": "macOS 命令手册",
+        "intro": "收录 {n} 个 macOS 条目，覆盖 BSD 文件命令、launchctl、系统维护、网络与开发工具，标注与 Linux 的差异。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "macos-learning-path",
@@ -132,6 +186,11 @@
       "desc": "GPU、推理、训练与实验管理工具",
       "searchPlaceholder": "搜索 AI 与 MLOps 工具",
       "default": false,
+      "unit": "条目",
+      "seo": {
+        "label": "AI 与 MLOps 工具手册",
+        "intro": "收录 {n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪、评估、Agent 与安全。"
+      },
       "learningPath": {
         "branch": "guide",
         "slug": "ai-learning-path",

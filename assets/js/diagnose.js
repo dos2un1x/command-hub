@@ -6,10 +6,50 @@
   const resetBtn = document.getElementById('diagnose-reset');
   if (!treesEl || !content) return;
 
+  const page = document.querySelector('.diagnose-page');
+  const treesUrl = page?.dataset.trees || 'data/diagnose.json';
+
   let trees = [];
   let tree = null;
   let nodeId = null;
   let trail = [];
+
+  function snapshot() {
+    return {
+      tree: tree ? tree.id : null,
+      node: nodeId,
+      trail: trail.map((step) => ({ ...step })),
+    };
+  }
+
+  function replaceHistory() {
+    if (!tree) return;
+    try {
+      window.history.replaceState(snapshot(), '', `#${tree.id}`);
+    } catch {
+      /* file:// 预览等环境可能禁止改历史,不影响页面内导航 */
+    }
+  }
+
+  function pushHistory() {
+    if (!tree) return;
+    try {
+      window.history.pushState(snapshot(), '', `#${tree.id}`);
+    } catch {
+      /* 同上 */
+    }
+  }
+
+  function applyState(state) {
+    if (!state || typeof state !== 'object') return false;
+    const nextTree = trees.find((t) => t.id === state.tree);
+    if (!nextTree || !nextTree.nodes?.[state.node]) return false;
+    tree = nextTree;
+    nodeId = state.node;
+    trail = Array.isArray(state.trail) ? state.trail.map((step) => ({ ...step })) : [];
+    render();
+    return true;
+  }
 
   const el = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -104,6 +144,7 @@
       btn.addEventListener('click', () => {
         trail.push({ id: nodeId, choice: opt.label });
         nodeId = opt.next;
+        pushHistory();
         render();
       });
       list.append(btn);
@@ -142,8 +183,10 @@
     const again = el('button', 'diagnose-btn primary', '回到这棵树的第一步');
     again.type = 'button';
     again.addEventListener('click', () => {
+      const changed = trail.length > 0 || nodeId !== tree.start;
       trail = [];
       nodeId = tree.start;
+      if (changed) pushHistory();
       render();
     });
     actions.append(again);
@@ -171,32 +214,34 @@
     tree = next;
     nodeId = tree.start;
     trail = [];
-    if (window.location.hash !== `#${id}`) {
-      window.history.replaceState(null, '', `#${id}`);
-    }
+    replaceHistory();
     render();
   }
 
   function goBack() {
     if (!trail.length) return;
-    const prev = trail.pop();
-    nodeId = prev.id;
-    render();
+    // 让浏览器后退/前进与页面内“上一步”共用同一套历史状态。
+    window.history.back();
   }
 
   backBtn?.addEventListener('click', goBack);
   resetBtn?.addEventListener('click', () => {
     if (!tree) return;
+    const changed = trail.length > 0 || nodeId !== tree.start;
     trail = [];
     nodeId = tree.start;
+    if (changed) pushHistory();
     render();
   });
   window.addEventListener('hashchange', () => {
     const id = window.location.hash.slice(1);
     if (id && (!tree || tree.id !== id)) selectTree(id);
   });
+  window.addEventListener('popstate', (event) => {
+    applyState(event.state);
+  });
 
-  fetch('data/diagnose.json', { cache: 'no-store' })
+  fetch(treesUrl)
     .then((r) => {
       if (!r.ok) throw new Error('diagnose.json');
       return r.json();
@@ -205,6 +250,8 @@
       trees = Array.isArray(data) ? data : [];
       if (!trees.length) throw new Error('empty');
       const initial = window.location.hash.slice(1);
+      // 刷新后优先恢复当前步骤;若无状态则从 hash 指向的树开始。
+      if (window.history.state?.tree === initial && applyState(window.history.state)) return;
       selectTree(trees.some((t) => t.id === initial) ? initial : trees[0].id);
     })
     .catch(() => {

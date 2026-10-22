@@ -4,6 +4,8 @@
   const COUNT = 5;
   const MASTER_STREAK = 2;
 
+  const page = document.querySelector('.review-page');
+  const questionsUrl = page?.dataset.questions || 'js/questions.json';
   const list = document.getElementById('review-list');
   const daily = document.getElementById('review-daily');
   const empty = document.getElementById('review-empty');
@@ -271,7 +273,7 @@
     updateProgress();
   }
 
-  fetch('js/questions.json', { cache: 'no-store' })
+  fetch(questionsUrl)
     .then((r) => {
       if (!r.ok) throw new Error('questions.json');
       return r.json();

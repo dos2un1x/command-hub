@@ -1,26 +1,36 @@
 /**
  * 源文件结构校验(不构建)
  *
- * 在写内容后立刻可跑,用于在构建前拦住格式问题。
- * 构建时 build.mjs 也会做同样的检查,这里是独立入口。
+ * 在写内容后立刻可跑,用于在构建前拦住格式与分类问题。
+ * build.mjs 复用 scripts/lib/content.mjs 的同一套解析规则。
  */
 import FS from 'node:fs/promises';
 import path from 'node:path';
+import {
+  RESERVED,
+  isValidSlug,
+  parseSource,
+  validateCategoryConfig,
+} from './lib/content.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const COMMAND_DIR = path.join(ROOT, 'command');
-const RESERVED = new Set(['index', 'list', 'hot', 'review', 'diagnose']);
-
-const sanitize = (v) =>
-  String(v || '')
-    .replace(/^﻿/, '')
-    .replace(/[​-‍⁠]/g, '')
-    .trim();
 
 const config = JSON.parse(await FS.readFile(path.join(ROOT, 'branches.json'), 'utf8'));
 const declared = new Set(config.branches.map((b) => b.id));
 const errors = [];
 const warnings = [];
+
+const branchIds = config.branches.map((b) => b.id);
+const duplicateBranchIds = branchIds.filter((id, i, list) => list.indexOf(id) !== i);
+if (duplicateBranchIds.length) {
+  errors.push(`branches.json 存在重复分支 id:${[...new Set(duplicateBranchIds)].join(', ')}`);
+}
+for (const b of config.branches) {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(b.id)) {
+    errors.push(`branches.json 的分支 id 不合法: ${b.id}`);
+  }
+}
 
 const entries = await FS.readdir(COMMAND_DIR, { withFileTypes: true });
 
@@ -47,35 +57,49 @@ for (const b of config.branches) {
   }
   if (!files.length) warnings.push(`分支 "${b.id}" 没有任何页面`);
 
+  const branchItems = [];
   for (const f of files) {
     total++;
     const slug = f.slice(0, -3);
     const raw = await FS.readFile(path.join(dir, f), 'utf8');
     const where = `command/${b.id}/${f}`;
+    const parsed = parseSource(raw);
+    branchItems.push({ n: slug });
 
-    const m = raw.match(/^([^=]+?)\s*===/);
-    if (!m) {
+    if (!parsed.hasTitle) {
       errors.push(`${where}: 缺少 "标题\\n===" 头`);
       continue;
     }
-    const title = sanitize(m[1]);
-    if (title !== slug) {
-      errors.push(`${where}: 标题 "${title}" ≠ 文件名 "${slug}"(会导致 404)`);
+    if (parsed.title !== slug) {
+      errors.push(`${where}: 标题 "${parsed.title}" ≠ 文件名 "${slug}"(会导致 404)`);
     }
-    if (!/^[a-z0-9][a-z0-9._-]*$/i.test(slug)) {
+    if (!isValidSlug(slug)) {
       errors.push(`${where}: 文件名不是合法 ASCII slug`);
     }
     if (RESERVED.has(slug)) {
       errors.push(`${where}: "${slug}" 是保留名,会与 index/list/hot/review/diagnose 冲突`);
     }
-    const dm = raw.match(/\n={1,}([\s\S]*?)##/i);
-    if (!dm || !dm[1].replace(/[\r\n]/g, '').trim()) {
+    if (!parsed.desc) {
       errors.push(`${where}: 描述为空(需在 === 与第一个 ## 之间填写描述)`);
     }
 
-    const key = slug;
-    if (!names.has(key)) names.set(key, []);
-    names.get(key).push(b.id);
+    if (!names.has(slug)) names.set(slug, []);
+    names.get(slug).push(b.id);
+  }
+
+  // 有 categories.json 的分支:未归类、未知分类、空分类、重复 id 都在这里拦住。
+  try {
+    const cfg = JSON.parse(await FS.readFile(path.join(dir, 'categories.json'), 'utf8'));
+    const { errors: catErrors } = validateCategoryConfig({
+      branchId: b.id,
+      cfg,
+      items: branchItems,
+    });
+    for (const error of catErrors) {
+      errors.push(`command/${b.id}/categories.json: ${error}`);
+    }
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
   }
 }
 

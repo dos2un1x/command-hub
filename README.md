@@ -4,6 +4,8 @@ Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / �
 
 ## 快速开始
 
+需要 Node.js 22 及以上版本。
+
 ```bash
 npm install
 npm run build      # 构建到 build/
@@ -25,12 +27,12 @@ template/snake.ejs         贪吃蛇小游戏页(非命令页)
 template/tetris.ejs        俄罗斯方块小游戏页(非命令页)
 template/review.ejs        每日复习页
 template/diagnose.ejs      故障诊断向导页
-assets/                    CSS / JS / 图片源
+assets/                    CSS / JS / 数据源
 assets/data/diagnose.json  诊断向导决策树数据
 assets/js/snake-core.js    贪吃蛇纯逻辑(可单测)
 assets/js/tetris-core.js   俄罗斯方块纯逻辑(可单测)
 test/                      单测(node --test)
-scripts/                   构建与校验脚本
+scripts/                   构建与校验脚本(scripts/lib/ 为公共解析与 SEO 逻辑)
 build/                     构建产物(gitignore)
 deploy/                    本地部署状态与日志(gitignore)
 public/  public.zip        发布暂存与打包产物(gitignore,由 npm run package 生成)
@@ -88,7 +90,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 > 两个游戏页都是 ES module,必须经 HTTP 打开 —— 直接双击 `build/*.html`(file://)不会运行。
 > 本地预览用 `npx serve build` 或 `python3 -m http.server -d build 8000`。
 
-`npm test` 跑两个游戏的核心逻辑单测(需要 Node ≥ 18)。
+`npm test` 跑游戏核心逻辑与构建辅助函数的单测(需要 Node ≥ 22)。
 
 ## 新增一个命令页
 
@@ -154,14 +156,14 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 分支标签自动出现在首页与所有内页顶栏,搜索索引、总览页分组、计数全部自动更新。**无需改动任何代码。**
 
-`id` 必须与目录名一致。`"default": true` 只能有一个。
+`id` 必须与目录名一致。`"default": true` 只能有一个。可选字段:`seo.label` / `seo.intro`(分支页标题与介绍,`{n}` 会替换为条目数)、`content: true`(按内容页生成标题,不套用“命令详解”)、`unit`(页脚量词)、`learningPath`(分支页的学习路径入口)。首页热门命令在 `site.hotCommands` 中维护。
 
 ## 校验与发布
 
 ```bash
 npm run validate       # 命名与结构校验
 npm run check-links    # 产物内链完整性(零 404)
-npm run verify         # build + validate + check-links
+npm run verify         # validate + build + check-links
 npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接上传)
 ```
 
@@ -179,10 +181,10 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 
-标题与描述在 `scripts/build.mjs` 的页面渲染段集中生成,不再使用模板拼接。
+标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2005 个 HTML、1901 个内容页、sitemap 2000 条、站内链接 70,395 条(校验零 404)。
+当前构建规模:2005 个 HTML、1901 个内容页、sitemap 2000 条、站内链接 68,392 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 

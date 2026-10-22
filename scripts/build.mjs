@@ -2,13 +2,30 @@
  * 多分支命令站构建管线
  *
  * 输入:command/<branch>/<slug>.md + branches.json + template/ + assets/
- * 输出:build/  (根页面、<branch>/ 页面、js/css/img)
+ * 输出:build/  (根页面、<branch>/ 页面、js/css/data/images)
  */
+import crypto from 'node:crypto';
 import FS from 'node:fs/promises';
 import path from 'node:path';
 import * as ejs from 'ejs';
 import UglifyJS from 'uglify-js';
 import { create } from 'markdown-to-html-cli';
+import {
+  RESERVED,
+  countLearningPaths,
+  isValidSlug,
+  parseSelfTests,
+  parseSource,
+  validateCategoryConfig,
+} from './lib/content.mjs';
+import {
+  brandTitle as brandTitleBase,
+  clipText,
+  detailTitle as detailTitleBase,
+  plainText,
+  sentenceText,
+  titlePhrase,
+} from './lib/seo.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const COMMAND_DIR = path.join(ROOT, 'command');
@@ -16,16 +33,7 @@ const TEMPLATE_DIR = path.join(ROOT, 'template');
 const ASSETS_DIR = path.join(ROOT, 'assets');
 const OUT_DIR = path.join(ROOT, 'build');
 
-const V = Date.now();
 const esc = (s) => ejs.escapeXML(String(s == null ? '' : s));
-
-/** 清理命令名：剥离 BOM 与零宽字符 */
-function sanitizeCommandName(value) {
-  return String(value || '')
-    .replace(/^﻿/, '')
-    .replace(/[​-‍⁠]/g, '')
-    .trim();
-}
 
 async function rmrf(p) {
   await FS.rm(p, { recursive: true, force: true });
@@ -34,6 +42,33 @@ async function write(p, content) {
   await FS.mkdir(path.dirname(p), { recursive: true });
   await FS.writeFile(p, content);
 }
+
+async function walkFiles(dir) {
+  const files = [];
+  for (const entry of await FS.readdir(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...(await walkFiles(p)));
+    else files.push(p);
+  }
+  return files;
+}
+
+/** 资源版本取 CSS/JS/favicon 的内容哈希:内容不变时重复访问仍命中缓存。 */
+async function assetVersion() {
+  const files = [
+    ...(await walkFiles(path.join(ASSETS_DIR, 'css'))),
+    ...(await walkFiles(path.join(ASSETS_DIR, 'js'))),
+    path.join(ROOT, 'images', 'favicon.ico'),
+  ].sort();
+  const hash = crypto.createHash('sha1');
+  for (const file of files) {
+    hash.update(path.relative(ROOT, file));
+    hash.update(await FS.readFile(file));
+  }
+  return hash.digest('hex').slice(0, 12);
+}
+
+const V = await assetVersion();
 
 /** 扫描 command/<branch>/*.md */
 async function readSources(branches) {
@@ -62,11 +97,13 @@ async function readSources(branches) {
     for (const f of files) {
       const slug = f.slice(0, -3);
       const raw = await FS.readFile(path.join(COMMAND_DIR, b.id, f), 'utf8');
-      const m = raw.match(/^([^=]+?)\s*===/);
-      const title = sanitizeCommandName(m ? m[1] : '');
-      const dm = raw.match(/\n={1,}([\s\S]*?)##/i);
-      const desc = dm ? dm[1].replace(/[\r\n]/g, '').trim() : '';
+      const { title, desc } = parseSource(raw);
 
+      if (!isValidSlug(slug)) {
+        throw new Error(
+          `文件名不是合法 ASCII slug:command/${b.id}/${f}。只允许字母、数字、点、下划线与连字符。`
+        );
+      }
       if (title !== slug) {
         throw new Error(
           `命名不一致:command/${b.id}/${f} 的标题为 "${title}",与文件名 "${slug}" 不符。\n` +
@@ -112,7 +149,8 @@ async function markdownToHTML(str) {
 
 async function render(tplName, data) {
   const file = path.join(TEMPLATE_DIR, tplName);
-  return ejs.render(await FS.readFile(file, 'utf8'), data, { filename: file });
+  // cache 会按 filename 缓存模板与 include,避免 1901 个页面重复读盘/编译。
+  return ejs.renderFile(file, data, { cache: true });
 }
 
 /** 并发受限的 map */
@@ -142,63 +180,15 @@ if (!baseUrl) {
   throw new Error('branches.json 的 site.baseUrl 未配置,无法生成 canonical 与 sitemap');
 }
 
-/** 按字符数截断(中文按 1 个字计),超出时补省略号 */
-const clipText = (s, n) => {
-  const chars = Array.from(String(s == null ? '' : s).replace(/\s+/g, ' ').trim());
-  return chars.length > n ? chars.slice(0, Math.max(1, n - 1)).join('') + '…' : chars.join('');
-};
-/** 去掉 Markdown 标记,保留纯文本 */
-const plainText = (s) =>
-  String(s == null ? '' : s)
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/[`*_>#~]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-/** 去掉句末标点,便于拼进 meta description */
-const sentenceText = (s) => plainText(s).replace(/[。.!！?？;；,，]+$/, '');
-
-/** 从页面的“## 读完自测”中抽取问答,供 /review.html 随机复习。 */
-function parseSelfTests(md) {
-  const marker = '## 读完自测';
-  const start = md.indexOf(marker);
-  if (start < 0) return [];
-  const rest = md.slice(start + marker.length);
-  const next = rest.search(/\n## /);
-  const body = next >= 0 ? rest.slice(0, next) : rest;
-  const cut = body.indexOf('<details>');
-  if (cut < 0) return [];
-  const qPart = body.slice(0, cut);
-  const aPart = body.slice(cut);
-  const questions = [...qPart.matchAll(/^\s*\d+\.\s+(.+)$/gm)].map((x) => x[1].trim());
-  const answers = [...aPart.matchAll(/^\s*\d+\.\s+(.+)$/gm)].map((x) => x[1].trim());
-  return questions
-    .map((q, i) => ({ q, a: answers[i] || '' }))
-    .filter((x) => x.q && x.a);
+const branchIds = branches.map((b) => b.id);
+const duplicateBranchIds = branchIds.filter((id, i, list) => list.indexOf(id) !== i);
+if (duplicateBranchIds.length) {
+  throw new Error(`branches.json 存在重复分支 id:${[...new Set(duplicateBranchIds)].join(', ')}`);
 }
-/** 标题里用的简短描述:去掉「是/用于/用来/可以/主要」等开头,过长则不用 */
-const titlePhrase = (s) => {
-  const t = sentenceText(s).replace(/^(是|用于|用来|可以|主要)+/, '');
-  return Array.from(t).length <= 14 ? t : '';
-};
-/** 标题统一以「 - 站点名」结尾。不截断 head:分支名/命令名被截断比标题略长更糟 */
-const brandTitle = (head) => `${head} - ${site.name}`;
-/** 详情页标题:优先「命令名 命令详解:描述」,过长时降级,保证标题不会过长 */
-function detailTitle(it, dTitle) {
-  const suffix = ` - ${site.name}`;
-  if (CONTENT_BRANCHES.has(it.b)) {
-    // 指南/教程不是命令页,标题用描述里冒号前的短语,避免只显示英文 slug。
-    const head = sentenceText(it.d).split(/[：:]/)[0];
-    const chars = Array.from(head);
-    const phrase = chars.length <= 24 ? head : chars.slice(0, 23).join('') + '…';
-    const title = `${phrase}${suffix}`;
-    return Array.from(title).length <= 42 ? title : `${it.n}${suffix}`;
+for (const b of branches) {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(b.id)) {
+    throw new Error(`branches.json 的分支 id 不合法: ${b.id}`);
   }
-  const withDesc = dTitle ? `${it.n} 命令详解：${dTitle}${suffix}` : '';
-  if (withDesc && Array.from(withDesc).length <= 36) return withDesc;
-  const noDesc = `${it.n} 命令详解${suffix}`;
-  if (Array.from(noDesc).length <= 36) return noDesc;
-  return `${it.n}${suffix}`;
 }
 
 if (branches.filter((b) => b.default).length !== 1) {
@@ -206,11 +196,20 @@ if (branches.filter((b) => b.default).length !== 1) {
 }
 const defaultBranch = branches.find((b) => b.default);
 /** 非命令型分支:详情页标题与描述按“内容页”组织,不套用“命令详解”。 */
-const CONTENT_BRANCHES = new Set(['guide', 'tutorial']);
+const CONTENT_BRANCHES = new Set(branches.filter((b) => b.content).map((b) => b.id));
 /** 详情页页脚的量词:指南/教程/排障/AI 不是“命令”。 */
-const branchUnit = (id) => (['guide', 'tutorial', 'troubleshoot', 'ai'].includes(id) ? '条目' : '命令');
+const branchUnit = (id) => branches.find((b) => b.id === id)?.unit || '命令';
+/** 标题统一以「 - 站点名」结尾。不截断 head:分支名/命令名被截断比标题略长更糟 */
+const brandTitle = (head) => brandTitleBase(head, site.name);
+/** 详情页标题:优先「命令名 命令详解:描述」,过长时降级,保证标题不会过长 */
+const detailTitle = (it, dTitle) =>
+  detailTitleBase(it, dTitle, { siteName: site.name, contentBranches: CONTENT_BRANCHES });
 
 const items = await readSources(branches);
+
+/** 学习路径总数从 learning-paths 页自动统计,避免模板写死。 */
+const learningPathsItem = items.find((it) => it.b === 'guide' && it.n === 'learning-paths');
+const learningPathCount = learningPathsItem ? countLearningPaths(learningPathsItem.md) : 0;
 
 /** 全站复习题库:每个“读完自测”的三道题。 */
 const branchNameById = new Map(branches.map((b) => [b.id, b.name]));
@@ -226,8 +225,6 @@ const reviewQuestions = items.flatMap((it) =>
     bn: branchNameById.get(it.b) || it.b,
   }))
 );
-const logo = await FS.readFile(path.join(TEMPLATE_DIR, 'partials', 'logo-inline.svg'), 'utf8');
-
 /** 故障诊断向导数据:构建时校验结构,链接由 check-links 统一校验。 */
 const diagnoseData = JSON.parse(
   await FS.readFile(path.join(ASSETS_DIR, 'data', 'diagnose.json'), 'utf8')
@@ -282,7 +279,6 @@ for (const tree of diagnoseData) {
 }
 
 // 保留字与跨分支冲突防护
-const RESERVED = new Set(['index', 'list', 'hot', 'review', 'diagnose']);
 for (const b of branches) {
   for (const it of items.filter((x) => x.b === b.id)) {
     if (RESERVED.has(it.n)) {
@@ -304,43 +300,16 @@ for (const b of branches) {
     throw e;
   }
 
-  const list = (cfg.categories || [])
-    .map((c, i) => ({ ...c, order: Number.isFinite(c.order) ? c.order : i + 1 }))
-    .sort((x, y) => x.order - y.order || x.id.localeCompare(y.id));
-  if (!list.length) throw new Error(`${path.relative(ROOT, catPath)} 没有 categories`);
-
-  const ids = new Set();
-  for (const c of list) {
-    if (!/^[a-z0-9][a-z0-9-]*$/.test(c.id)) throw new Error(`分类 id 不合法: ${c.id}`);
-    if (!c.name || !c.desc) throw new Error(`分类 ${c.id} 缺少 name 或 desc`);
-    ids.add(c.id);
-  }
-
-  const assignments = cfg.assignments || {};
   const branchItems = items.filter((it) => it.b === b.id);
-  const byCat = new Map(list.map((c) => [c.id, []]));
-  for (const it of branchItems) {
-    const catId = assignments[it.n];
-    if (!catId) {
-      throw new Error(`command/${b.id}/${it.n}.md 未在 categories.json 中归类`);
-    }
-    if (!ids.has(catId)) {
-      throw new Error(`command/${b.id}/categories.json: ${it.n} 的分类 "${catId}" 不存在`);
-    }
-    it.cat = catId;
-    byCat.get(catId).push(it);
+  const { list, byCat, errors } = validateCategoryConfig({
+    branchId: b.id,
+    cfg,
+    items: branchItems,
+  });
+  if (errors.length) {
+    throw new Error(`command/${b.id}/categories.json:\n  ${errors.join('\n  ')}`);
   }
-  for (const slug of Object.keys(assignments)) {
-    if (!branchItems.some((it) => it.n === slug)) {
-      throw new Error(`command/${b.id}/categories.json: 映射中的 "${slug}" 没有对应页面`);
-    }
-  }
-  for (const c of list) {
-    if (!byCat.get(c.id).length) {
-      throw new Error(`command/${b.id}/categories.json: 分类 "${c.id}" 没有页面`);
-    }
-  }
-  categoriesByBranch.set(b.id, { list, byCat, config: cfg });
+  categoriesByBranch.set(b.id, { list, byCat });
 }
 
 const categoryNavFor = (branchId) => {
@@ -371,19 +340,7 @@ for (const [name, list] of byNameAll) {
 }
 
 // 首页「热门命令」:按常见使用频率挑一批,过滤掉当前内容里不存在的
-const HOT_COMMAND_NAMES = [
-  'ls', 'grep', 'find', 'awk', 'sed', 'tar', 'chmod', 'ps', 'top', 'df',
-  'du', 'ssh', 'curl', 'systemctl', 'journalctl', 'git', 'vim', 'nano',
-  'kubectl', 'helm', 'docker', 'github-actions', 'terraform',
-  'nginx', 'psql', 'redis-cli', 'kafka-topics',
-  'oom-killed', 'no-space-left', 'permission-denied', 'crashloopbackoff',
-  'connection-refused', 'kubectl-cheatsheet',
-  'build-k8s-cluster', 'migrate-docker-to-containerd',
-  'build-postgresql-ha', 'migrate-iptables-to-nftables',
-  'nvidia-smi', 'ollama', 'vllm', 'huggingface-cli', 'torchrun', 'mlflow',
-  'dir', 'robocopy', 'ipconfig', 'Get-ChildItem', 'wsl', 'launchctl', 'brew',
-  'windows-shortcuts', 'vim-basics',
-];
+const HOT_COMMAND_NAMES = Array.isArray(site.hotCommands) ? site.hotCommands : [];
 const seenHot = new Set();
 const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
   .filter((it) => {
@@ -405,15 +362,12 @@ await rmrf(OUT_DIR);
 await FS.mkdir(OUT_DIR, { recursive: true });
 
 // 静态资源
-await FS.cp(path.join(ASSETS_DIR, 'img'), path.join(OUT_DIR, 'img'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'css'), path.join(OUT_DIR, 'css'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'js'), path.join(OUT_DIR, 'js'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'data'), path.join(OUT_DIR, 'data'), { recursive: true });
 // 浏览器标签图标以 images/favicon.ico 为准，复制到产物根目录的 images/。
 await FS.mkdir(path.join(OUT_DIR, 'images'), { recursive: true });
 await FS.copyFile(path.join(ROOT, 'images', 'favicon.ico'), path.join(OUT_DIR, 'images', 'favicon.ico'));
-await FS.rm(path.join(OUT_DIR, 'js', 'github-corners.js'), { force: true });
-await FS.rm(path.join(OUT_DIR, 'css', 'index.legacy.css'), { force: true });
 
 // index.js 压缩
 {
@@ -426,8 +380,17 @@ await FS.rm(path.join(OUT_DIR, 'css', 'index.legacy.css'), { force: true });
 // 搜索索引
 const dt = `var commands=${JSON.stringify(items.map(({ n, p, d, b }) => ({ n, p, d, b })))};\n` +
   `var branches=${JSON.stringify(branches.map(({ id, name, desc }) => ({ id, name, desc })))};\n`;
+const questionsJson = JSON.stringify(reviewQuestions);
+// 数据版本只跟随搜索索引/题库/诊断数据变化,与 CSS/JS 的资源版本分开。
+const DATA_V = crypto
+  .createHash('sha1')
+  .update(dt)
+  .update(questionsJson)
+  .update(JSON.stringify(diagnoseData))
+  .digest('hex')
+  .slice(0, 12);
 await write(path.join(OUT_DIR, 'js', 'dt.js'), dt);
-await write(path.join(OUT_DIR, 'js', 'questions.json'), JSON.stringify(reviewQuestions));
+await write(path.join(OUT_DIR, 'js', 'questions.json'), questionsJson);
 console.log(`复习题库 ${reviewQuestions.length} 道`);
 
 // ── 3. 公共渲染参数 ─────────────────────────────────────────
@@ -443,67 +406,18 @@ const branchCards = branches.map((b) => {
     desc: b.desc,
     count: byBranch[b.id].length,
     categoryCount: cats ? cats.list.length : 0,
-    categories: cats ? cats.list.slice(0, 3).map((c) => c.name) : [],
   };
 });
 
-const BRANCH_SEO = {
-  linux: {
-    label: 'Linux 命令大全',
-    intro: (n) =>
-      `收录 ${n} 个 Linux 条目，覆盖文件与目录、文本处理、网络、系统管理、磁盘、存储、权限与主机安全等场景，提供语法、参数与使用示例。`,
-  },
-  k8s: {
-    label: 'Kubernetes 命令手册',
-    intro: (n) =>
-      `收录 ${n} 个 Kubernetes 条目，覆盖集群管理、资源编排、故障排查与日常运维，提供语法、参数与使用示例。`,
-  },
-  devops: {
-    label: 'DevOps 工具手册',
-    intro: (n) =>
-      `收录 ${n} 个 DevOps 条目，覆盖 CI/CD、发布自动化、云 CLI、IaC、容器、供应链安全、平台工程与可观测性。`,
-  },
-  troubleshoot: {
-    label: '故障排查手册',
-    intro: (n) =>
-      `收录 ${n} 个排障条目，按报错与故障现象组织，覆盖系统、磁盘、网络、权限、JVM/Go/Node、Kubernetes 与中间件。`,
-  },
-  guide: {
-    label: '学习路径、工具对比与速查表',
-    intro: (n) =>
-      `收录 ${n} 个指南条目，包含十二条领域学习路径、心智模型、工具对比、选型建议、Vim 编辑器、系统与软件快捷键、高频命令速查表和上线检查清单，帮助先建立方向，再在相似方案之间做决定。`,
-  },
-  middleware: {
-    label: '中间件手册',
-    intro: (n) =>
-      `收录 ${n} 个中间件条目，覆盖日志与搜索、消息与协调、网关与接入、制品仓库、数据库连接池、Java 生态与向量检索。`,
-  },
-  tutorial: {
-    label: '迁移、搭建与故障演练',
-    intro: (n) =>
-      `收录 ${n} 个教程条目，覆盖组件迁移、版本升级，以及 Kubernetes、Kafka、Redis、PostgreSQL 高可用、可观测性、密钥管理、发布策略搭建与本地故障演练。`,
-  },
-  ai: {
-    label: 'AI 与 MLOps 工具手册',
-    intro: (n) =>
-      `收录 ${n} 个 AI 与 MLOps 条目，覆盖 GPU 监控、CUDA/NCCL、模型推理、分布式训练、微调、RAG 应用、实验跟踪、评估、Agent 与安全。`,
-  },
-  windows: {
-    label: 'Windows 命令手册',
-    intro: (n) =>
-      `收录 ${n} 个 Windows 条目，覆盖 CMD、PowerShell、WSL、网络与 Windows Server/AD，提供语法、参数、示例与风险提示。`,
-  },
-  macos: {
-    label: 'macOS 命令手册',
-    intro: (n) =>
-      `收录 ${n} 个 macOS 条目，覆盖 BSD 文件命令、launchctl、系统维护、网络与开发工具，标注与 Linux 的差异。`,
-  },
-};
-const branchSeo = (b) =>
-  BRANCH_SEO[b.id] || {
-    label: `${b.name} 命令大全`,
-    intro: (n) => `收录 ${n} 个 ${b.name} 命令，提供语法、参数与使用示例。`,
-  };
+/** 分支 SEO 文案来自 branches.json,构建只负责填充条目数。 */
+const branchSeo = (b) => ({
+  label: b.seo?.label || `${b.name} 命令大全`,
+  intro: (n) =>
+    String(b.seo?.intro || `收录 ${n} 个 ${b.name} 命令，提供语法、参数与使用示例。`).replace(
+      /\{n\}/g,
+      n
+    ),
+});
 
 /** 同前缀命令优先,不足 5 条用字母序邻居补齐 */
 function relatedFor(it, list) {
@@ -534,11 +448,13 @@ function base(extra) {
   return {
     site,
     branches,
-    logo,
     v: V,
+    dataV: DATA_V,
     total,
     branchCount,
     categoryCount,
+    diagnoseTreeCount: diagnoseData.length,
+    learningPathCount,
     ...extra,
   };
 }
@@ -829,7 +745,8 @@ for (const b of branches) {
 if (categoryPages.length) console.log(`渲染分类页 ${categoryPages.length} 个…`);
 
 // ── 8. sitemap / robots ─────────────────────────────────────
-const lastmod = new Date().toISOString().slice(0, 10);
+// 不写 lastmod:静态站每次构建都会把全部 URL 标成“今天更新”,
+// 与其给搜索引擎假信号,不如省略这个可选字段。
 const hotNames = new Set(hotCommands.map((x) => x.n));
 // 默认分支排在前面,热门命令优先级更高 —— 主动推送按 sitemap 顺序取前 N 条,
 // 这样首页、分支页、热门命令会先被百度抓到。
@@ -855,7 +772,7 @@ const sitemap = [
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   ...sitemapEntries.map(
     (e) =>
-      `  <url><loc>${esc(e.loc)}</loc><lastmod>${lastmod}</lastmod><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`
+      `  <url><loc>${esc(e.loc)}</loc><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`
   ),
   '</urlset>',
   '',

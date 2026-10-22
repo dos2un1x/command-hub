@@ -6,6 +6,7 @@
  */
 import FS from 'node:fs/promises';
 import path from 'node:path';
+import { parseSource, validateCategoryConfig } from './lib/content.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const COMMAND_ROOT = path.join(ROOT, 'command');
@@ -32,23 +33,15 @@ for (const branchId of branchDirs) {
     throw e;
   }
 
-  const categories = catConfig.categories || [];
-  const assignments = catConfig.assignments || {};
   const files = (await FS.readdir(dir))
     .filter((f) => f.endsWith('.md'))
     .map((f) => f.slice(0, -3));
-
-  const errors = [];
-  const byCat = Object.fromEntries(categories.map((c) => [c.id, []]));
-  for (const slug of files) {
-    const cat = assignments[slug];
-    if (!cat) errors.push(`未分类: ${slug}`);
-    else if (!byCat[cat]) errors.push(`未知分类 "${cat}": ${slug}`);
-    else byCat[cat].push(slug);
-  }
-  for (const slug of Object.keys(assignments)) {
-    if (!files.includes(slug)) errors.push(`映射里多出: ${slug}`);
-  }
+  const items = files.map((n) => ({ n }));
+  const { list: categories, byCat, errors } = validateCategoryConfig({
+    branchId,
+    cfg: catConfig,
+    items,
+  });
   if (errors.length) {
     console.error(`✗ ${branchId}: ${errors.length} 个问题`);
     for (const e of errors.slice(0, 40)) console.error('  ' + e);
@@ -57,8 +50,7 @@ for (const branchId of branchDirs) {
 
   async function descFor(slug) {
     const raw = await FS.readFile(path.join(dir, `${slug}.md`), 'utf8');
-    const m = raw.match(/\n={1,}([\s\S]*?)##/i);
-    return m ? m[1].replace(/[\r\n|]/g, ' ').replace(/\|/g, '\\|').trim() : '';
+    return parseSource(raw).desc.replace(/\|/g, '\\|');
   }
 
   const branchName = branchNames.get(branchId) || branchId;
@@ -73,12 +65,13 @@ for (const branchId of branchDirs) {
     '| 分类 | id | 条目数 |',
     '|---|---|---:|',
   ];
-  for (const c of categories) lines.push(`| ${c.name} | \`${c.id}\` | ${byCat[c.id].length} |`);
+  for (const c of categories) lines.push(`| ${c.name} | \`${c.id}\` | ${byCat.get(c.id).length} |`);
   lines.push(`| **合计** | | **${files.length}** |`, '');
 
   for (const c of categories) {
+    const slugs = byCat.get(c.id).map((item) => item.n).sort();
     lines.push(`## ${c.name}(\`${c.id}\`)`, '', c.desc, '', '| slug | 简述 |', '|---|---|');
-    for (const slug of [...byCat[c.id]].sort()) {
+    for (const slug of slugs) {
       lines.push(`| \`${slug}\` | ${await descFor(slug)} |`);
     }
     lines.push('');
@@ -88,7 +81,7 @@ for (const branchId of branchDirs) {
   await FS.mkdir(OUT_DIR, { recursive: true });
   await FS.writeFile(outPath, lines.join('\n'));
   console.log(`✓ ${path.relative(ROOT, outPath)}(${files.length} 条)`);
-  for (const c of categories) console.log(`  ${c.name.padEnd(10)} ${byCat[c.id].length}`);
+  for (const c of categories) console.log(`  ${c.name.padEnd(10)} ${byCat.get(c.id).length}`);
   rendered++;
 }
 

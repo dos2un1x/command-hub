@@ -7,9 +7,8 @@
       </div>
       <div class="search">
           <ul class="search-list" id="result"></ul>
-          <input type="text" class="query" id="query" autocomplete="off" autofocus="autofocus" placeholder="<%= placeholder %>"/>
+          <input type="text" class="query" id="query" autocomplete="off" aria-label="站内搜索"<% if (current_path === '/list.html') { %> autofocus="autofocus"<% } %> placeholder="<%= placeholder %>"/>
           <div class="enter-input">
-              <input type="hidden" id="current_path" value="<%= current_path %>">
               <input type="hidden" id="root_prefix" value="<%= relative_path %>">
               <button id="search_btn">搜索</button>
           </div>
