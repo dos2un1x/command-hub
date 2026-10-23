@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # command/ 是私有内容子模块；CI 用只读 Deploy Key 拉取。
+          submodules: recursive
+          ssh-key: ${{ secrets.COMMAND_DEPLOY_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

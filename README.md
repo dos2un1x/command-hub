@@ -17,10 +17,35 @@ npm run build      # 构建到 build/
 npx serve build     # 或 python3 -m http.server -d build 8000
 ```
 
+### 内容源是私有子模块
+
+`command/` 是私有仓库 `dos2un1x/command` 的 git submodule。公开 clone 只包含站点代码；没有该仓库读取权限时，`npm run build` / `npm run verify` 会提示初始化子模块并停止。
+
+有权限的人首次拉取后执行:
+
+```bash
+git submodule update --init --recursive
+```
+
+也可以直接 `git clone --recurse-submodules git@github.com:dos2un1x/command-hub.git`。
+
+内容变更在 `command/` 子模块内提交并推送，然后在 `command-hub` 提交更新后的子模块指针:
+
+```bash
+git -C command add .
+git -C command commit -m "content: ..."
+git -C command push
+
+git add command
+git commit -m "chore(content): 更新 command 子模块"
+```
+
+GitHub Actions 用只读 Deploy Key 拉取该子模块；没有权限的公开贡献者可以运行 `npm test`，但不能完整构建。站点发布后的 HTML/搜索索引仍然是公开的，私有化保护的是 Markdown 源与提交历史。
+
 ## 目录结构
 
 ```
-command/<分支>/<slug>.md   内容源(Markdown)
+command/<分支>/<slug>.md   内容源(Markdown,私有子模块)
 branches.json              分支注册表
 template/                  EJS 模板
 template/snake.ejs         贪吃蛇小游戏页(非命令页)

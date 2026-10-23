@@ -2,6 +2,8 @@
 
 写给「往本站加页面」的人(以及 AI agent)。遵守本规范,构建就不会失败。
 
+> `command/` 是私有仓库 `dos2un1x/command` 的 git submodule。没有该仓库读取权限时，`npm test` 仍可运行，但 `npm run build` / `npm run verify` 会提示初始化子模块并停止。内容改动要提交到 `command` 子模块仓库，再在 `command-hub` 更新子模块指针，详见根目录 README。
+
 ## 新增一个命令页
 
 在对应分支目录下新建 `command/<分支>/<slug>.md`:

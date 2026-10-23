@@ -8,8 +8,10 @@ import FS from 'node:fs/promises';
 import path from 'node:path';
 import {
   RESERVED,
+  contentInitError,
   isValidSlug,
   parseSource,
+  readCommandEntries,
   validateCategoryConfig,
 } from './lib/content.mjs';
 
@@ -32,7 +34,12 @@ for (const b of config.branches) {
   }
 }
 
-const entries = await FS.readdir(COMMAND_DIR, { withFileTypes: true });
+const entries = await readCommandEntries(COMMAND_DIR);
+const initError = contentInitError(entries);
+if (initError) {
+  console.log(`\n✗ ${initError}`);
+  process.exit(1);
+}
 
 for (const e of entries) {
   if (e.isFile() && e.name.endsWith('.md')) {

@@ -3,9 +3,35 @@
  *
  * build/validate/render-category-map 共用这一份规则，避免三处逻辑漂移。
  */
+import FS from 'node:fs/promises';
 
 /** 分支内的保留名:index 会覆盖分支落地页,其余与根页面同名,便于统一约束。 */
 export const RESERVED = new Set(['index', 'list', 'hot', 'review', 'diagnose']);
+
+/**
+ * 读取 command/ 的条目;目录不存在时返回空数组。
+ *
+ * command/ 现在是私有内容子模块。未初始化时目录可能不存在,
+ * 由 contentInitError 给出可操作的提示,而不是抛 ENOENT。
+ */
+export async function readCommandEntries(dir) {
+  try {
+    return await FS.readdir(dir, { withFileTypes: true });
+  } catch (e) {
+    if (e.code === 'ENOENT') return [];
+    throw e;
+  }
+}
+
+/** 私有内容子模块为空时的提示;已初始化返回空字符串。 */
+export function contentInitError(entries) {
+  if (entries.length) return '';
+  return [
+    'command/ 内容为空:它是私有内容子模块,不是普通目录。',
+    '  请先运行:git submodule update --init --recursive',
+    '  并确认当前 GitHub 账号对 dos2un1x/command 有读取权限。',
+  ].join('\n');
+}
 
 /** 清理命令名:剥离 BOM 与零宽字符 */
 export function sanitizeCommandName(value) {

@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   RESERVED,
+  contentInitError,
   countLearningPaths,
   isValidSlug,
   parseSelfTests,
   parseSource,
+  readCommandEntries,
   sanitizeCommandName,
   validateCategoryConfig,
 } from '../scripts/lib/content.mjs';
@@ -143,6 +145,17 @@ test('validateCategoryConfig:重复分类 id 会报错且不重复建分类', ()
   assert.match(result.errors.join('\n'), /分类 id 重复: file/);
   assert.equal(result.list.length, 2);
   assert.equal(result.byCat.get('file').length, 1);
+});
+
+test('contentInitError:command 为空时提示初始化私有子模块', () => {
+  const message = contentInitError([]);
+  assert.match(message, /git submodule update --init --recursive/);
+  assert.match(message, /dos2un1x\/command/);
+  assert.equal(contentInitError([{ name: 'linux' }]), '');
+});
+
+test('readCommandEntries:目录不存在时返回空数组,便于给出初始化提示', async () => {
+  assert.deepEqual(await readCommandEntries('/definitely/not/a/command/dir'), []);
 });
 
 test('validateCategoryConfig:没有分类或缺少 name/desc 会报错', () => {

@@ -12,10 +12,12 @@ import UglifyJS from 'uglify-js';
 import { create } from 'markdown-to-html-cli';
 import {
   RESERVED,
+  contentInitError,
   countLearningPaths,
   isValidSlug,
   parseSelfTests,
   parseSource,
+  readCommandEntries,
   validateCategoryConfig,
 } from './lib/content.mjs';
 import {
@@ -72,7 +74,9 @@ const V = await assetVersion();
 
 /** 扫描 command/<branch>/*.md */
 async function readSources(branches) {
-  const entries = await FS.readdir(COMMAND_DIR, { withFileTypes: true });
+  const entries = await readCommandEntries(COMMAND_DIR);
+  const initError = contentInitError(entries);
+  if (initError) throw new Error(initError);
   const stray = entries.filter((e) => e.isFile() && e.name.endsWith('.md'));
   if (stray.length) {
     throw new Error(
