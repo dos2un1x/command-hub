@@ -490,6 +490,8 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 扫码添加微信、加入交流群，或赞赏支持。
 
+需要 `command` 私有子模块权限以完整构建？请扫码添加作者微信或加入交流群，并附上你的 GitHub 账号与用途。
+
 | 加我微信 | 加入交流群 | 赞赏支持 |
 | :---: | :---: | :---: |
 | <img src="images/wechat-user.jpg" width="220" alt="dos2unix 微信二维码"> | <img src="images/wechat-group.jpg" width="220" alt="command-hub 微信交流群二维码"> | <img src="images/wechat-reward.jpg" width="220" alt="dos2unix 赞赏码"> |
