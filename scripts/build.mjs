@@ -16,6 +16,7 @@ import {
   countLearningPaths,
   isStrayRootMarkdown,
   isValidSlug,
+  missingHotCommands,
   parseSelfTests,
   parseSource,
   readCommandEntries,
@@ -354,6 +355,11 @@ const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
     return true;
   })
   .slice(0, 52);
+
+const missingHot = missingHotCommands(HOT_COMMAND_NAMES, byName);
+if (missingHot.length) {
+  console.log(`  警告:热门命令没有对应页面: ${missingHot.join(', ')}`);
+}
 
 const byBranch = {};
 for (const b of branches) byBranch[b.id] = [];

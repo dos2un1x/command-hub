@@ -8,6 +8,7 @@
     "build": "node scripts/build.mjs",
     "test": "node --test",
     "validate": "node scripts/validate.mjs",
+    "content-report": "node scripts/content-report.mjs",
     "check-links": "node scripts/check-links.mjs",
     "category-map": "node scripts/render-category-map.mjs",
     "baidu:push": "node scripts/baidu-push.mjs",

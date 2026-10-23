@@ -11,6 +11,7 @@ import {
   contentInitError,
   isStrayRootMarkdown,
   isValidSlug,
+  missingHotCommands,
   parseSource,
   readCommandEntries,
   validateCategoryConfig,
@@ -109,6 +110,11 @@ for (const b of config.branches) {
   } catch (e) {
     if (e.code !== 'ENOENT') throw e;
   }
+}
+
+const missingHot = missingHotCommands(config.site?.hotCommands || [], names);
+if (missingHot.length) {
+  errors.push(`branches.json 的 hotCommands 引用了不存在的页面: ${missingHot.join(', ')}`);
 }
 
 const dupes = [...names.entries()].filter(([, brs]) => brs.length > 1);

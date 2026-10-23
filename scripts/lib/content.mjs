@@ -38,6 +38,16 @@ export function isStrayRootMarkdown(name) {
   return name.endsWith('.md') && name !== 'README.md';
 }
 
+/** 热门命令必须能解析到页面;返回缺失的名字(去重,保持声明顺序)。 */
+export function missingHotCommands(hotNames, pagesByName) {
+  const seen = new Set();
+  return (Array.isArray(hotNames) ? hotNames : []).filter((name) => {
+    if (seen.has(name)) return false;
+    seen.add(name);
+    return !pagesByName.has(name);
+  });
+}
+
 /** 清理命令名:剥离 BOM 与零宽字符 */
 export function sanitizeCommandName(value) {
   return String(value || '')

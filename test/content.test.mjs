@@ -6,6 +6,7 @@ import {
   countLearningPaths,
   isStrayRootMarkdown,
   isValidSlug,
+  missingHotCommands,
   parseSelfTests,
   parseSource,
   readCommandEntries,
@@ -184,4 +185,13 @@ test('validateCategoryConfig:没有分类或缺少 name/desc 会报错', () => {
     },
   });
   assert.match(broken.errors.join('\n'), /分类 file 缺少 name 或 desc/);
+});
+
+test('missingHotCommands:找出热门列表里没有对应页面的条目', () => {
+  const names = new Map([
+    ['ls', ['linux']],
+    ['kubectl', ['k8s']],
+  ]);
+  assert.deepEqual(missingHotCommands(['ls', 'vim', 'kubectl', 'vim'], names), ['vim']);
+  assert.deepEqual(missingHotCommands(['ls'], names), []);
 });
