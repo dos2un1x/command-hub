@@ -21,10 +21,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # command/ 是私有内容子模块；CI 用只读 Deploy Key 拉取。
-          submodules: recursive
-          ssh-key: ${{ secrets.COMMAND_DEPLOY_KEY }}
+
+      - name: Checkout private content submodule
+        env:
+          COMMAND_DEPLOY_KEY: ${{ secrets.COMMAND_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$COMMAND_DEPLOY_KEY" > ~/.ssh/command_deploy_key
+          chmod 600 ~/.ssh/command_deploy_key
+          trap 'rm -f ~/.ssh/command_deploy_key' EXIT
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/command_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new' \
+            git submodule update --init --recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
