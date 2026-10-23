@@ -9,6 +9,7 @@ import path from 'node:path';
 import {
   RESERVED,
   contentInitError,
+  isStrayRootMarkdown,
   isValidSlug,
   parseSource,
   readCommandEntries,
@@ -42,7 +43,7 @@ if (initError) {
 }
 
 for (const e of entries) {
-  if (e.isFile() && e.name.endsWith('.md')) {
+  if (e.isFile() && isStrayRootMarkdown(e.name)) {
     errors.push(`command/ 根目录下的 ${e.name} 必须归入分支目录`);
   }
   if (e.isDirectory() && !declared.has(e.name)) {

@@ -14,6 +14,7 @@ import {
   RESERVED,
   contentInitError,
   countLearningPaths,
+  isStrayRootMarkdown,
   isValidSlug,
   parseSelfTests,
   parseSource,
@@ -77,7 +78,7 @@ async function readSources(branches) {
   const entries = await readCommandEntries(COMMAND_DIR);
   const initError = contentInitError(entries);
   if (initError) throw new Error(initError);
-  const stray = entries.filter((e) => e.isFile() && e.name.endsWith('.md'));
+  const stray = entries.filter((e) => e.isFile() && isStrayRootMarkdown(e.name));
   if (stray.length) {
     throw new Error(
       `command/ 根目录下不应有 .md 文件(必须归入分支目录):${stray.map((e) => e.name).join(', ')}`

@@ -33,6 +33,11 @@ export function contentInitError(entries) {
   ].join('\n');
 }
 
+/** command 根目录只允许 README.md 作为仓库说明;其余 .md 必须归入分支目录。 */
+export function isStrayRootMarkdown(name) {
+  return name.endsWith('.md') && name !== 'README.md';
+}
+
 /** 清理命令名:剥离 BOM 与零宽字符 */
 export function sanitizeCommandName(value) {
   return String(value || '')

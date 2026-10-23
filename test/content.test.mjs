@@ -4,6 +4,7 @@ import {
   RESERVED,
   contentInitError,
   countLearningPaths,
+  isStrayRootMarkdown,
   isValidSlug,
   parseSelfTests,
   parseSource,
@@ -156,6 +157,14 @@ test('contentInitError:command 为空时提示初始化私有子模块', () => {
 
 test('readCommandEntries:目录不存在时返回空数组,便于给出初始化提示', async () => {
   assert.deepEqual(await readCommandEntries('/definitely/not/a/command/dir'), []);
+});
+
+test('isStrayRootMarkdown:只允许根目录 README.md', () => {
+  assert.equal(isStrayRootMarkdown('README.md'), false);
+  assert.equal(isStrayRootMarkdown('readme.md'), true);
+  assert.equal(isStrayRootMarkdown('notes.md'), true);
+  assert.equal(isStrayRootMarkdown('README'), false);
+  assert.equal(isStrayRootMarkdown('categories.json'), false);
 });
 
 test('validateCategoryConfig:没有分类或缺少 name/desc 会报错', () => {
