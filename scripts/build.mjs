@@ -14,6 +14,7 @@ import {
   RESERVED,
   contentInitError,
   countLearningPaths,
+  hasRelatedSection,
   isStrayRootMarkdown,
   isValidSlug,
   missingHotCommands,
@@ -670,7 +671,8 @@ await pmap(items, 8, async (it) => {
   const b = branches.find((x) => x.id === it.b);
   const list = byBranch[it.b];
   const idx = list.findIndex((x) => x.n === it.n);
-  const related = relatedFor(it, list);
+  // 正文已有手工维护的相关命令时，不再渲染按字母序补齐的自动区块，避免同名区块重复。
+  const related = hasRelatedSection(it.md) ? [] : relatedFor(it, list);
   const prevItem = idx > 0 ? list[idx - 1] : null;
   const nextItem = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
   const dText = sentenceText(it.d).replace(/^(是|用于|用来|可以|主要)+/, '');

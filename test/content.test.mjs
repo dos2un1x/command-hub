@@ -4,6 +4,7 @@ import {
   RESERVED,
   contentInitError,
   countLearningPaths,
+  hasRelatedSection,
   isStrayRootMarkdown,
   isValidSlug,
   missingHotCommands,
@@ -194,4 +195,12 @@ test('missingHotCommands:找出热门列表里没有对应页面的条目', () =
   ]);
   assert.deepEqual(missingHotCommands(['ls', 'vim', 'kubectl', 'vim'], names), ['vim']);
   assert.deepEqual(missingHotCommands(['ls'], names), []);
+});
+
+test('hasRelatedSection:识别二级和三级相关区块', () => {
+  assert.equal(hasRelatedSection('## 相关命令\n'), true);
+  assert.equal(hasRelatedSection('### 相关条目\n'), true);
+  assert.equal(hasRelatedSection('正文\n### 相关命令\n- x\n'), true);
+  assert.equal(hasRelatedSection('## 参考链接\n'), false);
+  assert.equal(hasRelatedSection(''), false);
 });

@@ -38,6 +38,11 @@ export function isStrayRootMarkdown(name) {
   return name.endsWith('.md') && name !== 'README.md';
 }
 
+/** 正文是否已有手工维护的相关命令/相关条目区块(二级或三级标题)。 */
+export function hasRelatedSection(md) {
+  return /^#{2,3} (相关命令|相关条目)\s*$/m.test(String(md || ''));
+}
+
 /** 热门命令必须能解析到页面;返回缺失的名字(去重,保持声明顺序)。 */
 export function missingHotCommands(hotNames, pagesByName) {
   const seen = new Set();
