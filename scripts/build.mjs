@@ -26,6 +26,7 @@ import {
 } from './lib/content.mjs';
 import { extractToc, insertToc, shouldShowToc } from './lib/toc.mjs';
 import { pickFeatured } from './lib/featured.mjs';
+import { applyAliases } from './lib/search-alias.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -409,8 +410,17 @@ await FS.copyFile(path.join(ROOT, 'images', 'favicon.ico'), path.join(OUT_DIR, '
   await write(path.join(OUT_DIR, 'js', 'index.js'), min.code);
 }
 
-// 搜索索引
-const dt = `var commands=${JSON.stringify(items.map(({ n, p, d, b }) => ({ n, p, d, b })))};\n` +
+// 搜索索引(合并别名;配置了不存在的页面时构建失败)
+const SEARCH_ALIASES = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'search-aliases.json'), 'utf8')
+);
+const aliased = applyAliases(items, SEARCH_ALIASES);
+if (aliased.unknown.length) {
+  throw new Error(`search-aliases: 找不到页面 ${aliased.unknown.join(', ')}`);
+}
+const dt = `var commands=${JSON.stringify(
+  aliased.items.map(({ n, p, d, b, a }) => ({ n, p, d, b, ...(a ? { a } : {}) }))
+)};\n` +
   `var branches=${JSON.stringify(branches.map(({ id, name, desc }) => ({ id, name, desc })))};\n`;
 const questionsJson = JSON.stringify(reviewQuestions);
 // 数据版本只跟随搜索索引/题库/诊断数据变化,与 CSS/JS 的资源版本分开。

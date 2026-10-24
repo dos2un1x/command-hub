@@ -191,11 +191,13 @@ new (class {
     const limit = full ? this.page_size : this.query_size;
     const nameHits = [];
     const descHits = [];
+    const aliasHits = [];
 
     if (Array.isArray(list) && size) {
       for (let i = 0; i < size && list[i]; i++) {
         const nIdx = this.isSreachIndexOF(list[i].n, this.query);
         const dIdx = this.isSreachIndexOF(list[i].d, this.query);
+        const aIdx = this.isSreachIndexOF(list[i].a || '', this.query);
         const item = list[i];
         if (indexOfCatch(nIdx)) {
           item.nIdx = nIdx;
@@ -203,13 +205,18 @@ new (class {
         } else if (indexOfCatch(dIdx)) {
           item.dIdx = dIdx;
           descHits.push(item);
+        } else if (indexOfCatch(aIdx)) {
+          // 别名命中排在名称/描述之后,但仍参与高亮与跳转。
+          item.nIdx = 100000 + aIdx;
+          aliasHits.push(item);
         }
       }
     }
 
     nameHits.sort(sortArray);
     descHits.sort(sortArray);
-    nameHits.concat(descHits).slice(0, limit).forEach((item) => {
+    aliasHits.sort(sortArray);
+    nameHits.concat(descHits, aliasHits).slice(0, limit).forEach((item) => {
       out.push(this.createKeyworldsHTML(item, this.query, full));
     });
 
