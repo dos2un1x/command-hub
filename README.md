@@ -79,7 +79,10 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 故障演练:教程分支 `lab` 类目的 22 页(12 个基础 + 10 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;`lab-learning-path` 给出四周基础计划和进阶插入方式。
 - 故障复盘:排障分支的 15 篇匿名化合成案例(如 `incident-dns-ndots`、`incident-etcd-quorum`),按“现象 → 时间线 → 影响面 → 误导线索 → 根因 → 修复 → 预防”展开,用于练习从错误线索中收敛。
 - 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织。
-- 读完自测:全部 1,979 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 5,937 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 平台生命周期:`platform-lifecycle-matrix` 汇总操作系统、Kubernetes 与 DevOps 工具的支持窗口和升级节点;`version-eol-matrix` 继续维护 K8s/AI/中间件的版本与 EOL。
+- 公开事故复盘:指南分支收录 AWS S3、GitLab、GitHub、Cloudflare、CircleCI 等公开事故的摘要与检查清单,事实以原始报告为准。
+- 精确错误页:排障分支覆盖 `x509`、`connection reset`、`context deadline exceeded`、`i/o timeout`、`TLS handshake timeout` 等精确报错;Windows/macOS 排障单独成类。
+- 读完自测:全部 2,004 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,012 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
@@ -228,7 +231,7 @@ EOL 断言的页面,对照 `assets/data/content-freshness.json` 里的最后核�
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,085 个 HTML、1,979 个内容页、sitemap 2,080 条、站内链接 70,968 条(校验零 404)。
+当前构建规模:2,113 个 HTML、2,004 个内容页、sitemap 2,108 条、站内链接 72,047 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
