@@ -15,7 +15,29 @@
   <span class="current"><%= typeof displayName !== 'undefined' && displayName ? displayName : describe.n %></span>
 </nav>
 
+<% if (learningLink) { %>
+<a class="learning-link" href="<%= relative_path %><%= learningLink.p.replace(/^\//, '') %>.html">
+  <span>系统学习</span>
+  <strong><%= learningLink.d %></strong>
+  <span aria-hidden="true">→</span>
+</a>
+<% } %>
+
 <%- mdhtml %>
+
+<% if (troubleshootLinks && troubleshootLinks.length) { %>
+<aside class="troubleshoot-links" aria-label="遇到问题">
+  <h2>遇到问题?</h2>
+  <ul>
+  <% troubleshootLinks.forEach(function (link) { %>
+    <li>
+      <a href="<%= relative_path %><%= link.p.replace(/^\//, '') %>.html"><%= link.n %></a>
+      <span><%= link.d %></span>
+    </li>
+  <% }); %>
+  </ul>
+</aside>
+<% } %>
 
 <% if (related && related.length) { %>
 <nav class="related-commands" aria-label="相关命令">

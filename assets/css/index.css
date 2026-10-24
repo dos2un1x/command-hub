@@ -305,6 +305,22 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 [data-color-mode*='dark'] .related-desc{color:#aaa}
 @media screen and (max-width:560px){.related-grid{grid-template-columns:1fr}}
 
+/* ===== 详情页系统学习入口 ===== */
+.learning-link{display:flex;align-items:center;gap:8px;margin:0 0 18px;padding:8px 12px;border:1px solid var(--color-header-border);border-radius:8px;font-size:13px;line-height:1.5;color:inherit;background:var(--color-theme-bg)}
+.learning-link:hover{background:var(--color-hover)}
+.learning-link span:first-child{flex:0 0 auto;padding:1px 7px;border-radius:9px;font-size:11px;color:#fff;background:#2196f3}
+.learning-link strong{font-weight:600;color:#2196f3}
+
+/* ===== 命令页排障入口 ===== */
+.troubleshoot-links{margin:30px 0 0;padding:14px 18px;border:1px solid var(--color-header-border);border-left:3px solid #e8710a;border-radius:8px;background:var(--color-theme-bg)}
+.troubleshoot-links h2{margin:0 0 8px;padding:0;border-bottom:0;font-size:14px;font-weight:700}
+.troubleshoot-links ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 16px;margin:0;padding:0;list-style:none}
+.troubleshoot-links li{display:flex;flex-direction:column;gap:2px;margin:0;list-style:none;font-size:13px;line-height:1.5}
+.troubleshoot-links a{color:#2196f3;font-weight:700}
+.troubleshoot-links span{font-size:12px;color:#777}
+[data-color-mode*='dark'] .troubleshoot-links span{color:#aaa}
+@media screen and (max-width:700px){.troubleshoot-links ul{grid-template-columns:1fr}}
+
 /* ===== 长页目录 ===== */
 .page-toc{margin:0 0 22px;padding:14px 18px;border:1px solid var(--color-header-border);border-radius:8px;background:var(--color-theme-bg)}
 .page-toc h2{margin:0 0 8px;padding:0;border-bottom:0;font-size:14px;font-weight:700}

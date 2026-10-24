@@ -1,0 +1,12 @@
+{
+  "linux": "linux-learning-path",
+  "k8s": "k8s-learning-path",
+  "devops": "devops-learning-path",
+  "middleware": "middleware-learning-path",
+  "ai": "ai-learning-path",
+  "macos": "macos-learning-path",
+  "windows": "windows-learning-path",
+  "tutorial": "lab-learning-path",
+  "troubleshoot": "troubleshoot-learning-path",
+  "guide": "learning-paths"
+}

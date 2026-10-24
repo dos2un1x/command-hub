@@ -78,7 +78,8 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`、`observability-mental-model`。
 - 故障演练:教程分支 `lab` 类目的 22 页(12 个基础 + 10 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;`lab-learning-path` 给出四周基础计划和进阶插入方式。
 - 故障复盘:排障分支的 15 篇匿名化合成案例(如 `incident-dns-ndots`、`incident-etcd-quorum`),按“现象 → 时间线 → 影响面 → 误导线索 → 根因 → 修复 → 预防”展开,用于练习从错误线索中收敛。
-- 读完自测:全部 1,954 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 5,862 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织。
+- 读完自测:全部 1,979 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 5,937 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
@@ -89,6 +90,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 面包屑、上一条/下一条与手工维护的 `## 相关命令` 区块保持原样;页面已有手工相关命令时不再叠加自动推荐。
 - 分类页会显示“先读这三篇”,由 `assets/data/category-featured.json` 配置;构建期校验 slug 必须属于该分类,写错直接失败。
 - 搜索支持别名(如 `k8s` → kubectl、`ripgrep` → rg、`fdfind` → fd),配置在 `assets/data/search-aliases.json`。
+- 命令页底部有“遇到问题?”入口,按 `assets/data/troubleshoot-links.json` 链到对应排障页;顶部按分支显示“系统学习”入口。
 
 新增工具或概念页时,建议在页尾补 `## 读完自测`;学习路径、心智模型和故障演练的写法见 CONTRIBUTING。所有内容页的站内链接统一用相对路径(`../k8s/pod.html`),因此 `public/` 可以在站点根、子路径或本地 `file://` 下直接预览。
 
@@ -226,7 +228,7 @@ EOL 断言的页面,对照 `assets/data/content-freshness.json` 里的最后核�
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,058 个 HTML、1,953 个内容页、sitemap 2,053 条、站内链接 67,865 条(校验零 404)。
+当前构建规模:2,084 个 HTML、1,979 个内容页、sitemap 2,079 条、站内链接 70,927 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 

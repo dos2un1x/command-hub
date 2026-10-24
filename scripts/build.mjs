@@ -27,6 +27,8 @@ import {
 import { extractToc, insertToc, shouldShowToc } from './lib/toc.mjs';
 import { pickFeatured } from './lib/featured.mjs';
 import { applyAliases } from './lib/search-alias.mjs';
+import { selectTroubleshootLinks } from './lib/troubleshoot-links.mjs';
+import { learningLinkFor } from './lib/learning-link.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -337,6 +339,34 @@ for (const [key, slugs] of Object.entries(FEATURED)) {
     if (!catItems.some((it) => it.n === slug)) {
       throw new Error(`category-featured: ${key} 中的 ${slug} 不存在或不属于该分类`);
     }
+  }
+}
+
+// 命令页的“遇到问题?”入口:目标必须是真实存在的排障页。
+const TROUBLESHOOT_LINKS = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'troubleshoot-links.json'), 'utf8')
+);
+const troubleshootByName = new Map(
+  items.filter((it) => it.b === 'troubleshoot').map((it) => [it.n, it])
+);
+for (const [name, slugs] of Object.entries(TROUBLESHOOT_LINKS)) {
+  for (const slug of slugs) {
+    if (!troubleshootByName.has(slug)) {
+      throw new Error(`troubleshoot-links: ${name} 指向的 ${slug} 不存在`);
+    }
+  }
+}
+
+// 详情页“系统学习”入口:映射目标必须是真实存在的指南页。
+const LEARNING_LINKS = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'learning-links.json'), 'utf8')
+);
+const guideByName = new Map(
+  items.filter((it) => it.b === 'guide').map((it) => [it.n, it])
+);
+for (const [branch, slug] of Object.entries(LEARNING_LINKS)) {
+  if (!guideByName.has(slug)) {
+    throw new Error(`learning-links: ${branch} 指向的 ${slug} 不存在`);
   }
 }
 
@@ -706,6 +736,7 @@ await pmap(items, 8, async (it) => {
   }
   const cats = categoriesByBranch.get(it.b);
   const category = cats ? cats.list.find((c) => c.id === it.cat) || null : null;
+  const learningLink = learningLinkFor(it.b, LEARNING_LINKS, guideByName);
   const html = await render('details.ejs', base({
     relative_path: '../',
     current_path: it.p + '.html',
@@ -726,6 +757,11 @@ await pmap(items, 8, async (it) => {
     ogType: 'article',
     category,
     related,
+    learningLink: learningLink && learningLink.n !== it.n ? learningLink : null,
+    troubleshootLinks: selectTroubleshootLinks(
+      troubleshootByName,
+      TROUBLESHOOT_LINKS[it.n] || []
+    ),
     prevItem,
     nextItem,
     mdhtml,
