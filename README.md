@@ -77,7 +77,8 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(通常 7–13 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`;另有可观测性、数据库、网络三条跨域路径。
 - 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`、`observability-mental-model`。
 - 故障演练:教程分支 `lab` 类目的 22 页(12 个基础 + 10 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;`lab-learning-path` 给出四周基础计划和进阶插入方式。
-- 读完自测:全部 1,953 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 5,859 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 读完自测:全部 1,954 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 5,862 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
 ## 详情页阅读体验
@@ -194,6 +195,8 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 ```bash
 npm run validate       # 命名与结构校验
 npm run check-links    # 产物内链完整性(零 404)
+npm run freshness      # 版本敏感页的最后核对日期与过期检查
+npm run quiz-audit     # 自测题质量(答案过短、缺少原因的是非题)
 npm run verify         # validate + build + check-links
 npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接上传)
 ```
@@ -202,6 +205,11 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 `zip` 并排除 `__MACOSX`/`.DS_Store`(Linux/Windows 解包不会多出一堆 `._*`),
 完成后还会自检条目数与解压体积。`public/` 与 `public.zip` 均为本地暂存产物,
 每次发布重新生成。
+
+`npm run freshness` 默认扫描 AI、Kubernetes、中间件三个分支中包含较多版本号/日期/
+EOL 断言的页面,对照 `assets/data/content-freshness.json` 里的最后核对日期,列出
+未登记与超过 180 天的页面;`--all` 扫描全部分支,`--strict` 在有未登记/过期页面时
+返回非零退出码。完成一次审计后,把对应页面路径与日期写进登记表即可。
 
 ## SEO 产物
 
