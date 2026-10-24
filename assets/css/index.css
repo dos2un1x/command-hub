@@ -256,6 +256,16 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 .category-page .breadcrumb a{color:#2196f3}
 .category-page .breadcrumb .sep{color:#bbb}
 .category-page .category-links{margin-top:18px}
+.category-featured{margin:0 0 26px;padding:16px 18px;border:1px solid var(--color-header-border);border-radius:9px;background:var(--color-theme-bg)}
+.category-featured h2{margin:0 0 10px;font-size:15px;font-weight:700}
+.category-featured ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.category-featured li{margin:0;list-style:none}
+.category-featured a{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border:1px solid var(--color-header-border);border-radius:7px;color:inherit}
+.category-featured a:hover{background:var(--color-hover)}
+.featured-name{font-size:14px;font-weight:700;color:#2196f3}
+.featured-desc{font-size:12px;line-height:1.55;color:#777}
+[data-color-mode*='dark'] .featured-desc{color:#aaa}
+@media screen and (max-width:700px){.category-featured ol{grid-template-columns:1fr}}
 
 /* ===== 分支页 / 全部命令页标题 ===== */
 .hotlist-title{margin:0 0 8px;font-size:22px;line-height:1.4;font-weight:700}

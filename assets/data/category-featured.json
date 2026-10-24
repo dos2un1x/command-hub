@@ -1,0 +1,22 @@
+{
+  "linux/file": ["ls", "cp", "find"],
+  "linux/text": ["grep", "awk", "sed"],
+  "linux/process": ["ps", "top", "kill"],
+  "linux/network": ["curl", "ss", "tcpdump"],
+  "linux/disk": ["df", "du", "mount"],
+  "k8s/workload": ["deployment", "pod", "hpa"],
+  "k8s/network": ["service", "ingress", "network-troubleshooting"],
+  "k8s/storage": ["pvc", "storageclass", "csi"],
+  "k8s/security": ["rbac", "seccomp", "pod-security-admission"],
+  "k8s/observability": ["prometheus", "metrics-server", "kubectl-cost"],
+  "ai/inference": ["vllm", "sglang", "quantization"],
+  "ai/rag": ["chunking", "hybrid-search", "reranker"],
+  "ai/eval": ["llm-as-judge", "prompt-injection", "deepeval"],
+  "troubleshoot/k8s": ["crashloopbackoff", "pod-pending", "node-notready"],
+  "troubleshoot/network": ["connection-timeout", "dns-resolution-failed", "502-bad-gateway"],
+  "middleware/data": ["redis-cluster", "postgresql", "pgbouncer"],
+  "middleware/messaging": ["kafka", "rabbitmq"],
+  "middleware/vector": ["milvus", "qdrant", "weaviate"],
+  "middleware/workflow": ["airflow", "temporal", "prefect"],
+  "guide/cheatsheet": ["kubectl-cheatsheet", "k8s-troubleshooting-cheatsheet", "bash-cheatsheet"]
+}

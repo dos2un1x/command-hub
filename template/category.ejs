@@ -14,6 +14,21 @@
     <a class="category-chip<% if (c.id === category.id) { %> is-active<% } %>" href="../<%= c.id %>/"><%= c.name %><span><%= c.count %></span></a>
   <% }); %>
   </nav>
+  <% if (featured && featured.length) { %>
+  <section class="category-featured" aria-label="先读这三篇">
+    <h2>先读这三篇</h2>
+    <ol>
+    <% featured.forEach(function (page) { %>
+      <li>
+        <a href="<%= branchPrefix %><%= page.n %>.html">
+          <span class="featured-name"><%= page.n %></span>
+          <span class="featured-desc"><%= page.d %></span>
+        </a>
+      </li>
+    <% }); %>
+    </ol>
+  </section>
+  <% } %>
   <ul>
   <% items.forEach(function (page) { %>
     <li><a href="<%= branchPrefix %><%= page.n %>.html"><%= page.n %> - <%= page.d %></a></li>

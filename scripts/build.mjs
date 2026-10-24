@@ -25,6 +25,7 @@ import {
   validateCategoryConfig,
 } from './lib/content.mjs';
 import { extractToc, insertToc, shouldShowToc } from './lib/toc.mjs';
+import { pickFeatured } from './lib/featured.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -319,6 +320,23 @@ for (const b of branches) {
     throw new Error(`command/${b.id}/categories.json:\n  ${errors.join('\n  ')}`);
   }
   categoriesByBranch.set(b.id, { list, byCat });
+}
+
+// 分类页“先读这三篇”:配置写错时在构建期直接失败,避免线上出现空推荐。
+const FEATURED = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'category-featured.json'), 'utf8')
+);
+for (const [key, slugs] of Object.entries(FEATURED)) {
+  const [branchId, catId] = key.split('/');
+  const cats = categoriesByBranch.get(branchId);
+  if (!cats) throw new Error(`category-featured: 未知分支 ${branchId}`);
+  const catItems = cats.byCat.get(catId);
+  if (!catItems) throw new Error(`category-featured: 未知分类 ${key}`);
+  for (const slug of slugs) {
+    if (!catItems.some((it) => it.n === slug)) {
+      throw new Error(`category-featured: ${key} 中的 ${slug} 不存在或不属于该分类`);
+    }
+  }
 }
 
 const categoryNavFor = (branchId) => {
@@ -734,6 +752,7 @@ for (const b of branches) {
       category: cat,
       categoryIntro: cat.longDesc || cat.desc,
       categoryNav: nav,
+      featured: pickFeatured(catItems, FEATURED[`${b.id}/${cat.id}`] || []),
       items: catItems,
       footerCount: byBranch[b.id].length,
       footerLabel: `个${b.name}命令`,
