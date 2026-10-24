@@ -20,9 +20,11 @@ import {
   missingHotCommands,
   parseSelfTests,
   parseSource,
+  pickRelated,
   readCommandEntries,
   validateCategoryConfig,
 } from './lib/content.mjs';
+import { extractToc, insertToc, shouldShowToc } from './lib/toc.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -431,31 +433,6 @@ const branchSeo = (b) => ({
     ),
 });
 
-/** 同前缀命令优先,不足 5 条用字母序邻居补齐 */
-function relatedFor(it, list) {
-  const idx = list.findIndex((x) => x.n === it.n);
-  const base = (n) => n.split('-')[0];
-  const family = list.filter(
-    (x) =>
-      x.n !== it.n &&
-      (base(x.n) === base(it.n) || x.n.startsWith(it.n) || it.n.startsWith(x.n))
-  );
-  const neighbors = [];
-  for (let d = 1; d <= 8; d++) {
-    if (list[idx - d]) neighbors.push(list[idx - d]);
-    if (list[idx + d]) neighbors.push(list[idx + d]);
-  }
-  const seen = new Set([it.n]);
-  const out = [];
-  for (const x of [...family, ...neighbors]) {
-    if (seen.has(x.n)) continue;
-    seen.add(x.n);
-    out.push(x);
-    if (out.length === 5) break;
-  }
-  return out;
-}
-
 function base(extra) {
   return {
     site,
@@ -672,7 +649,9 @@ await pmap(items, 8, async (it) => {
   const list = byBranch[it.b];
   const idx = list.findIndex((x) => x.n === it.n);
   // 正文已有手工维护的相关命令时，不再渲染按字母序补齐的自动区块，避免同名区块重复。
-  const related = hasRelatedSection(it.md) ? [] : relatedFor(it, list);
+  const related = hasRelatedSection(it.md)
+    ? []
+    : pickRelated(it, list).map((x) => ({ ...x, bn: branchNameById.get(x.b) || x.b }));
   const prevItem = idx > 0 ? list[idx - 1] : null;
   const nextItem = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
   const dText = sentenceText(it.d).replace(/^(是|用于|用来|可以|主要)+/, '');
@@ -688,6 +667,14 @@ await pmap(items, 8, async (it) => {
       )
       // H1 已经用了描述,去掉紧跟其后的重复描述段落。
       .replace(/(<h1[^>]*>[\s\S]*?<\/h1>\s*)<p>[\s\S]*?<\/p>/, '$1');
+  }
+  const toc = shouldShowToc(it.md) ? extractToc(mdhtml) : [];
+  if (toc.length) {
+    const tocHtml =
+      '<nav class="page-toc" aria-label="本页目录"><h2>本页目录</h2><ol>' +
+      toc.map((x) => `<li><a href="#${esc(x.id)}">${esc(x.text)}</a></li>`).join('') +
+      '</ol></nav>';
+    mdhtml = insertToc(mdhtml, tocHtml);
   }
   const cats = categoriesByBranch.get(it.b);
   const category = cats ? cats.list.find((c) => c.id === it.cat) || null : null;

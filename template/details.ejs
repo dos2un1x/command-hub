@@ -20,9 +20,15 @@
 <% if (related && related.length) { %>
 <nav class="related-commands" aria-label="相关命令">
   <h2>相关命令</h2>
-  <ul>
+  <ul class="related-grid">
   <% related.forEach(function (page) { %>
-    <li><a href="<%= relative_path %><%= page.b %>/<%= page.n %>.html"><%= page.n %></a> - <%= page.d %></li>
+    <li class="related-card">
+      <a class="related-card-link" href="<%= relative_path %><%= page.b %>/<%= page.n %>.html">
+        <span class="related-name"><%= page.n %></span>
+        <span class="related-branch"><%= page.bn || page.b %></span>
+      </a>
+      <p class="related-desc"><%= page.d %></p>
+    </li>
   <% }); %>
   </ul>
 </nav>

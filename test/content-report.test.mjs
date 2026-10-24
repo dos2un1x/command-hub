@@ -42,6 +42,15 @@ test('analyzePage:识别页面结构与内链数量', () => {
   assert.equal(page.chars, completePage.length);
 });
 
+test('analyzePage:三级标题的易错点与相关条目也算覆盖', () => {
+  const page = completePage
+    .replace('## 易错点与排错', '### 易错点与排错')
+    .replace('## 相关命令', '### 相关条目');
+  const analyzed = analyzePage(page);
+  assert.equal(analyzed.hasPitfalls, true);
+  assert.equal(analyzed.hasRelated, true);
+});
+
 test('analyzePage:缺少章节和空自测都算未覆盖', () => {
   const page = analyzePage('demo\n===\n描述\n## 补充说明\n\n## 读完自测\n');
   assert.equal(page.hasQuiz, false);

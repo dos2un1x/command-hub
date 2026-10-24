@@ -5,8 +5,8 @@
  */
 import { parseSelfTests } from './content.mjs';
 
-const PITFALLS = /^## (易错点与排错|易错点|常见坑|常见误区)\s*$/m;
-const RELATED = /^## (相关命令|相关条目)\s*$/m;
+const PITFALLS = /^#{2,3} (易错点与排错|易错点|常见坑|常见误区)\s*$/m;
+const RELATED = /^#{2,3} (相关命令|相关条目)\s*$/m;
 
 /** 分析单个页面是否具备关键结构。 */
 export function analyzePage(raw) {

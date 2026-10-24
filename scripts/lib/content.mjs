@@ -43,6 +43,33 @@ export function hasRelatedSection(md) {
   return /^#{2,3} (相关命令|相关条目)\s*$/m.test(String(md || ''));
 }
 
+/** 相关命令:同分类同前缀 > 同分类 > 同前缀 > 字母序邻居。 */
+export function pickRelated(it, list, limit = 5) {
+  const idx = list.findIndex((x) => x.n === it.n);
+  if (idx < 0) return [];
+  const base = (n) => String(n).split('-')[0];
+  const family = (x) =>
+    x.n !== it.n &&
+    (base(x.n) === base(it.n) || x.n.startsWith(it.n) || it.n.startsWith(x.n));
+  const sameCatFamily = list.filter((x) => x.cat && x.cat === it.cat && family(x));
+  const sameCat = list.filter((x) => x.cat && x.cat === it.cat && !family(x));
+  const otherFamily = list.filter((x) => x.cat !== it.cat && family(x));
+  const neighbors = [];
+  for (let d = 1; d <= 8; d++) {
+    if (list[idx - d]) neighbors.push(list[idx - d]);
+    if (list[idx + d]) neighbors.push(list[idx + d]);
+  }
+  const seen = new Set([it.n]);
+  const out = [];
+  for (const x of [...sameCatFamily, ...sameCat, ...otherFamily, ...neighbors]) {
+    if (seen.has(x.n)) continue;
+    seen.add(x.n);
+    out.push(x);
+    if (out.length === limit) break;
+  }
+  return out;
+}
+
 /** 热门命令必须能解析到页面;返回缺失的名字(去重,保持声明顺序)。 */
 export function missingHotCommands(hotNames, pagesByName) {
   const seen = new Set();
