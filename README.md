@@ -73,23 +73,23 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 站点在“查”之外提供一条“学”的路径,相关页面集中在指南分支的“学习路径”类目:
 
-- `/guide/learning-paths.html`:总入口,列出 12 条领域路径、12 个心智模型和 22 个故障演练,并给出六周推进建议。
+- `/guide/learning-paths.html`:总入口,列出 12 条领域路径、12 个心智模型和 26 个故障演练,并给出六周推进建议;技术选型从 `technology-selection-map` 的六条决策树进入。
 - 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(通常 7–13 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`;另有可观测性、数据库、网络三条跨域路径。
 - 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`、`observability-mental-model`。
-- 故障演练:教程分支 `lab` 类目的 22 页(12 个基础 + 10 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;`lab-learning-path` 给出四周基础计划和进阶插入方式。
+- 故障演练:教程分支 `lab` 类目的 26 页(12 个基础 + 14 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;其中 4 个变更/恢复演练覆盖 K8s 升级、证书轮换、数据库切换和 etcd 快照恢复;`lab-learning-path` 给出四周基础计划和进阶插入方式。
 - 故障复盘:排障分支的 15 篇匿名化合成案例(如 `incident-dns-ndots`、`incident-etcd-quorum`),按“现象 → 时间线 → 影响面 → 误导线索 → 根因 → 修复 → 预防”展开,用于练习从错误线索中收敛。
-- 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`、`runbook-k8s-upgrade`、`runbook-cert-rotation`、`runbook-db-failover`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织;新增页面均从事故响应手册、排障学习路径和灾难恢复页手工入链。
+- 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`、`runbook-k8s-upgrade`、`runbook-cert-rotation`、`runbook-db-failover`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织;新增页面均从事故响应手册、排障学习路径和灾难恢复页手工入链,其中升级、证书、切换和 etcd 恢复有对应的 `lab-*` 演练页。
 - 平台生命周期:`platform-lifecycle-matrix` 汇总操作系统、Kubernetes 与 DevOps 工具的支持窗口和升级节点;`version-eol-matrix` 继续维护 K8s/AI/中间件的版本与 EOL。
-- 公开事故复盘:指南分支收录 AWS S3 2017、GitLab 2017、GitHub 2018、Cloudflare 2019/2020、CircleCI 2023、Slack 2021、Datadog 2023、Roblox 2021、Facebook 2021、Google Cloud 2019、AWS Kinesis 2020 共 12 篇摘要与检查清单,事实以原始报告为准。
+- 公开事故复盘:指南分支收录 AWS S3 2017、GitLab 2017、GitHub 2018、Cloudflare 2019/2020、CircleCI 2023、Slack 2021、Datadog 2023、Roblox 2021、Facebook 2021、Google Cloud 2019、AWS Kinesis 2020 共 12 篇摘要与检查清单,事实以原始报告为准;`public-postmortem-index` 按根因分组,把事故、教训和对应 Runbook 串起来。
 - 精确错误页:排障分支覆盖 `x509`、`connection reset`、`context deadline exceeded`、`i/o timeout`、`TLS handshake timeout` 等精确报错;Windows/macOS 排障单独成类。
-- 读完自测:全部 2,011 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,033 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 读完自测:全部 2,023 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,069 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
 ## 详情页阅读体验
 
 - 长页目录:正文达到 8,000 字时,在标题与简介之后自动插入本页目录,锚点直接跳到对应章节;短页不显示,避免噪声。
-- 相关命令:自动推荐按“同分类同前缀 → 同分类 → 同前缀 → 字母序邻居”排序,以卡片形式展示命令名、所属分支与一句话说明,比纯字母邻居更贴近当前主题。
+- 相关命令:自动推荐按“同分类同前缀 → 同分类 → 同前缀 → 字母序邻居”排序,以卡片形式展示命令名、所属分支与一句话说明,比纯字母邻居更贴近当前主题;本轮又核对 100 个高频页并为其补齐 4–6 条跨工具链的手工相关命令(其中 93 页新增),中间件、教程和指南分支的相关命令覆盖达到 100%。
 - 面包屑、上一条/下一条与手工维护的 `## 相关命令` 区块保持原样;页面已有手工相关命令时不再叠加自动推荐。版本敏感页显示“版本信息最后核对”日期。
 - 分类页会显示“先读这三篇”,由 `assets/data/category-featured.json` 配置;构建期校验 slug 必须属于该分类,写错直接失败。
 - 搜索支持别名(如 `k8s` → kubectl、`ripgrep` → rg、`fdfind` → fd),配置在 `assets/data/search-aliases.json`。
@@ -231,7 +231,7 @@ EOL 断言的页面,对照 `assets/data/content-freshness.json` 里的最后核�
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,120 个 HTML、2,011 个内容页、sitemap 2,115 条、站内链接 72,392 条(校验零 404)。
+当前构建规模:2,132 个 HTML、2,023 个内容页、sitemap 2,127 条、站内链接 72,852 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -297,10 +297,10 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | macOS | 58 | BSD 文件命令、launchctl/pmset/softwareupdate/tmutil/csrutil 等系统命令、ifconfig/tcpdump/dscacheutil 等网络工具、Xcode 命令行工具与 Homebrew、diskutil/hdiutil 磁盘维护 |
 | DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
 | 排障 | 170 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
-| 指南 | 181 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘和平台生命周期矩阵;包含 12 条领域路径、12 个心智模型和 22 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| 指南 | 183 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘、复盘索引、技术选型决策地图和平台生命周期矩阵;包含 12 条领域路径、12 个心智模型和 26 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 71 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PostgreSQL/PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB,以及 RocketMQ/Dubbo/ShardingSphere/Seata/Canal/Arthas 等 Java 生态中间件 |
-| 教程 | 77 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 22 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd 等) |
-| AI 与 MLOps | 132 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册 |
+| 教程 | 81 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 26 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd/K8s 升级/数据库切换等) |
+| AI 与 MLOps | 138 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册,以及 GPU Xid、NCCL 卡死、vLLM OOM、模型加载失败、推理延迟和 Ray 调度等运行态排障 |
 
 Kubernetes 分支按方向划分:
 
@@ -365,7 +365,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支分四类(共 41 个工具对比 + 42 个速查表 + 15 个路线图/检查清单 + 22 个学习路径与心智模型):
+指南分支的主要学习内容分四类(共 41 个工具对比 + 42 个速查表 + 15 个路线图/检查清单 + 22 个学习路径与心智模型):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
@@ -405,6 +405,8 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            security-mental-model observability-mental-model
            database-mental-model network-mental-model
 ```
+
+另有两个入口页:`technology-selection-map` 用六条决策树把选型问题分流到对比页,`public-postmortem-index` 按根因把 12 篇公开复盘和 8 篇 Runbook 串起来。
 
 中间件分支按服务划分:
 
@@ -459,6 +461,7 @@ Java 生态      rocketmq dubbo shardingsphere seata canal arthas
              lab-imagepullbackoff lab-node-notready lab-certificate-expired
              lab-nginx-502 lab-helm-failed lab-kafka-rebalance
              lab-es-unassigned lab-etcd-quorum lab-mysql-replication-lag
+             lab-k8s-upgrade lab-cert-rotation lab-db-failover lab-etcd-restore
 ```
 
 AI 与 MLOps 分支按方向划分:
@@ -466,13 +469,14 @@ AI 与 MLOps 分支按方向划分:
 ```
 GPU 与加速   nvidia-smi nvitop nvtop cuda nccl dcgm-exporter
              nvidia-container-toolkit hami gpu-burn bitsandbytes flash-attn transformers
-             slurm
+             slurm gpu-xid nccl-hang
 推理与服务   ollama vllm sglang llama-server triton huggingface-cli
              tgi lmdeploy xinference openllm tensorrt-llm gpustack
              triton-inference-server ray-serve bentoml
+             vllm-oom model-load-failed inference-latency
 推理优化     vllm-tuning quantization speculative-decoding
 训练与编排   torchrun deepspeed accelerate ray kubeflow llama-factory
-             peft trl axolotl unsloth megatron-lm optuna
+             peft trl axolotl unsloth megatron-lm optuna ray-scheduling
 RAG 与应用   langchain llamaindex ragflow dify fastgpt docling
 RAG 运维     weaviate-ops chroma-ops milvus-ops graphrag reranker
 评估与安全   ragas deepeval guardrails-ai llama-guard promptfoo
@@ -493,7 +497,7 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 本站内容（除另有标注外）采用 [LICENSE](LICENSE) 的 MIT 许可，Copyright © 2026 dos2un1x。
 
-全站 2011 页，按 10 个分支、91 个分类组织：
+全站 2023 页，按 10 个分支、91 个分类组织：
 
 - Linux：862 页
 - Windows：89 页
@@ -501,10 +505,10 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 - Kubernetes：274 页
 - DevOps：97 页
 - 排障：170 页
-- 指南：181 页
+- 指南：183 页
 - 中间件：71 页
-- 教程：77 页
-- AI 与 MLOps：132 页
+- 教程：81 页
+- AI 与 MLOps：138 页
 
 引用第三方工具或文档时，页面内保留官方来源链接；正文、示例取舍与排错说明由本站组织。分发或复用内容时请保留 LICENSE。
 
