@@ -228,7 +228,7 @@ EOL 断言的页面,对照 `assets/data/content-freshness.json` 里的最后核�
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,084 个 HTML、1,979 个内容页、sitemap 2,079 条、站内链接 70,927 条(校验零 404)。
+当前构建规模:2,085 个 HTML、1,979 个内容页、sitemap 2,080 条、站内链接 70,968 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
