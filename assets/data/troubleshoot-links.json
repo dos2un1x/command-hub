@@ -1,28 +1,184 @@
 {
-  "df": ["no-space-left", "inode-exhausted"],
-  "du": ["no-space-left", "disk-readonly"],
-  "curl": ["connection-timeout", "502-bad-gateway", "504-gateway-timeout"],
-  "wget": ["connection-timeout", "502-bad-gateway"],
-  "systemctl": ["boot-failure", "permission-denied"],
-  "journalctl": ["boot-failure", "disk-io-high"],
-  "kubectl": ["crashloopbackoff", "pod-pending", "imagepullbackoff"],
-  "mysql": ["mysql-too-many-connections", "mysql-deadlock", "mysql-replication-lag"],
-  "psql": ["postgres-connection-exhausted", "postgres-deadlock", "postgres-replication-lag"],
-  "postgresql": ["postgres-connection-exhausted", "postgres-deadlock", "postgres-replication-lag"],
-  "redis-cli": ["redis-hotkey", "redis-memory-full", "redis-slowlog"],
-  "kafka-topics": ["kafka-consumer-lag", "kafka-under-replicated", "kafka-disk-full"],
-  "docker": ["imagepullbackoff", "no-space-left"],
-  "ctr": ["imagepullbackoff", "disk-io-high"],
-  "nerdctl": ["imagepullbackoff", "disk-io-high"],
-  "ssh": ["ssh-permission-denied", "connection-timeout"],
-  "ping": ["packet-loss", "mtu-blackhole"],
-  "mtr": ["packet-loss", "mtu-blackhole"],
-  "traceroute": ["packet-loss", "mtu-blackhole"],
-  "tcpdump": ["packet-loss", "mtu-blackhole"],
-  "dig": ["dns-resolution-failed", "dns-servfail", "dns-ndots"],
-  "nslookup": ["dns-resolution-failed", "dns-servfail", "dns-ndots"],
-  "openssl": ["certificate-expired", "certificate-untrusted", "x509-unknown-authority"],
-  "cp": ["permission-denied", "no-space-left"],
-  "tar": ["no-space-left", "permission-denied"],
-  "find": ["permission-denied", "inode-exhausted"]
+  "df": [
+    "no-space-left",
+    "inode-exhausted"
+  ],
+  "du": [
+    "no-space-left",
+    "disk-readonly"
+  ],
+  "curl": [
+    "connection-timeout",
+    "502-bad-gateway",
+    "504-gateway-timeout"
+  ],
+  "wget": [
+    "connection-timeout",
+    "502-bad-gateway"
+  ],
+  "systemctl": [
+    "boot-failure",
+    "permission-denied"
+  ],
+  "journalctl": [
+    "boot-failure",
+    "disk-io-high"
+  ],
+  "kubectl": [
+    "crashloopbackoff",
+    "pod-pending",
+    "imagepullbackoff"
+  ],
+  "mysql": [
+    "mysql-too-many-connections",
+    "mysql-deadlock",
+    "mysql-replication-lag"
+  ],
+  "psql": [
+    "postgres-connection-exhausted",
+    "postgres-deadlock",
+    "postgres-replication-lag"
+  ],
+  "postgresql": [
+    "postgres-connection-exhausted",
+    "postgres-deadlock",
+    "postgres-replication-lag"
+  ],
+  "redis-cli": [
+    "redis-hotkey",
+    "redis-memory-full",
+    "redis-slowlog"
+  ],
+  "kafka-topics": [
+    "kafka-consumer-lag",
+    "kafka-under-replicated",
+    "kafka-disk-full"
+  ],
+  "docker": [
+    "imagepullbackoff",
+    "no-space-left"
+  ],
+  "ctr": [
+    "imagepullbackoff",
+    "disk-io-high"
+  ],
+  "nerdctl": [
+    "imagepullbackoff",
+    "disk-io-high"
+  ],
+  "ssh": [
+    "ssh-permission-denied",
+    "connection-timeout"
+  ],
+  "ping": [
+    "packet-loss",
+    "mtu-blackhole"
+  ],
+  "mtr": [
+    "packet-loss",
+    "mtu-blackhole"
+  ],
+  "traceroute": [
+    "packet-loss",
+    "mtu-blackhole"
+  ],
+  "tcpdump": [
+    "packet-loss",
+    "mtu-blackhole"
+  ],
+  "dig": [
+    "dns-resolution-failed",
+    "dns-servfail",
+    "dns-ndots"
+  ],
+  "nslookup": [
+    "dns-resolution-failed",
+    "dns-servfail",
+    "dns-ndots"
+  ],
+  "openssl": [
+    "certificate-expired",
+    "certificate-untrusted",
+    "x509-unknown-authority"
+  ],
+  "cp": [
+    "permission-denied",
+    "no-space-left"
+  ],
+  "tar": [
+    "no-space-left",
+    "permission-denied"
+  ],
+  "find": [
+    "permission-denied",
+    "inode-exhausted"
+  ],
+  "Get-Service": [
+    "windows-service-start-failed"
+  ],
+  "Start-Service": [
+    "windows-service-start-failed"
+  ],
+  "Stop-Service": [
+    "windows-service-start-failed"
+  ],
+  "sc": [
+    "windows-service-start-failed"
+  ],
+  "dism": [
+    "windows-update-failed",
+    "windows-disk-full"
+  ],
+  "sfc": [
+    "windows-update-failed",
+    "windows-disk-full"
+  ],
+  "chkdsk": [
+    "windows-disk-full"
+  ],
+  "diskpart": [
+    "windows-disk-full"
+  ],
+  "wevtutil": [
+    "windows-service-start-failed",
+    "windows-update-failed"
+  ],
+  "netsh": [
+    "windows-dns-failed",
+    "windows-rdp-failed"
+  ],
+  "Test-NetConnection": [
+    "windows-rdp-failed",
+    "windows-dns-failed"
+  ],
+  "ipconfig": [
+    "windows-dns-failed"
+  ],
+  "launchctl": [
+    "macos-launchd-failed"
+  ],
+  "diskutil": [
+    "macos-disk-full"
+  ],
+  "tmutil": [
+    "macos-disk-full"
+  ],
+  "spctl": [
+    "macos-gatekeeper-blocked"
+  ],
+  "codesign": [
+    "macos-gatekeeper-blocked"
+  ],
+  "xattr": [
+    "macos-gatekeeper-blocked"
+  ],
+  "softwareupdate": [
+    "macos-softwareupdate-failed"
+  ],
+  "scutil": [
+    "macos-dns-failed"
+  ],
+  "dscacheutil": [
+    "macos-dns-failed"
+  ]
 }
