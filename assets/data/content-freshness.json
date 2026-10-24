@@ -267,6 +267,12 @@
     "k8s/service": "2026-10-24",
     "k8s/storageclass": "2026-10-24",
     "k8s/vpa": "2026-10-24",
-    "guide/platform-lifecycle-matrix": "2026-10-25"
+    "guide/platform-lifecycle-matrix": "2026-10-25",
+    "ai/gpu-xid": "2026-10-25",
+    "ai/nccl-hang": "2026-10-25",
+    "ai/vllm-oom": "2026-10-25",
+    "ai/model-load-failed": "2026-10-25",
+    "ai/inference-latency": "2026-10-25",
+    "ai/ray-scheduling": "2026-10-25"
   }
 }
