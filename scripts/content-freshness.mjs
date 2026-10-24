@@ -1,10 +1,14 @@
 /**
  * 版本敏感页新鲜度报告。
  *
+ * 默认扫描 AI/Kubernetes/中间件分支的版本敏感页，以及所有分支中已登记页面。
+ * 登记即检查：只要页面出现在 content-freshness.json，就不再依赖版本号正则。
+ *
  * 用法:
  *   npm run freshness
  *   npm run freshness -- --json
  *   npm run freshness -- --max-age=365 --strict
+ *   npm run freshness -- --all
  *
  * 登记表:assets/data/content-freshness.json
  *   { "pages": { "k8s/kserve": "2026-10-24" } }
@@ -27,25 +31,28 @@ const maxAgeDays = maxArg ? Number(maxArg.split('=')[1]) : FRESHNESS_MAX_AGE_DAY
 
 const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date());
 
-const pages = [];
-for (const branch of await FS.readdir(COMMAND_DIR)) {
-  if (!scanAll && !DEFAULT_BRANCHES.has(branch)) continue;
-  const dir = path.join(COMMAND_DIR, branch);
-  const stat = await FS.stat(dir).catch(() => null);
-  if (!stat?.isDirectory()) continue;
-  for (const file of (await FS.readdir(dir)).filter((f) => f.endsWith('.md'))) {
-    pages.push({
-      path: `${branch}/${file.slice(0, -3)}`,
-      raw: await FS.readFile(path.join(dir, file), 'utf8'),
-    });
-  }
-}
-
 let registry = {};
 try {
   registry = JSON.parse(await FS.readFile(REGISTRY, 'utf8'));
 } catch {
   registry = { pages: {} };
+}
+const registryPages = registry.pages || registry;
+
+const pages = [];
+for (const branch of await FS.readdir(COMMAND_DIR)) {
+  const dir = path.join(COMMAND_DIR, branch);
+  const stat = await FS.stat(dir).catch(() => null);
+  if (!stat?.isDirectory()) continue;
+  for (const file of (await FS.readdir(dir)).filter((f) => f.endsWith('.md'))) {
+    const pagePath = `${branch}/${file.slice(0, -3)}`;
+    const registered = Object.prototype.hasOwnProperty.call(registryPages, pagePath);
+    if (!scanAll && !DEFAULT_BRANCHES.has(branch) && !registered) continue;
+    pages.push({
+      path: pagePath,
+      raw: await FS.readFile(path.join(dir, file), 'utf8'),
+    });
+  }
 }
 
 const report = analyzeFreshness(pages, registry, today, maxAgeDays);

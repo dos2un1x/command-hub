@@ -12,6 +12,7 @@
     "freshness": "node scripts/content-freshness.mjs",
     "quiz-audit": "node scripts/quiz-audit.mjs",
     "check-links": "node scripts/check-links.mjs",
+    "check-external": "node scripts/check-external-links.mjs",
     "category-map": "node scripts/render-category-map.mjs",
     "baidu:push": "node scripts/baidu-push.mjs",
     "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",

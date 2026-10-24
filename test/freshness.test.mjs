@@ -34,6 +34,16 @@ test('analyzeFreshness:非版本敏感页不进入报告', () => {
   assert.ok(!report.rows.some((r) => r.path === 'linux/ls'));
 });
 
+test('analyzeFreshness:已登记页面即使不匹配版本正则也进入报告', () => {
+  const report = analyzeFreshness(
+    [{ path: 'ai/gpu-xid', raw: '从内核日志定位 GPU 硬件问题' }],
+    { 'ai/gpu-xid': '2026-10-24' },
+    '2026-10-24'
+  );
+  assert.equal(report.rows.length, 1);
+  assert.equal(report.rows[0].status, 'ok');
+});
+
 test('analyzeFreshness:非法日期按 missing 处理', () => {
   const report = analyzeFreshness(
     [{ path: 'k8s/x', raw: 'v1.0 2026-01 1.2' }],

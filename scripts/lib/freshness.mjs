@@ -20,7 +20,8 @@ export function analyzeFreshness(pages, registry, today, maxAgeDays = FRESHNESS_
   const todayTime = parseDate(today) ?? Date.now();
   const rows = [];
   for (const page of pages) {
-    if (!isVersionSensitive(page.raw)) continue;
+    const registered = Object.prototype.hasOwnProperty.call(map, page.path);
+    if (!registered && !isVersionSensitive(page.raw)) continue;
     const verified = map[page.path];
     const verifiedTime = parseDate(verified);
     let status = 'missing';
