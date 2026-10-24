@@ -29,6 +29,7 @@ import { pickFeatured } from './lib/featured.mjs';
 import { applyAliases } from './lib/search-alias.mjs';
 import { selectTroubleshootLinks } from './lib/troubleshoot-links.mjs';
 import { learningLinkFor } from './lib/learning-link.mjs';
+import { verifiedFor } from './lib/freshness-badge.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -369,6 +370,10 @@ for (const [branch, slug] of Object.entries(LEARNING_LINKS)) {
     throw new Error(`learning-links: ${branch} 指向的 ${slug} 不存在`);
   }
 }
+
+const FRESHNESS_REGISTRY = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'content-freshness.json'), 'utf8')
+);
 
 const categoryNavFor = (branchId) => {
   const cats = categoriesByBranch.get(branchId);
@@ -758,6 +763,7 @@ await pmap(items, 8, async (it) => {
     category,
     related,
     learningLink: learningLink && learningLink.n !== it.n ? learningLink : null,
+    verified: verifiedFor(FRESHNESS_REGISTRY, it.b, it.n),
     troubleshootLinks: selectTroubleshootLinks(
       troubleshootByName,
       TROUBLESHOOT_LINKS[it.n] || []

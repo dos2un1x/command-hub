@@ -22,6 +22,9 @@
   <span aria-hidden="true">→</span>
 </a>
 <% } %>
+<% if (verified) { %>
+<p class="verified-badge">版本信息最后核对：<%= verified %></p>
+<% } %>
 
 <%- mdhtml %>
 

@@ -266,6 +266,7 @@
     "k8s/secret": "2026-10-24",
     "k8s/service": "2026-10-24",
     "k8s/storageclass": "2026-10-24",
-    "k8s/vpa": "2026-10-24"
+    "k8s/vpa": "2026-10-24",
+    "guide/platform-lifecycle-matrix": "2026-10-25"
   }
 }
