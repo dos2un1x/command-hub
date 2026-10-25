@@ -21,7 +21,6 @@ const max = maxArg ? Number(maxArg.split('=')[1]) : 1;
 
 const pages = [];
 for (const branch of config.branches) {
-  if (branchArg && branch.id !== branchArg) continue;
   const dir = path.join(COMMAND_DIR, branch.id);
   let files;
   try {
@@ -39,7 +38,8 @@ for (const branch of config.branches) {
   }
 }
 
-const all = lowInlinkPages(pages, max);
+const scope = branchArg ? pages.filter((p) => p.branch === branchArg) : pages;
+const all = lowInlinkPages(pages, max).filter((row) => !branchArg || row.path.startsWith(`${branchArg}/`));
 const byBranch = {};
 for (const row of all) {
   const branch = row.path.split('/')[0];
@@ -49,9 +49,9 @@ for (const row of all) {
 }
 
 if (json) {
-  console.log(JSON.stringify({ max, total: pages.length, pages: all }, null, 2));
+  console.log(JSON.stringify({ max, total: scope.length, pages: all }, null, 2));
 } else {
-  console.log(`编辑性入链 ≤${max} 的页面: ${all.length} / ${pages.length}\n`);
+  console.log(`编辑性入链 ≤${max} 的页面: ${all.length} / ${scope.length}\n`);
   console.log('| 分支 | 低入链 | 零入链 |');
   console.log('|---|---:|---:|');
   for (const [branch, stat] of Object.entries(byBranch).sort()) {
