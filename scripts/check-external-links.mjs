@@ -24,8 +24,20 @@ const timeoutArg = args.find((a) => a.startsWith('--timeout='));
 const timeoutMs = timeoutArg ? Number(timeoutArg.split('=')[1]) : 8000;
 const concurrencyArg = args.find((a) => a.startsWith('--concurrency='));
 const concurrency = concurrencyArg ? Number(concurrencyArg.split('=')[1]) : 12;
+const retryArg = args.find((a) => a.startsWith('--retry='));
+const retry = retryArg ? Number(retryArg.split('=')[1]) : 1;
+const noAllowlist = args.includes('--no-allowlist');
 
 const config = JSON.parse(await FS.readFile(path.join(ROOT, 'branches.json'), 'utf8'));
+let allowlist = [];
+if (!noAllowlist) {
+  try {
+    const data = JSON.parse(await FS.readFile(path.join(ROOT, 'assets', 'data', 'external-link-allowlist.json'), 'utf8'));
+    allowlist = Array.isArray(data.hosts) ? data.hosts : [];
+  } catch {
+    allowlist = [];
+  }
+}
 const pageMarkdowns = {};
 for (const branch of config.branches) {
   const dir = path.join(COMMAND_DIR, branch.id);
@@ -46,14 +58,23 @@ for (const branch of config.branches) {
 let entries = [...mergeReferenceLinks(pageMarkdowns).entries()];
 if (Number.isFinite(limit) && limit > 0) entries = entries.slice(0, limit);
 
-console.error(`检查 ${entries.length} 个唯一外链（并发 ${concurrency}，超时 ${timeoutMs}ms）…`);
-const results = await checkExternalLinks(entries, { concurrency, timeoutMs });
+console.error(
+  `检查 ${entries.length} 个唯一外链（并发 ${concurrency}，超时 ${timeoutMs}ms，重试 ${retry}，allowlist ${allowlist.length} host）…`
+);
+const results = await checkExternalLinks(entries, { concurrency, timeoutMs, retry, allowlist });
 const failed = results.filter((r) => !r.ok);
 
 if (json) {
-  console.log(JSON.stringify({ total: results.length, failed: failed.length, results: failed }, null, 2));
+  console.log(
+    JSON.stringify(
+      { total: results.length, failed: failed.length, allowed: results.filter((r) => r.allowed).length, results: failed },
+      null,
+      2
+    )
+  );
 } else {
-  console.log(`外链总数: ${results.length}，失败: ${failed.length}`);
+  const allowed = results.filter((r) => r.allowed).length;
+  console.log(`外链总数: ${results.length}，失败: ${failed.length}，allowlist 跳过: ${allowed}`);
   for (const row of failed) {
     const pages = row.pages.slice(0, 3).join(', ') + (row.pages.length > 3 ? ` 等 ${row.pages.length} 页` : '');
     console.log(`- [${row.status ?? row.error}] ${row.url}  ← ${pages}`);

@@ -67,9 +67,31 @@ async function probe(url, { fetchImpl = fetch, timeoutMs = 8000 } = {}) {
   return { ok: status >= 200 && status < 400, status, error: null };
 }
 
-/** 并发检查外链；返回 [{url, pages, ok, status, error}]。 */
+/** host 是否在 allowlist 中；支持精确 host 和 *.example.com 通配。 */
+export function isAllowlisted(url, status, hosts = [], statuses = [403, 429]) {
+  if (!hosts.length || !statuses.includes(status)) return false;
+  let host;
+  try {
+    host = new URL(url).hostname.toLowerCase();
+  } catch {
+    return false;
+  }
+  return hosts.some((entry) => {
+    const h = String(entry).toLowerCase();
+    return h.startsWith('*.') ? host.endsWith(h.slice(1)) : host === h;
+  });
+}
+
+/** 并发检查外链；返回 [{url, pages, ok, allowed, status, error}]。 */
 export async function checkExternalLinks(entries, options = {}) {
-  const { concurrency = 12, timeoutMs = 8000, fetchImpl = fetch } = options;
+  const {
+    concurrency = 12,
+    timeoutMs = 8000,
+    fetchImpl = fetch,
+    retry = 0,
+    allowlist = [],
+    allowStatuses = [403, 429],
+  } = options;
   const list = entries instanceof Map ? [...entries.entries()] : entries;
   const results = new Array(list.length);
   let cursor = 0;
@@ -78,11 +100,17 @@ export async function checkExternalLinks(entries, options = {}) {
     while (cursor < list.length) {
       const index = cursor++;
       const [url, pages] = list[index];
-      const probeResult = await probe(url, { fetchImpl, timeoutMs });
+      let probeResult = await probe(url, { fetchImpl, timeoutMs });
+      for (let attempt = 0; attempt < retry && !probeResult.ok && probeResult.error; attempt++) {
+        probeResult = await probe(url, { fetchImpl, timeoutMs });
+      }
+      const allowed = isAllowlisted(url, probeResult.status, allowlist, allowStatuses);
       results[index] = {
         url,
         pages: [...(pages || [])].sort(),
         ...probeResult,
+        ok: probeResult.ok || allowed,
+        allowed,
       };
     }
   }

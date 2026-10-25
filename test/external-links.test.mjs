@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   checkExternalLinks,
   extractReferenceLinks,
+  isAllowlisted,
   mergeReferenceLinks,
 } from '../scripts/lib/external-links.mjs';
 
@@ -73,4 +74,43 @@ test('checkExternalLinks:404 与网络错误都标记失败', async () => {
   assert.equal(rows[0].status, 404);
   assert.equal(rows[1].ok, false);
   assert.equal(rows[1].error, 'Error');
+});
+
+
+test('isAllowlisted:仅匹配配置 host 的 403/429', () => {
+  assert.equal(isAllowlisted('https://linux.die.net/man/1/ls', 403, ['linux.die.net']), true);
+  assert.equal(isAllowlisted('https://linux.die.net/man/1/ls', 404, ['linux.die.net']), false);
+  assert.equal(isAllowlisted('https://sub.example.com/x', 403, ['*.example.com']), true);
+  assert.equal(isAllowlisted('https://other.com/x', 403, ['example.com']), false);
+});
+
+test('checkExternalLinks:allowlist 的 403 计为通过但不掩盖 404', async () => {
+  const fakeFetch = async (url) => ({ status: url.includes('allowed') ? 403 : 404 });
+  const rows = await checkExternalLinks(
+    [
+      ['https://linux.die.net/allowed', new Set(['linux/x'])],
+      ['https://linux.die.net/missing', new Set(['linux/y'])],
+    ],
+    { fetchImpl: fakeFetch, concurrency: 1, allowlist: ['linux.die.net'] }
+  );
+  assert.equal(rows[0].ok, true);
+  assert.equal(rows[0].allowed, true);
+  assert.equal(rows[1].ok, false);
+  assert.equal(rows[1].allowed, false);
+});
+
+test('checkExternalLinks:retry 会重试网络错误', async () => {
+  let calls = 0;
+  const fakeFetch = async () => {
+    calls++;
+    if (calls === 1) throw new Error('temporary');
+    return { status: 200 };
+  };
+  const [row] = await checkExternalLinks([['https://example.com/x', new Set()]], {
+    fetchImpl: fakeFetch,
+    concurrency: 1,
+    retry: 1,
+  });
+  assert.equal(row.ok, true);
+  assert.equal(calls, 2);
 });

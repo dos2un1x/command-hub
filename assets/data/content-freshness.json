@@ -339,6 +339,7 @@
     "ai/rag-retrieval-quality-incident": "2026-10-25",
     "ai/embedding-model-migration": "2026-10-25",
     "ai/agent-runtime-observability": "2026-10-25",
-    "ai/inference-autoscaling": "2026-10-25"
+    "ai/inference-autoscaling": "2026-10-25",
+    "tutorial/lab-dns-failover": "2026-10-25"
   }
 }

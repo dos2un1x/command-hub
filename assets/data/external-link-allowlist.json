@@ -1,0 +1,14 @@
+{
+  "_comment": "只对 403/429 反爬或限流 host 生效；404、超时和 5xx 仍会报告。",
+  "hosts": [
+    "linux.die.net",
+    "wiki.linuxfoundation.org",
+    "wiki.osdev.org",
+    "sysdig.com",
+    "tukaani.org",
+    "charts.fairwinds.com",
+    "www.suse.com",
+    "about.roblox.com",
+    "platform.openai.com"
+  ]
+}
