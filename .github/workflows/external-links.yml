@@ -1,0 +1,47 @@
+name: External link audit
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout private content submodule
+        env:
+          COMMAND_DEPLOY_KEY: ${{ secrets.COMMAND_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$COMMAND_DEPLOY_KEY" > ~/.ssh/command_deploy_key
+          chmod 600 ~/.ssh/command_deploy_key
+          trap 'rm -f ~/.ssh/command_deploy_key' EXIT
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/command_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new' \
+            git submodule update --init --recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit external reference links
+        run: node scripts/check-external-links.mjs --json --concurrency=16 --timeout=8000 > external-links.json
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-links-${{ github.run_id }}
+          path: external-links.json
+          retention-days: 90

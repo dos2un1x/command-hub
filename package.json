@@ -9,6 +9,7 @@
     "test": "node --test",
     "validate": "node scripts/validate.mjs",
     "content-report": "node scripts/content-report.mjs",
+    "content-graph": "node scripts/content-graph.mjs",
     "freshness": "node scripts/content-freshness.mjs",
     "quiz-audit": "node scripts/quiz-audit.mjs",
     "check-links": "node scripts/check-links.mjs",
