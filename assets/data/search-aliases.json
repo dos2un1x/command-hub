@@ -199,5 +199,39 @@
   "lab-regional-failure": [
     "game day",
     "regional failure"
+  ],
+  "rag-retrieval-quality-incident": [
+    "rag quality",
+    "retrieval",
+    "recall"
+  ],
+  "embedding-model-migration": [
+    "embedding migration",
+    "reindex",
+    "vector migration"
+  ],
+  "agent-runtime-observability": [
+    "agent observability",
+    "agent trace",
+    "tool calls"
+  ],
+  "inference-autoscaling": [
+    "inference autoscaling",
+    "hpa",
+    "keda"
+  ],
+  "lab-velero-restore": [
+    "velero restore",
+    "backup restore"
+  ],
+  "lab-postgres-pitr": [
+    "pitr",
+    "point in time recovery"
+  ],
+  "lab-kafka-restore": [
+    "kafka restore"
+  ],
+  "lab-es-restore": [
+    "elasticsearch restore"
   ]
 }

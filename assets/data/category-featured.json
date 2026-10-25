@@ -147,5 +147,10 @@
     "technology-selection-map",
     "scenario-cpu-high",
     "scenario-disk-full"
+  ],
+  "ai/agent": [
+    "langgraph",
+    "mcp",
+    "agent-runtime-observability"
   ]
 }
