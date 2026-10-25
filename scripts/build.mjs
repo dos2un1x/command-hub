@@ -31,6 +31,7 @@ import { selectTroubleshootLinks } from './lib/troubleshoot-links.mjs';
 import { learningLinkFor } from './lib/learning-link.mjs';
 import { verifiedFor } from './lib/freshness-badge.mjs';
 import { labStatusFor, validateLabStatus } from './lib/lab-status.mjs';
+import { breadcrumbList, faqPage, howTo, howToSteps } from './lib/structured-data.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -240,6 +241,13 @@ const reviewQuestions = items.flatMap((it) =>
     bn: branchNameById.get(it.b) || it.b,
   }))
 );
+/** 详情页 FAQPage:按页面聚合三道自测题。 */
+const faqByPage = new Map();
+for (const qa of reviewQuestions) {
+  const key = `${qa.b}/${qa.n}`;
+  if (!faqByPage.has(key)) faqByPage.set(key, []);
+  faqByPage.get(key).push({ q: qa.q, a: qa.a });
+}
 /** 故障诊断向导数据:构建时校验结构,链接由 check-links 统一校验。 */
 const diagnoseData = JSON.parse(
   await FS.readFile(path.join(ASSETS_DIR, 'data', 'diagnose.json'), 'utf8')
@@ -753,6 +761,29 @@ await pmap(items, 8, async (it) => {
   const cats = categoriesByBranch.get(it.b);
   const category = cats ? cats.list.find((c) => c.id === it.cat) || null : null;
   const learningLink = learningLinkFor(it.b, LEARNING_LINKS, guideByName);
+  const displayName = isContent ? sentenceText(it.d).split(/[：:]/)[0] : it.n;
+  const metaDescription = isContent
+    ? `${clipText(dText, 50)}。本页提供操作步骤、注意事项与相关条目，支持在线速查。`
+    : `${it.n} 命令：${clipText(dText, 40)}。本页提供 ${it.n} 的语法、常用选项、使用示例与相关命令，支持在线速查。`;
+  const canonicalUrl = `${baseUrl}/${it.b}/${it.n}.html`;
+  const structuredData = [
+    breadcrumbList([
+      { name: '首页', url: `${baseUrl}/` },
+      { name: b.name, url: `${baseUrl}/${it.b}/` },
+      ...(category
+        ? [{ name: category.name, url: `${baseUrl}/${it.b}/category/${category.id}/` }]
+        : []),
+      { name: displayName, url: canonicalUrl },
+    ]),
+  ];
+  const faq = faqByPage.get(`${it.b}/${it.n}`) || [];
+  if (faq.length) structuredData.push(faqPage(faq));
+  if (it.cat === 'lab') {
+    const steps = howToSteps(it.md);
+    if (steps.length) {
+      structuredData.push(howTo({ name: displayName, description: metaDescription, steps }));
+    }
+  }
   const html = await render('details.ejs', base({
     relative_path: '../',
     current_path: it.p + '.html',
@@ -760,18 +791,17 @@ await pmap(items, 8, async (it) => {
     placeholder: b.searchPlaceholder || '搜索命令',
     isHome: false,
     describe: { n: it.n, d: it.d },
-    displayName: isContent ? sentenceText(it.d).split(/[：:]/)[0] : it.n,
+    displayName,
     brand: b.name,
     pageTitle: detailTitle(it, dTitle),
-    metaDescription: isContent
-      ? `${clipText(dText, 50)}。本页提供操作步骤、注意事项与相关条目，支持在线速查。`
-      : `${it.n} 命令：${clipText(dText, 40)}。本页提供 ${it.n} 的语法、常用选项、使用示例与相关命令，支持在线速查。`,
+    metaDescription,
     metaKeywords: isContent
       ? `${it.n},${b.name},${site.name},速查`
       : `${it.n},${it.n}命令,${b.name}命令,命令速查`,
-    canonicalUrl: `${baseUrl}/${it.b}/${it.n}.html`,
+    canonicalUrl,
     ogType: 'article',
     category,
+    structuredData,
     related,
     learningLink: learningLink && learningLink.n !== it.n ? learningLink : null,
     verified: verifiedFor(FRESHNESS_REGISTRY, it.b, it.n),

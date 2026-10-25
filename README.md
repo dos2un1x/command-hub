@@ -84,7 +84,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 公开事故复盘:指南分支收录 AWS S3 2017、GitLab 2017、GitHub 2018、Cloudflare 2019/2020、CircleCI 2023、Slack 2021、Datadog 2023、Roblox 2021、Facebook 2021、Google Cloud 2019、AWS Kinesis 2020 共 12 篇摘要与检查清单,事实以原始报告为准;`public-postmortem-index` 按根因分组,把事故、教训和对应 Runbook 串起来。
 - 精确错误页:排障分支覆盖 `x509`、`connection reset`、`context deadline exceeded`、`i/o timeout`、`TLS handshake timeout` 等精确报错;Windows/macOS 排障单独成类。
 - 企业运维:Windows 侧新增 WinRM、GPO 诊断、AD 复制排障、Defender/Intune;macOS 侧新增 MDM、FileVault、钥匙串,覆盖注册、策略下发、复制健康和凭据管理。
-- 读完自测:全部 2,064 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,192 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 读完自测:全部 2,065 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,195 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
@@ -232,12 +232,13 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
 - `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2000 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
+- 详情页 JSON-LD:`BreadcrumbList` + `FAQPage`;Lab 页额外输出 `HowTo`
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
 
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,174 个 HTML、2,064 个内容页、sitemap 2,169 条、站内链接 75,777 条(校验零 404)。
+当前构建规模:2,175 个 HTML、2,065 个内容页、sitemap 2,170 条、站内链接 75,993 条(校验零 404)。
 
 ## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
 
@@ -254,7 +255,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:10 个分类、97 条
 - `command/troubleshoot/categories.json`:10 个分类、170 条
-- `command/guide/categories.json`:12 个分类、200 条
+- `command/guide/categories.json`:12 个分类、201 条
 - `command/middleware/categories.json`:11 个分类、71 条
 - `command/tutorial/categories.json`:3 个分类、90 条
 - `command/ai/categories.json`:7 个分类、146 条
@@ -303,7 +304,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | macOS | 61 | BSD 文件命令、launchctl/pmset/softwareupdate/tmutil/csrutil 等系统命令、ifconfig/tcpdump/dscacheutil 等网络工具、Xcode 命令行工具与 Homebrew、diskutil/hdiutil 磁盘维护,以及 MDM、FileVault 与钥匙串管理 |
 | DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
 | 排障 | 170 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
-| 指南 | 200 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘、复盘索引、技术选型决策地图、速查表索引、快捷键总览和平台生命周期矩阵;包含 12 条领域路径、4 条岗位路径、12 个心智模型和 35 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| 指南 | 201 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘、复盘索引、技术选型决策地图、速查表索引、快捷键总览和平台生命周期矩阵;包含 12 条领域路径、4 条岗位路径、12 个心智模型和 35 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 71 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PostgreSQL/PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB,以及 RocketMQ/Dubbo/ShardingSphere/Seata/Canal/Arthas 等 Java 生态中间件 |
 | 教程 | 90 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 35 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd/K8s 升级/数据库切换/区域故障等) |
 | AI 与 MLOps | 146 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册,以及 GPU Xid、NCCL 卡死、vLLM OOM、模型加载失败、推理延迟、Ray 调度、训练 loss 异常、checkpoint 损坏、分布式训练卡死、GPU 节点生命周期、RAG 召回质量、embedding 迁移、Agent 运行时观测和推理自动扩缩容等运行态排障 |
@@ -371,7 +372,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支的主要学习内容分五类(共 42 个工具对比 + 44 个速查表 + 15 个路线图/检查清单 + 30 个学习路径与心智模型 + 5 个术语与索引页):
+指南分支的主要学习内容分五类(共 42 个工具对比 + 44 个速查表 + 15 个路线图/检查清单 + 30 个学习路径与心智模型 + 6 个术语与索引页):
 
 ```
 工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
@@ -411,7 +412,7 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
            troubleshoot-mental-model middleware-mental-model ai-mental-model
            security-mental-model observability-mental-model
            database-mental-model network-mental-model
-术语与索引 build-index migration-index error-code-index linux-command-map glossary-index
+术语与索引 build-index migration-index error-code-index linux-command-map linux-long-tail-index glossary-index
 ```
 
 另有五个入口页:`technology-selection-map` 用七条决策树把 42 篇对比页分流,`public-postmortem-index` 按根因把 12 篇公开复盘和 12 篇 Runbook 串起来,`cheatsheet-index` 汇总 44 张速查表,`shortcuts-overview` 汇总 7 个平台的快捷键页,`glossary-index` 汇总 122 条术语与缩写。
@@ -511,7 +512,7 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 本站内容（除另有标注外）采用 [LICENSE](LICENSE) 的 MIT 许可，Copyright © 2026 dos2un1x。
 
-全站 2064 页，按 10 个分支、92 个分类组织：
+全站 2065 页，按 10 个分支、92 个分类组织：
 
 - Linux：862 页
 - Windows：93 页

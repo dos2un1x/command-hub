@@ -16,10 +16,10 @@
 
 | 状态 | 数量 |
 | --- | ---: |
-| 实跑通过 | 12 |
-| 部分通过 | 1 |
-| 部分验证 | 2 |
-| 静态审查 | 20 |
+| 实跑通过 | 19 |
+| 部分通过 | 2 |
+| 部分验证 | 0 |
+| 静态审查 | 14 |
 | 新增未跑 | 0 |
 | **合计** | **35** |
 
@@ -35,19 +35,19 @@
 | [lab-pvc-pending](https://www.dos2unix.cn/tutorial/lab-pvc-pending.html) | kind | 静态审查 | 2026-10-25 | — |
 | [lab-crashloopbackoff](https://www.dos2unix.cn/tutorial/lab-crashloopbackoff.html) | kind | 静态审查 | 2026-10-25 | — |
 | [lab-dns-failure](https://www.dos2unix.cn/tutorial/lab-dns-failure.html) | kind | 静态审查 | 2026-10-25 | — |
-| [lab-mysql-deadlock](https://www.dos2unix.cn/tutorial/lab-mysql-deadlock.html) | Docker | 静态审查 | 2026-10-25 | — |
-| [lab-postgres-connection-exhausted](https://www.dos2unix.cn/tutorial/lab-postgres-connection-exhausted.html) | Docker | 静态审查 | 2026-10-25 | — |
-| [lab-kafka-consumer-lag](https://www.dos2unix.cn/tutorial/lab-kafka-consumer-lag.html) | Docker | 静态审查 | 2026-10-25 | — |
-| [lab-redis-hotkey](https://www.dos2unix.cn/tutorial/lab-redis-hotkey.html) | Docker | 静态审查 | 2026-10-25 | — |
+| [lab-mysql-deadlock](https://www.dos2unix.cn/tutorial/lab-mysql-deadlock.html) | Docker / MySQL 8.0.46 | 实跑通过 | 2026-10-25 | 死锁 1213、锁等待与统一加锁顺序修复均实测通过；readiness 已修正 |
+| [lab-postgres-connection-exhausted](https://www.dos2unix.cn/tutorial/lab-postgres-connection-exhausted.html) | Docker / PostgreSQL 16 | 实跑通过 | 2026-10-25 | 保留槽位错误与 too many clients 两种条件均实测通过 |
+| [lab-kafka-consumer-lag](https://www.dos2unix.cn/tutorial/lab-kafka-consumer-lag.html) | Docker Compose / Kafka 3.7.0 | 实跑通过 | 2026-10-25 | 总 lag、分区倾斜与位点推进实测通过 |
+| [lab-redis-hotkey](https://www.dos2unix.cn/tutorial/lab-redis-hotkey.html) | Docker / Redis | 实跑通过 | 2026-10-25 | 热 Key 非大 Key、commandstats/--hotkeys 与 MONITOR 实测通过 |
 
 ## 进阶演练（10）
 
 | 演练 | 环境 | 状态 | 最后核对 | 说明 |
 | --- | --- | --- | --- | --- |
-| [lab-oom-killed](https://www.dos2unix.cn/tutorial/lab-oom-killed.html) | Docker / kind | 静态审查 | 2026-10-25 | — |
+| [lab-oom-killed](https://www.dos2unix.cn/tutorial/lab-oom-killed.html) | Docker / cgroup v2 | 实跑通过 | 2026-10-25 | OOMKilled/exit 137、memory.events 与 256 MiB 修复变体均实测通过 |
 | [lab-imagepullbackoff](https://www.dos2unix.cn/tutorial/lab-imagepullbackoff.html) | kind | 静态审查 | 2026-10-25 | — |
 | [lab-node-notready](https://www.dos2unix.cn/tutorial/lab-node-notready.html) | kind | 静态审查 | 2026-10-25 | — |
-| [lab-certificate-expired](https://www.dos2unix.cn/tutorial/lab-certificate-expired.html) | Docker / 本地 TLS | 静态审查 | 2026-10-25 | — |
+| [lab-certificate-expired](https://www.dos2unix.cn/tutorial/lab-certificate-expired.html) | 本地 TLS 容器 / OpenSSL 3.3.7 | 实跑通过 | 2026-10-25 | 过期证书的 verify/curl 报错与重签恢复均实测通过 |
 | [lab-nginx-502](https://www.dos2unix.cn/tutorial/lab-nginx-502.html) | Docker Compose / nginx | 实跑通过 | 2026-10-25 | 坏端口、停进程、日志与修复均实测通过；Docker Desktop 停进程后需重试才见 502 |
 | [lab-helm-failed](https://www.dos2unix.cn/tutorial/lab-helm-failed.html) | kind + Helm | 静态审查 | 2026-10-25 | — |
 | [lab-kafka-rebalance](https://www.dos2unix.cn/tutorial/lab-kafka-rebalance.html) | Docker Compose / Kafka 3.7.0 | 实跑通过 | 2026-10-25 | 成员退出、会话超时、分区重分配与恢复均实测通过 |
@@ -60,12 +60,12 @@
 | 演练 | 环境 | 状态 | 最后核对 | 说明 |
 | --- | --- | --- | --- | --- |
 | [lab-k8s-upgrade](https://www.dos2unix.cn/tutorial/lab-k8s-upgrade.html) | kind 多节点 / 一次性测试集群 | 静态审查 | 2026-10-25 | — |
-| [lab-cert-rotation](https://www.dos2unix.cn/tutorial/lab-cert-rotation.html) | 本地 TLS 服务 / 测试入口 | 部分验证 | 2026-10-25 | 证书链、生效检查和回滚命令已复核，未完整复跑 |
+| [lab-cert-rotation](https://www.dos2unix.cn/tutorial/lab-cert-rotation.html) | 本地 TLS 容器 / OpenSSL 3.3.7 | 部分通过 | 2026-10-25 | 本地证书轮换、信任包合并与回滚通过；集群侧 kubeadm/CSR 未验证 |
 | [lab-db-failover](https://www.dos2unix.cn/tutorial/lab-db-failover.html) | Docker Compose / 测试数据库 | 实跑通过 | 2026-10-25 | 切换、连接恢复与一致性检查通过 |
 | [lab-etcd-restore](https://www.dos2unix.cn/tutorial/lab-etcd-restore.html) | 3 节点 kind / 一次性 etcd | 实跑通过 | 2026-10-25 | 快照恢复与 quorum 重建通过 |
-| [lab-regional-failure](https://www.dos2unix.cn/tutorial/lab-regional-failure.html) | Docker Compose + kind | 部分验证 | 2026-10-25 | 就绪等待、清理顺序和 OpenSSL 说明已修订，未完整复跑 |
+| [lab-regional-failure](https://www.dos2unix.cn/tutorial/lab-regional-failure.html) | Docker Compose / kind | 部分通过 | 2026-10-25 | DNS、入口切换、数据库切换/回滚、证书轮换与清理通过；kind 上游与 200 业务响应未验证 |
 | [lab-redis-failover](https://www.dos2unix.cn/tutorial/lab-redis-failover.html) | Docker Compose | 实跑通过 | 2026-10-25 | 故障切换、双主隔离与 Sentinel 收敛通过；计划内回切按实际主节点判断 |
-| [lab-kafka-broker-replace](https://www.dos2unix.cn/tutorial/lab-kafka-broker-replace.html) | Docker Compose / Kafka 3.7.0 | 部分通过 | 2026-10-25 | 三副本迁移到 broker-4 且 broker-3 退役已验证；停机 ISR、写入拒绝与回滚未验证 |
+| [lab-kafka-broker-replace](https://www.dos2unix.cn/tutorial/lab-kafka-broker-replace.html) | Docker Compose / Kafka 3.7.0 | 实跑通过 | 2026-10-25 | 迁移、broker 停机、写入拒绝、追平与回滚全部实测通过 |
 | [lab-backup-restore-verification](https://www.dos2unix.cn/tutorial/lab-backup-restore-verification.html) | Docker Compose / 本地目录 | 实跑通过 | 2026-10-25 | 备份、隔离恢复、一致性与清理均通过 |
 | [lab-velero-restore](https://www.dos2unix.cn/tutorial/lab-velero-restore.html) | kind + MinIO | 静态审查 | 2026-10-25 | — |
 | [lab-postgres-pitr](https://www.dos2unix.cn/tutorial/lab-postgres-pitr.html) | Docker Compose | 实跑通过 | 2026-10-25 | 目标时间暂停、提升与约束复验通过 |
@@ -83,5 +83,5 @@
 ## 下一批建议
 
 1. 在临时 kind 集群复跑 `lab-k8s-upgrade`、`lab-velero-restore` 和 `lab-etcd-quorum`，记录节点排空、PDB 和 etcd quorum 的真实输出。
-2. 复跑 `lab-cert-rotation` 和 `lab-regional-failure` 的完整流程，把“部分验证”提升为实跑通过。
+2. 补 `lab-cert-rotation` 的集群侧（kubeadm/CSR）和 `lab-regional-failure` 的 kind 部分，把“部分通过/部分验证”收口。
 3. 把每次实跑的镜像 tag、端口、耗时和清理结果补进本页，形成可回归的执行记录。

@@ -40,29 +40,34 @@
     "environment": "kind"
   },
   "lab-mysql-deadlock": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker"
+    "environment": "Docker / MySQL 8.0.46",
+    "note": "死锁 1213、锁等待与统一加锁顺序修复均实测通过；readiness 已修正"
   },
   "lab-postgres-connection-exhausted": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker"
+    "environment": "Docker / PostgreSQL 16",
+    "note": "保留槽位错误与 too many clients 两种条件均实测通过"
   },
   "lab-kafka-consumer-lag": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker"
+    "environment": "Docker Compose / Kafka 3.7.0",
+    "note": "总 lag、分区倾斜与位点推进实测通过"
   },
   "lab-redis-hotkey": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker"
+    "environment": "Docker / Redis",
+    "note": "热 Key 非大 Key、commandstats/--hotkeys 与 MONITOR 实测通过"
   },
   "lab-oom-killed": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker / kind"
+    "environment": "Docker / cgroup v2",
+    "note": "OOMKilled/exit 137、memory.events 与 256 MiB 修复变体均实测通过"
   },
   "lab-imagepullbackoff": {
     "status": "static",
@@ -75,9 +80,10 @@
     "environment": "kind"
   },
   "lab-certificate-expired": {
-    "status": "static",
+    "status": "passed",
     "checked": "2026-10-25",
-    "environment": "Docker / 本地 TLS"
+    "environment": "本地 TLS 容器 / OpenSSL 3.3.7",
+    "note": "过期证书的 verify/curl 报错与重签恢复均实测通过"
   },
   "lab-nginx-502": {
     "status": "passed",
@@ -119,10 +125,10 @@
     "environment": "kind 多节点 / 一次性测试集群"
   },
   "lab-cert-rotation": {
-    "status": "partial-review",
+    "status": "partial",
     "checked": "2026-10-25",
-    "environment": "本地 TLS 服务 / 测试入口",
-    "note": "证书链、生效检查和回滚命令已复核，未完整复跑"
+    "environment": "本地 TLS 容器 / OpenSSL 3.3.7",
+    "note": "本地证书轮换、信任包合并与回滚通过；集群侧 kubeadm/CSR 未验证"
   },
   "lab-db-failover": {
     "status": "passed",
@@ -137,10 +143,10 @@
     "note": "快照恢复与 quorum 重建通过"
   },
   "lab-regional-failure": {
-    "status": "partial-review",
+    "status": "partial",
     "checked": "2026-10-25",
-    "environment": "Docker Compose + kind",
-    "note": "就绪等待、清理顺序和 OpenSSL 说明已修订，未完整复跑"
+    "environment": "Docker Compose / kind",
+    "note": "DNS、入口切换、数据库切换/回滚、证书轮换与清理通过；kind 上游与 200 业务响应未验证"
   },
   "lab-redis-failover": {
     "status": "passed",
@@ -149,10 +155,10 @@
     "note": "故障切换、双主隔离与 Sentinel 收敛通过；计划内回切按实际主节点判断"
   },
   "lab-kafka-broker-replace": {
-    "status": "partial",
+    "status": "passed",
     "checked": "2026-10-25",
     "environment": "Docker Compose / Kafka 3.7.0",
-    "note": "三副本迁移到 broker-4 且 broker-3 退役已验证；停机 ISR、写入拒绝与回滚未验证"
+    "note": "迁移、broker 停机、写入拒绝、追平与回滚全部实测通过"
   },
   "lab-backup-restore-verification": {
     "status": "passed",

@@ -783,5 +783,52 @@
   "xcode-select": [
     "xcode",
     "开发工具"
+  ],
+  "glossary-index": [
+    "术语表",
+    "glossary",
+    "缩写"
+  ],
+  "error-code-index": [
+    "错误码",
+    "状态码",
+    "报错查询"
+  ],
+  "build-index": [
+    "搭建教程",
+    "build index"
+  ],
+  "migration-index": [
+    "迁移教程",
+    "升级教程"
+  ],
+  "linux-long-tail-index": [
+    "长尾命令",
+    "冷门命令"
+  ],
+  "gnu-vs-bsd-cli": [
+    "gnu bsd",
+    "mac 命令差异",
+    "参数差异"
+  ],
+  "deprecated-commands": [
+    "废弃命令",
+    "命令替代"
+  ],
+  "role-sre-onboarding": [
+    "sre 入职",
+    "sre 学习"
+  ],
+  "role-backend-oncall": [
+    "后端 oncall",
+    "后端值班"
+  ],
+  "role-data-platform": [
+    "数据平台学习",
+    "数据平台运维"
+  ],
+  "role-ai-infra-oncall": [
+    "ai 运维",
+    "推理运维"
   ]
 }
