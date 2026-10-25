@@ -148,6 +148,16 @@
     "scenario-cpu-high",
     "scenario-disk-full"
   ],
+  "guide/reference": [
+    "glossary-index",
+    "error-code-index",
+    "linux-command-map"
+  ],
+  "guide/learning": [
+    "learning-paths",
+    "lab-learning-path",
+    "role-sre-onboarding"
+  ],
   "ai/agent": [
     "langgraph",
     "mcp",

@@ -1,7 +1,8 @@
 {
   "kubectl": [
     "k8s",
-    "kubernetes"
+    "kubernetes",
+    "集群管理"
   ],
   "k9s": [
     "kubernetes ui"
@@ -21,30 +22,39 @@
     "pip3"
   ],
   "rg": [
-    "ripgrep"
+    "ripgrep",
+    "快速搜索"
   ],
   "fd": [
-    "fdfind"
+    "fdfind",
+    "find alternative",
+    "快速查找文件"
   ],
   "bat": [
     "batcat"
   ],
   "systemctl": [
-    "systemd"
+    "systemd",
+    "服务管理",
+    "systemd 服务"
   ],
   "journalctl": [
-    "systemd-journald"
+    "systemd-journald",
+    "系统日志",
+    "journal 日志"
   ],
   "postgresql": [
     "postgres",
-    "pg"
+    "pg",
+    "关系数据库"
   ],
   "psql": [
     "postgres",
     "pg"
   ],
   "elasticsearch": [
-    "es"
+    "es",
+    "全文搜索"
   ],
   "opensearch": [
     "os"
@@ -57,46 +67,71 @@
   ],
   "terraform": [
     "tofu",
-    "opentofu"
+    "opentofu",
+    "iac",
+    "基础设施即代码"
   ],
   "vllm": [
-    "llm inference"
+    "llm inference",
+    "推理服务",
+    "llm serving"
   ],
   "sglang": [
-    "llm inference"
+    "llm inference",
+    "推理服务",
+    "llm serving"
   ],
   "ollama": [
-    "llm"
+    "llm",
+    "本地模型",
+    "llm 运行"
   ],
   "nvidia-smi": [
     "gpu"
   ],
   "prometheus": [
-    "promql"
+    "promql",
+    "监控",
+    "metrics"
   ],
   "loki": [
-    "logql"
+    "logql",
+    "日志聚合"
   ],
   "grafana": [
-    "dashboards"
+    "dashboards",
+    "监控面板",
+    "dashboard"
   ],
   "helm": [
-    "helmfile"
+    "helmfile",
+    "k8s 包管理",
+    "chart"
   ],
   "docker": [
-    "docker-compose"
+    "docker-compose",
+    "容器",
+    "container"
   ],
   "curl": [
-    "httpie"
+    "httpie",
+    "http 请求",
+    "接口调试"
   ],
   "ssh": [
-    "sshd"
+    "sshd",
+    "远程登录",
+    "安全 shell"
   ],
   "scp": [
-    "sftp"
+    "sftp",
+    "远程复制",
+    "文件传输"
   ],
   "rsync": [
-    "sync"
+    "sync",
+    "文件同步",
+    "增量同步"
   ],
   "winrm": [
     "powershell remoting",
@@ -233,5 +268,520 @@
   ],
   "lab-es-restore": [
     "elasticsearch restore"
+  ],
+  "ls": [
+    "list files",
+    "列出文件",
+    "目录列表"
+  ],
+  "grep": [
+    "search text",
+    "文本搜索",
+    "正则搜索"
+  ],
+  "sed": [
+    "stream editor",
+    "文本替换",
+    "流编辑器"
+  ],
+  "awk": [
+    "文本处理",
+    "字段处理"
+  ],
+  "find": [
+    "查找文件",
+    "文件搜索"
+  ],
+  "xargs": [
+    "批量参数",
+    "管道参数"
+  ],
+  "jq": [
+    "json 查询",
+    "json 处理"
+  ],
+  "yq": [
+    "yaml 查询",
+    "yaml 处理"
+  ],
+  "ps": [
+    "process list",
+    "进程列表"
+  ],
+  "top": [
+    "进程监控",
+    "系统负载"
+  ],
+  "htop": [
+    "进程监控",
+    "交互式 top"
+  ],
+  "ss": [
+    "socket statistics",
+    "端口查看",
+    "netstat 替代"
+  ],
+  "ip": [
+    "网络配置",
+    "iproute2",
+    "ifconfig 替代"
+  ],
+  "df": [
+    "磁盘空间",
+    "文件系统使用率"
+  ],
+  "du": [
+    "目录大小",
+    "磁盘占用"
+  ],
+  "lsof": [
+    "打开文件",
+    "端口占用"
+  ],
+  "strace": [
+    "系统调用跟踪",
+    "syscall trace"
+  ],
+  "tcpdump": [
+    "抓包",
+    "packet capture"
+  ],
+  "dig": [
+    "dns 查询",
+    "域名解析"
+  ],
+  "nslookup": [
+    "dns 查询",
+    "域名解析"
+  ],
+  "openssl": [
+    "证书",
+    "tls",
+    "ssl"
+  ],
+  "chmod": [
+    "文件权限",
+    "权限位"
+  ],
+  "chown": [
+    "文件所有者",
+    "属主"
+  ],
+  "sudo": [
+    "提权",
+    "超级用户"
+  ],
+  "kill": [
+    "终止进程",
+    "信号"
+  ],
+  "pkill": [
+    "按名称杀进程",
+    "批量终止"
+  ],
+  "crontab": [
+    "定时任务",
+    "计划任务"
+  ],
+  "vmstat": [
+    "内存统计",
+    "虚拟内存"
+  ],
+  "iostat": [
+    "磁盘 io",
+    "io 统计"
+  ],
+  "perf": [
+    "性能分析",
+    "性能采样"
+  ],
+  "bpftrace": [
+    "ebpf",
+    "动态追踪"
+  ],
+  "dmesg": [
+    "内核日志",
+    "kernel log"
+  ],
+  "mount": [
+    "挂载",
+    "文件系统挂载"
+  ],
+  "iptables": [
+    "防火墙",
+    "nat"
+  ],
+  "nft": [
+    "nftables",
+    "防火墙"
+  ],
+  "nc": [
+    "netcat",
+    "端口测试"
+  ],
+  "nmap": [
+    "端口扫描",
+    "网络扫描"
+  ],
+  "tar": [
+    "压缩归档",
+    "打包"
+  ],
+  "wget": [
+    "下载文件",
+    "http 下载"
+  ],
+  "git": [
+    "版本控制",
+    "git 命令"
+  ],
+  "podman": [
+    "容器",
+    "docker 替代"
+  ],
+  "kustomize": [
+    "k8s 配置管理",
+    "overlay"
+  ],
+  "argocd": [
+    "gitops",
+    "argo cd"
+  ],
+  "flux": [
+    "gitops",
+    "fluxcd"
+  ],
+  "etcd": [
+    "键值存储",
+    "k8s 数据库"
+  ],
+  "coredns": [
+    "k8s dns",
+    "dns 服务"
+  ],
+  "calico": [
+    "k8s 网络",
+    "cni"
+  ],
+  "cilium": [
+    "k8s 网络",
+    "ebpf cni"
+  ],
+  "istio": [
+    "服务网格",
+    "service mesh"
+  ],
+  "gateway-api": [
+    "k8s 网关",
+    "gateway"
+  ],
+  "velero": [
+    "k8s 备份",
+    "备份恢复"
+  ],
+  "cert-manager": [
+    "证书管理",
+    "k8s 证书"
+  ],
+  "harbor": [
+    "镜像仓库",
+    "registry"
+  ],
+  "vault": [
+    "密钥管理",
+    "secret"
+  ],
+  "keycloak": [
+    "单点登录",
+    "sso"
+  ],
+  "kyverno": [
+    "k8s 策略",
+    "policy"
+  ],
+  "gatekeeper": [
+    "opa",
+    "k8s 策略"
+  ],
+  "falco": [
+    "运行时安全",
+    "容器安全"
+  ],
+  "kafka": [
+    "消息队列",
+    "消息中间件"
+  ],
+  "mysql": [
+    "关系数据库",
+    "mariadb"
+  ],
+  "starrocks": [
+    "olap",
+    "分析数据库"
+  ],
+  "minio": [
+    "对象存储",
+    "s3"
+  ],
+  "ceph": [
+    "分布式存储",
+    "块存储"
+  ],
+  "temporal": [
+    "工作流引擎",
+    "持久化工作流"
+  ],
+  "airflow": [
+    "调度平台",
+    "dag"
+  ],
+  "tekton": [
+    "ci/cd",
+    "pipeline"
+  ],
+  "argo-workflows": [
+    "工作流",
+    "argo"
+  ],
+  "argo-rollouts": [
+    "渐进式发布",
+    "canary"
+  ],
+  "ansible": [
+    "配置管理",
+    "playbook"
+  ],
+  "pulumi": [
+    "iac",
+    "基础设施即代码"
+  ],
+  "github-actions": [
+    "ci/cd",
+    "actions"
+  ],
+  "gitlab-ci": [
+    "ci/cd",
+    "pipeline"
+  ],
+  "jenkins": [
+    "ci/cd",
+    "流水线"
+  ],
+  "502-bad-gateway": [
+    "502",
+    "bad gateway",
+    "网关错误"
+  ],
+  "504-gateway-timeout": [
+    "504",
+    "gateway timeout",
+    "网关超时"
+  ],
+  "crashloopbackoff": [
+    "crash loop",
+    "容器重启",
+    "反复退出"
+  ],
+  "oom-killed": [
+    "oom",
+    "内存溢出",
+    "被杀"
+  ],
+  "imagepullbackoff": [
+    "镜像拉取失败",
+    "image pull"
+  ],
+  "pod-pending": [
+    "pod 未调度",
+    "pending"
+  ],
+  "certificate-expired": [
+    "证书过期",
+    "tls 过期"
+  ],
+  "x509-unknown-authority": [
+    "x509",
+    "证书不受信任",
+    "ca 未知"
+  ],
+  "connection-refused": [
+    "连接拒绝",
+    "端口未监听"
+  ],
+  "connection-reset-by-peer": [
+    "连接重置",
+    "reset by peer"
+  ],
+  "context-deadline-exceeded": [
+    "超时",
+    "deadline"
+  ],
+  "no-space-left": [
+    "磁盘满",
+    "空间不足"
+  ],
+  "inode-exhausted": [
+    "inode 满",
+    "文件数耗尽"
+  ],
+  "redis-memory-full": [
+    "redis oom",
+    "内存满"
+  ],
+  "mysql-deadlock": [
+    "死锁",
+    "1213"
+  ],
+  "postgres-connection-exhausted": [
+    "连接数满",
+    "too many connections"
+  ],
+  "kafka-consumer-lag": [
+    "消费积压",
+    "lag"
+  ],
+  "docker-cheatsheet": [
+    "docker 速查",
+    "容器速查"
+  ],
+  "k8s-troubleshooting-cheatsheet": [
+    "k8s 排障",
+    "kubernetes 排障"
+  ],
+  "linux-permission-cheatsheet": [
+    "权限速查",
+    "chmod 速查"
+  ],
+  "bash-cheatsheet": [
+    "bash 语法",
+    "shell 速查"
+  ],
+  "systemd-cheatsheet": [
+    "systemd 速查",
+    "服务管理"
+  ],
+  "network-troubleshooting-cheatsheet": [
+    "网络排障",
+    "tcp 排障"
+  ],
+  "http-status-cheatsheet": [
+    "http 状态码",
+    "状态码"
+  ],
+  "tls-cheatsheet": [
+    "tls 速查",
+    "证书速查"
+  ],
+  "dns-cheatsheet": [
+    "dns 速查",
+    "域名解析"
+  ],
+  "gpu-cheatsheet": [
+    "gpu 速查",
+    "显存"
+  ],
+  "tensorrt-llm": [
+    "推理加速",
+    "nvidia 推理"
+  ],
+  "ragflow": [
+    "rag 平台",
+    "知识库"
+  ],
+  "dify": [
+    "llm 应用",
+    "工作流"
+  ],
+  "langchain": [
+    "llm 框架",
+    "agent 框架"
+  ],
+  "llamaindex": [
+    "rag 框架",
+    "索引"
+  ],
+  "langgraph": [
+    "agent 编排",
+    "状态图"
+  ],
+  "crewai": [
+    "多 agent",
+    "agent 框架"
+  ],
+  "autogen": [
+    "多 agent",
+    "agent 框架"
+  ],
+  "mcp": [
+    "model context protocol",
+    "工具协议"
+  ],
+  "dspy": [
+    "prompt 优化",
+    "llm 编程"
+  ],
+  "pydantic-ai": [
+    "agent 框架",
+    "类型安全"
+  ],
+  "smolagents": [
+    "agent 框架",
+    "轻量 agent"
+  ],
+  "graphrag": [
+    "知识图谱 rag",
+    "graph rag"
+  ],
+  "reranker": [
+    "重排",
+    "rerank"
+  ],
+  "wsl": [
+    "windows linux 子系统",
+    "linux on windows"
+  ],
+  "reg": [
+    "注册表",
+    "registry"
+  ],
+  "robocopy": [
+    "windows 复制",
+    "文件同步"
+  ],
+  "launchctl": [
+    "macos 服务",
+    "launchd"
+  ],
+  "pmset": [
+    "macos 电源",
+    "电源管理"
+  ],
+  "softwareupdate": [
+    "macos 更新",
+    "系统更新"
+  ],
+  "tmutil": [
+    "time machine",
+    "macos 备份"
+  ],
+  "diskutil": [
+    "macos 磁盘",
+    "磁盘工具"
+  ],
+  "security": [
+    "macos 钥匙串",
+    "keychain"
+  ],
+  "defaults": [
+    "macos 偏好",
+    "plist"
+  ],
+  "brew": [
+    "homebrew",
+    "包管理"
+  ],
+  "xcode-select": [
+    "xcode",
+    "开发工具"
   ]
 }

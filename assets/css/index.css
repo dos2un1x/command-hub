@@ -312,6 +312,21 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 .learning-link strong{font-weight:600;color:#2196f3}
 .verified-badge{display:inline-block;margin:0 0 16px;padding:2px 9px;border:1px solid var(--color-header-border);border-radius:10px;font-size:12px;line-height:18px;color:#777}
 [data-color-mode*='dark'] .verified-badge{color:#aaa}
+.lab-status{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 8px;padding:3px 10px;border:1px solid var(--color-header-border);border-radius:12px;font-size:12px;line-height:20px}
+.lab-status strong{font-weight:600}
+.lab-status-meta{color:#777}
+.lab-status-note{margin:0 0 16px;font-size:12px;line-height:1.6;color:#777}
+.lab-status-passed{border-color:#81c784;background:#edf7ed;color:#1b5e20}
+.lab-status-partial{border-color:#ffb74d;background:#fff8e1;color:#8a5300}
+.lab-status-partial-review{border-color:#90caf9;background:#e3f2fd;color:#0d47a1}
+.lab-status-static{border-color:#bdbdbd;background:#f5f5f5;color:#555}
+.lab-status-new{border-color:#ce93d8;background:#f3e5f5;color:#6a1b9a}
+[data-color-mode*='dark'] .lab-status-meta,[data-color-mode*='dark'] .lab-status-note{color:#aaa}
+[data-color-mode*='dark'] .lab-status-static{background:#2a2a2a;color:#bbb}
+[data-color-mode*='dark'] .lab-status-passed{background:#17351c;color:#a5d6a7}
+[data-color-mode*='dark'] .lab-status-partial{background:#3a2a12;color:#ffcc80}
+[data-color-mode*='dark'] .lab-status-partial-review{background:#14283a;color:#90caf9}
+[data-color-mode*='dark'] .lab-status-new{background:#321a38;color:#e1bee7}
 
 /* ===== 命令页排障入口 ===== */
 .troubleshoot-links{margin:30px 0 0;padding:14px 18px;border:1px solid var(--color-header-border);border-left:3px solid #e8710a;border-radius:8px;background:var(--color-theme-bg)}

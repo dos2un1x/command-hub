@@ -1,0 +1,192 @@
+{
+  "lab-disk-full": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Linux root + loop"
+  },
+  "lab-inode-exhausted": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Linux root + tmpfs"
+  },
+  "lab-cpu-100": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Linux 或容器"
+  },
+  "lab-network-latency": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker + NET_ADMIN"
+  },
+  "lab-pod-pending": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-crashloopbackoff": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-dns-failure": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-pvc-pending": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-mysql-deadlock": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker"
+  },
+  "lab-postgres-connection-exhausted": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker"
+  },
+  "lab-kafka-consumer-lag": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker"
+  },
+  "lab-redis-hotkey": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker"
+  },
+  "lab-oom-killed": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker / kind"
+  },
+  "lab-imagepullbackoff": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-node-notready": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind"
+  },
+  "lab-certificate-expired": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "Docker / 本地 TLS"
+  },
+  "lab-nginx-502": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / nginx",
+    "note": "坏端口、停进程、日志与修复均实测通过；Docker Desktop 停进程后需重试才见 502"
+  },
+  "lab-helm-failed": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind + Helm"
+  },
+  "lab-kafka-rebalance": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / Kafka 3.7.0",
+    "note": "成员退出、会话超时、分区重分配与恢复均实测通过"
+  },
+  "lab-es-unassigned": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / Elasticsearch 8.15.3",
+    "note": "单节点 yellow/red、分配 explain 与副本/过滤修复均实测通过"
+  },
+  "lab-etcd-quorum": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "3 节点 kind / etcd"
+  },
+  "lab-mysql-replication-lag": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / MySQL 8.0.39",
+    "note": "锁等待造成 SQL 线程延迟、KILL 恢复与并行复制均通过；新增初始追平循环未整篇复跑"
+  },
+  "lab-k8s-upgrade": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind 多节点 / 一次性测试集群"
+  },
+  "lab-cert-rotation": {
+    "status": "partial-review",
+    "checked": "2026-10-25",
+    "environment": "本地 TLS 服务 / 测试入口",
+    "note": "证书链、生效检查和回滚命令已复核，未完整复跑"
+  },
+  "lab-db-failover": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / 测试数据库",
+    "note": "切换、连接恢复与一致性检查通过"
+  },
+  "lab-etcd-restore": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "3 节点 kind / 一次性 etcd",
+    "note": "快照恢复与 quorum 重建通过"
+  },
+  "lab-regional-failure": {
+    "status": "partial-review",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose + kind",
+    "note": "就绪等待、清理顺序和 OpenSSL 说明已修订，未完整复跑"
+  },
+  "lab-redis-failover": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose",
+    "note": "故障切换、双主隔离与 Sentinel 收敛通过；计划内回切按实际主节点判断"
+  },
+  "lab-kafka-broker-replace": {
+    "status": "partial",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / Kafka 3.7.0",
+    "note": "三副本迁移到 broker-4 且 broker-3 退役已验证；停机 ISR、写入拒绝与回滚未验证"
+  },
+  "lab-backup-restore-verification": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / 本地目录",
+    "note": "备份、隔离恢复、一致性与清理均通过"
+  },
+  "lab-velero-restore": {
+    "status": "static",
+    "checked": "2026-10-25",
+    "environment": "kind + MinIO"
+  },
+  "lab-postgres-pitr": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose",
+    "note": "目标时间暂停、提升与约束复验通过"
+  },
+  "lab-kafka-restore": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / Kafka 3.7.0",
+    "note": "卷恢复、offset/位点重置与 12 条消息校验均实测通过"
+  },
+  "lab-es-restore": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose / Elasticsearch 8.15.3",
+    "note": "快照、删除、恢复、mapping/文档数与别名切换均实测通过"
+  },
+  "lab-dns-failover": {
+    "status": "passed",
+    "checked": "2026-10-25",
+    "environment": "Docker Compose + CoreDNS",
+    "note": "TTL 预降、区导入、NS 切换、回滚与探针均通过；宿主 5353 被占用时用 15353 等价验证"
+  }
+}

@@ -25,6 +25,10 @@
 <% if (verified) { %>
 <p class="verified-badge">版本信息最后核对：<%= verified %></p>
 <% } %>
+<% if (labStatus) { %>
+<p class="lab-status lab-status-<%= labStatus.status %>">Lab 状态：<strong><%= labStatus.label %></strong><span class="lab-status-meta"><%= labStatus.checked %> · <%= labStatus.environment %></span></p>
+<% if (labStatus.note) { %><p class="lab-status-note"><%= labStatus.note %></p><% } %>
+<% } %>
 
 <%- mdhtml %>
 

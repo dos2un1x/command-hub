@@ -30,6 +30,7 @@ import { applyAliases } from './lib/search-alias.mjs';
 import { selectTroubleshootLinks } from './lib/troubleshoot-links.mjs';
 import { learningLinkFor } from './lib/learning-link.mjs';
 import { verifiedFor } from './lib/freshness-badge.mjs';
+import { labStatusFor, validateLabStatus } from './lib/lab-status.mjs';
 import {
   brandTitle as brandTitleBase,
   clipText,
@@ -374,6 +375,16 @@ for (const [branch, slug] of Object.entries(LEARNING_LINKS)) {
 const FRESHNESS_REGISTRY = JSON.parse(
   await FS.readFile(path.join(ASSETS_DIR, 'data', 'content-freshness.json'), 'utf8')
 );
+
+// Lab 实跑状态:状态表必须覆盖 tutorial/lab 分类下的每一篇演练。
+const LAB_STATUS = JSON.parse(
+  await FS.readFile(path.join(ASSETS_DIR, 'data', 'lab-status.json'), 'utf8')
+);
+const LAB_SLUGS = new Set(
+  (categoriesByBranch.get('tutorial')?.byCat.get('lab') || []).map((it) => it.n)
+);
+const labStatusErrors = validateLabStatus(LAB_STATUS, LAB_SLUGS);
+if (labStatusErrors.length) throw new Error(labStatusErrors.join('\n'));
 
 const categoryNavFor = (branchId) => {
   const cats = categoriesByBranch.get(branchId);
@@ -764,6 +775,7 @@ await pmap(items, 8, async (it) => {
     related,
     learningLink: learningLink && learningLink.n !== it.n ? learningLink : null,
     verified: verifiedFor(FRESHNESS_REGISTRY, it.b, it.n),
+    labStatus: labStatusFor(LAB_STATUS, it.n),
     troubleshootLinks: selectTroubleshootLinks(
       troubleshootByName,
       TROUBLESHOOT_LINKS[it.n] || []
