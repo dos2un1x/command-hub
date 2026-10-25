@@ -73,7 +73,7 @@
 - macOS 页面沿用紧凑速查风格,提示符写 `%`;要标注 BSD 与 GNU 选项差异,以及 Apple Silicon/Intel、macOS 版本差异。危险命令(`csrutil disable`、`diskutil eraseDisk`、`launchctl unload -w`)必须在示例前写影响范围与恢复方式。
 - PowerShell cmdlet 页面使用官方大小写作为文件名与标题(如 `Get-ChildItem.md`);示例默认兼容 Windows PowerShell 5.1,7.x 差异单独标注,不默认展示跳过证书校验或关闭执行策略的参数。
 
-### 指南分支的四种写法
+### 指南分支的八种写法
 
 - **对比页**:`## 结论先行` → `## 核心差异`(表格)→ `## 怎么选` → `## 注意` → 可选 `## 相关命令`。结论要明确,差异要能指导选择,不写中立无用的“各有优劣”。
 - **速查表**:`## 常用命令` / `## 场景速查`(或 `## 分层排查`)→ `## 易错点` → 可选 `## 相关命令`。命令按使用场景分组,每页控制在 40–60 行。
@@ -96,7 +96,7 @@
 - 必须包含清理/回滚命令;磁盘、CPU、网络实验要明确禁止影响宿主机或生产。
 - 至少指出一个“容易误判”的点,让读者先写假设再验证,而不是照着答案改。
 
-目前有 12 个基础演练和 10 个进阶演练。新增演练后,同步更新 `command/guide/lab-learning-path.md` 的总览表、阶段顺序和 `command/tutorial/categories.json` 的 `lab` 分类。
+目前有 12 个基础、10 个进阶和 13 个变更/恢复演练,共 35 个。新增或修改演练后,同步更新 `command/guide/lab-learning-path.md` 的总览表、阶段顺序和 `command/tutorial/categories.json` 的 `lab` 分类;同时必须在 `assets/data/lab-status.json` 登记状态、最后核对日期和环境,否则构建会因 Lab 状态校验失败。
 
 ### 读完自测的写法
 

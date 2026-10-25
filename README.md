@@ -76,7 +76,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - `/guide/learning-paths.html`:总入口,列出 12 条领域路径、4 条岗位路径、12 个心智模型和 35 个故障演练,并给出六周推进建议;技术选型从 `technology-selection-map` 的七条决策树进入。
 - 学习路径:每个领域 4 个阶段,每阶段含阅读顺序(通常 7–13 个真实站内链接)、动手任务和过关标准,如 `linux-learning-path`、`k8s-learning-path`;另有可观测性、数据库、网络三条跨域路径。
 - 心智模型:每个领域一页,只讲 5–7 个核心概念和它们的关系,如 `linux-mental-model`、`observability-mental-model`。
-- 故障演练:教程分支 `lab` 类目的 35 页(12 个基础 + 23 个进阶),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;其中 13 个变更/恢复演练覆盖 K8s 升级、证书轮换、数据库切换、etcd 快照恢复、区域故障、Redis 切换、Kafka broker 替换、备份恢复验证、Velero 恢复、PostgreSQL PITR、Kafka 恢复、Elasticsearch 恢复和 DNS 提供商切换;`lab-learning-path` 给出四周基础计划和进阶插入方式;各 Lab 的实际执行程度、验证限制和下一批计划见 [LAB-SMOKE-STATUS.md](LAB-SMOKE-STATUS.md)。
+- 故障演练:教程分支 `lab` 类目的 35 页(12 个基础、10 个进阶、13 个变更/恢复),在 kind、Docker Compose 或临时目录里注入故障,按“观察 → 判断 → 修复 → 复盘”练习,不碰生产;其中 13 个变更/恢复演练覆盖 K8s 升级、证书轮换、数据库切换、etcd 快照恢复、区域故障、Redis 切换、Kafka broker 替换、备份恢复验证、Velero 恢复、PostgreSQL PITR、Kafka 恢复、Elasticsearch 恢复和 DNS 提供商切换;`lab-learning-path` 给出四周基础计划和进阶插入方式;各 Lab 的实际执行程度、验证限制和下一批计划见 [LAB-SMOKE-STATUS.md](LAB-SMOKE-STATUS.md)。
 - 故障复盘:排障分支的 15 篇匿名化合成案例(如 `incident-dns-ndots`、`incident-etcd-quorum`),按“现象 → 时间线 → 影响面 → 误导线索 → 根因 → 修复 → 预防”展开,用于练习从错误线索中收敛。
 - 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`、`runbook-k8s-upgrade`、`runbook-cert-rotation`、`runbook-db-failover`、`runbook-redis-failover`、`runbook-kafka-broker-replace`、`runbook-dns-failover`、`runbook-backup-restore-verification`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织;新增页面均从事故响应手册、排障学习路径和灾难恢复页手工入链,其中升级、证书、切换、etcd 恢复和区域综合演练有对应的 `lab-*` 演练页。
 - 平台生命周期:`platform-lifecycle-matrix` 汇总操作系统、Kubernetes 与 DevOps 工具的支持窗口和升级节点;`version-eol-matrix` 继续维护 K8s/AI/中间件的版本与 EOL。
@@ -230,7 +230,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2000 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2,170 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - 详情页 JSON-LD:`BreadcrumbList` + `FAQPage`;Lab 页额外输出 `HowTo`
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
@@ -304,7 +304,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 | macOS | 61 | BSD 文件命令、launchctl/pmset/softwareupdate/tmutil/csrutil 等系统命令、ifconfig/tcpdump/dscacheutil 等网络工具、Xcode 命令行工具与 Homebrew、diskutil/hdiutil 磁盘维护,以及 MDM、FileVault 与钥匙串管理 |
 | DevOps | 97 | GitHub Actions、GitLab CI、Jenkins、Buildkite、发布自动化、云 CLI、Terraform/OpenTofu/Pulumi/Ansible、Helmfile/cdk8s、ORAS/SLSA/in-toto、tfsec/KICS/TFLint/Terrascan、Atlantis/Infracost/Backstage,以及 SLO/错误预算、事故指挥/复盘、容量预测、FinOps、IDP、策略即代码、混沌工程、渐进式发布、多集群、DR 演练、on-call/runbook/toil 等 SRE 与平台工程实践 |
 | 排障 | 170 | 按报错/现象组织:系统、磁盘、网络、权限证书、JVM/Go/Node、etcd/APIServer/CNI/CSI、Nginx、MySQL/PostgreSQL、Redis/Kafka/RabbitMQ、K8s 控制面与中间件连接问题,以及 Python/Ruby/PHP 运行时、MongoDB/ClickHouse/Pulsar、IPv6/gRPC/WebSocket/DNS ndots/TCP 状态等运行时与数据排障 |
-| 指南 | 201 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘、复盘索引、技术选型决策地图、速查表索引、快捷键总览和平台生命周期矩阵;包含 12 条领域路径、4 条岗位路径、12 个心智模型和 35 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
+| 指南 | 201 | 工具对比、速查表、路线图/检查清单、学习路径与心智模型、Windows 系统操作、PowerShell 概念、Vim 系列、快捷键与跨平台对照,以及恢复 Runbook、公开事故复盘、复盘索引、技术选型决策地图、速查表索引、快捷键总览和平台生命周期矩阵;学习路径覆盖 12 条领域路径、4 条岗位路径和 12 个心智模型,并串联教程分支的 35 个故障演练,覆盖选型、上线检查、性能排查、可观测性、容器安全、CI/CD 成熟度、SRE 值班、迁移、成本、事故响应、AI 基础设施、RAG 与 GPU 集群 |
 | 中间件 | 71 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PostgreSQL/PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB,以及 RocketMQ/Dubbo/ShardingSphere/Seata/Canal/Arthas 等 Java 生态中间件 |
 | 教程 | 90 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 35 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd/K8s 升级/数据库切换/区域故障等) |
 | AI 与 MLOps | 146 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册,以及 GPU Xid、NCCL 卡死、vLLM OOM、模型加载失败、推理延迟、Ray 调度、训练 loss 异常、checkpoint 损坏、分布式训练卡死、GPU 节点生命周期、RAG 召回质量、embedding 迁移、Agent 运行时观测和推理自动扩缩容等运行态排障 |
@@ -372,50 +372,63 @@ Kubernetes       crashloopbackoff imagepullbackoff pod-pending pod-evicted probe
                  redis-hotkey elasticsearch-yellow rabbitmq-queue-backlog
 ```
 
-指南分支的主要学习内容分五类(共 42 个工具对比 + 44 个速查表 + 15 个路线图/检查清单 + 30 个学习路径与心智模型 + 6 个术语与索引页):
+指南分支共 12 个分类、201 页。下面按用途列出主要学习内容(42 个工具对比与替代、44 个速查/矩阵/索引页、15 个路线图/检查清单、30 个学习路径与心智模型、6 个术语与索引页):
 
 ```
-工具对比   iptables-vs-nftables curl-vs-wget docker-vs-podman helm-vs-kustomize
-           systemd-vs-sysvinit cgroup-v1-vs-v2 nginx-vs-caddy haproxy-vs-nginx
-           ext4-vs-xfs btrfs-vs-zfs psql-vs-mysql kafka-vs-pulsar nats-vs-kafka
-           argocd-vs-flux ansible-vs-terraform prometheus-vs-victoriametrics
-           kafka-vs-rabbitmq redis-vs-memcached mysql-vs-mariadb envoy-vs-nginx
-           traefik-vs-nginx terraform-vs-cloudformation ollama-vs-vllm
-           vllm-vs-sglang qdrant-vs-milvus emqx-vs-mosquitto temporal-vs-airflow
-           valkey-vs-redis crossplane-vs-terraform karpenter-vs-cluster-autoscaler
-           envoy-gateway-vs-nginx-ingress pgvector-vs-qdrant
-速查表     linux-permission-cheatsheet k8s-troubleshooting-cheatsheet
-           git-cheatsheet network-troubleshooting-cheatsheet bash-cheatsheet
-           kubectl-cheatsheet docker-cheatsheet terraform-cheatsheet
-           ansible-cheatsheet ssh-cheatsheet tcpdump-cheatsheet
-           systemd-cheatsheet vim-cheatsheet tmux-cheatsheet
-           awk-cheatsheet sed-cheatsheet find-cheatsheet grep-cheatsheet
-           jq-cheatsheet yq-cheatsheet openssl-cheatsheet curl-cheatsheet
-           promql-cheatsheet logql-cheatsheet nginx-cheatsheet redis-cheatsheet
-           mysql-cheatsheet postgres-cheatsheet kafka-cheatsheet
-           helm-cheatsheet kustomize-cheatsheet dockerfile-cheatsheet
-           argocd-cheatsheet gpu-cheatsheet kubectl-jsonpath-cheatsheet
+工具对比   ansible-vs-puppet ansible-vs-terraform argocd-vs-flux
+           btrfs-vs-zfs cgroup-v1-vs-v2 containerd-vs-cri-o curl-vs-wget
+           docker-vs-podman envoy-vs-nginx ext4-vs-xfs grafana-vs-kibana
+           grpc-vs-rest haproxy-vs-nginx helm-vs-kustomize
+           iptables-vs-nftables kafka-vs-pulsar kafka-vs-rabbitmq
+           loki-vs-elk mysql-vs-mariadb nats-vs-kafka nats-vs-rabbitmq
+           nginx-vs-caddy podman-vs-containerd postgres-vs-mongodb
+           prometheus-vs-victoriametrics prometheus-vs-zabbix psql-vs-mysql
+           redis-vs-memcached systemd-vs-sysvinit
+           terraform-vs-cloudformation traefik-vs-nginx ollama-vs-vllm
+           vllm-vs-sglang qdrant-vs-milvus emqx-vs-mosquitto
+           temporal-vs-airflow valkey-vs-redis crossplane-vs-terraform
+           karpenter-vs-cluster-autoscaler envoy-gateway-vs-nginx-ingress
+           pgvector-vs-qdrant deprecated-commands
+速查与矩阵 ansible-cheatsheet awk-cheatsheet bash-cheatsheet
+           curl-cheatsheet docker-cheatsheet find-cheatsheet git-cheatsheet
+           grep-cheatsheet jq-cheatsheet k8s-troubleshooting-cheatsheet
+           kafka-cheatsheet kubectl-cheatsheet linux-permission-cheatsheet
+           logql-cheatsheet mysql-cheatsheet
+           network-troubleshooting-cheatsheet nginx-cheatsheet
+           openssl-cheatsheet postgres-cheatsheet promql-cheatsheet
+           redis-cheatsheet sed-cheatsheet ssh-cheatsheet
+           systemd-cheatsheet tcpdump-cheatsheet terraform-cheatsheet
+           tmux-cheatsheet yq-cheatsheet helm-cheatsheet
+           kustomize-cheatsheet dockerfile-cheatsheet argocd-cheatsheet
+           gpu-cheatsheet kubectl-jsonpath-cheatsheet
            linux-signal-cheatsheet http-status-cheatsheet dns-cheatsheet
-           tls-cheatsheet k8s-rbac-cheatsheet cron-cheatsheet regex-cheatsheet
-路线图     k8s-production-checklist linux-performance-triage observability-roadmap
-           database-selection-roadmap container-security-checklist
-           cicd-maturity-roadmap sre-oncall-checklist
-           migration-readiness-checklist cost-optimization-checklist
-           incident-response-playbook ai-infra-roadmap rag-production-checklist
-           gpu-cluster-checklist platform-engineering-roadmap k8s-upgrade-checklist
-学习路径   linux-learning-path devops-learning-path troubleshoot-learning-path
-           middleware-learning-path ai-learning-path security-learning-path
-           k8s-learning-path observability-learning-path database-learning-path
+           tls-cheatsheet k8s-rbac-cheatsheet cron-cheatsheet
+           regex-cheatsheet version-eol-matrix platform-lifecycle-matrix
+           cheatsheet-index
+路线图     k8s-production-checklist linux-performance-triage
+           observability-roadmap database-selection-roadmap
+           container-security-checklist cicd-maturity-roadmap
+           sre-oncall-checklist migration-readiness-checklist
+           cost-optimization-checklist incident-response-playbook
+           ai-infra-roadmap rag-production-checklist gpu-cluster-checklist
+           platform-engineering-roadmap k8s-upgrade-checklist
+学习路径   k8s-learning-path linux-learning-path devops-learning-path
+           troubleshoot-learning-path middleware-learning-path
+           ai-learning-path security-learning-path
+           observability-learning-path database-learning-path
            network-learning-path lab-learning-path learning-paths
-           role-sre-onboarding role-backend-oncall role-data-platform role-ai-infra-oncall
+           windows-learning-path macos-learning-path role-sre-onboarding
+           role-backend-oncall role-data-platform role-ai-infra-oncall
 心智模型   linux-mental-model k8s-mental-model devops-mental-model
            troubleshoot-mental-model middleware-mental-model ai-mental-model
            security-mental-model observability-mental-model
-           database-mental-model network-mental-model
-术语与索引 build-index migration-index error-code-index linux-command-map linux-long-tail-index glossary-index
+           database-mental-model network-mental-model windows-mental-model
+           macos-mental-model
+术语与索引 build-index migration-index error-code-index linux-command-map
+           linux-long-tail-index glossary-index
 ```
 
-另有五个入口页:`technology-selection-map` 用七条决策树把 42 篇对比页分流,`public-postmortem-index` 按根因把 12 篇公开复盘和 12 篇 Runbook 串起来,`cheatsheet-index` 汇总 44 张速查表,`shortcuts-overview` 汇总 7 个平台的快捷键页,`glossary-index` 汇总 122 条术语与缩写。
+另有五个入口页:`technology-selection-map` 用七条决策树把 42 篇工具对比与替代页分流,`public-postmortem-index` 按根因把 12 篇公开复盘和 12 篇 Runbook 串起来,`cheatsheet-index` 汇总 42 张速查表,`shortcuts-overview` 汇总 7 个平台的快捷键页,`glossary-index` 汇总 122 条术语与缩写。
 
 中间件分支按服务划分:
 
@@ -520,7 +533,7 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 - Kubernetes：274 页
 - DevOps：97 页
 - 排障：170 页
-- 指南：189 页
+- 指南：201 页
 - 中间件：71 页
 - 教程：90 页
 - AI 与 MLOps：146 页
