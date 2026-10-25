@@ -1,22 +1,151 @@
 {
-  "linux/file": ["ls", "cp", "find"],
-  "linux/text": ["grep", "awk", "sed"],
-  "linux/process": ["ps", "top", "kill"],
-  "linux/network": ["curl", "ss", "tcpdump"],
-  "linux/disk": ["df", "du", "mount"],
-  "k8s/workload": ["deployment", "pod", "hpa"],
-  "k8s/network": ["service", "ingress", "network-troubleshooting"],
-  "k8s/storage": ["pvc", "storageclass", "csi"],
-  "k8s/security": ["rbac", "seccomp", "pod-security-admission"],
-  "k8s/observability": ["prometheus", "metrics-server", "kubectl-cost"],
-  "ai/inference": ["vllm", "sglang", "quantization"],
-  "ai/rag": ["chunking", "hybrid-search", "reranker"],
-  "ai/eval": ["llm-as-judge", "prompt-injection", "deepeval"],
-  "troubleshoot/k8s": ["crashloopbackoff", "pod-pending", "node-notready"],
-  "troubleshoot/network": ["connection-timeout", "dns-resolution-failed", "502-bad-gateway"],
-  "middleware/data": ["redis-cluster", "postgresql", "pgbouncer"],
-  "middleware/messaging": ["kafka", "rabbitmq"],
-  "middleware/vector": ["milvus", "qdrant", "weaviate"],
-  "middleware/workflow": ["airflow", "temporal", "prefect"],
-  "guide/cheatsheet": ["kubectl-cheatsheet", "k8s-troubleshooting-cheatsheet", "bash-cheatsheet"]
+  "linux/file": [
+    "ls",
+    "cp",
+    "find"
+  ],
+  "linux/text": [
+    "grep",
+    "awk",
+    "sed"
+  ],
+  "linux/process": [
+    "ps",
+    "top",
+    "kill"
+  ],
+  "linux/network": [
+    "curl",
+    "ss",
+    "tcpdump"
+  ],
+  "linux/disk": [
+    "df",
+    "du",
+    "mount"
+  ],
+  "k8s/workload": [
+    "deployment",
+    "pod",
+    "hpa"
+  ],
+  "k8s/network": [
+    "service",
+    "ingress",
+    "network-troubleshooting"
+  ],
+  "k8s/storage": [
+    "pvc",
+    "storageclass",
+    "csi"
+  ],
+  "k8s/security": [
+    "rbac",
+    "seccomp",
+    "pod-security-admission"
+  ],
+  "k8s/observability": [
+    "prometheus",
+    "metrics-server",
+    "kubectl-cost"
+  ],
+  "ai/inference": [
+    "vllm",
+    "sglang",
+    "quantization"
+  ],
+  "ai/rag": [
+    "chunking",
+    "hybrid-search",
+    "reranker"
+  ],
+  "ai/eval": [
+    "llm-as-judge",
+    "prompt-injection",
+    "deepeval"
+  ],
+  "troubleshoot/k8s": [
+    "crashloopbackoff",
+    "pod-pending",
+    "node-notready"
+  ],
+  "troubleshoot/network": [
+    "connection-timeout",
+    "dns-resolution-failed",
+    "502-bad-gateway"
+  ],
+  "middleware/data": [
+    "redis-cluster",
+    "postgresql",
+    "pgbouncer"
+  ],
+  "middleware/messaging": [
+    "kafka",
+    "rabbitmq"
+  ],
+  "middleware/vector": [
+    "milvus",
+    "qdrant",
+    "weaviate"
+  ],
+  "middleware/workflow": [
+    "airflow",
+    "temporal",
+    "prefect"
+  ],
+  "guide/cheatsheet": [
+    "kubectl-cheatsheet",
+    "k8s-troubleshooting-cheatsheet",
+    "bash-cheatsheet"
+  ],
+  "windows/powershell": [
+    "winrm",
+    "Get-Service",
+    "Get-Process"
+  ],
+  "windows/server": [
+    "gpo-diagnostics",
+    "ad-replication",
+    "defender-intune"
+  ],
+  "macos/system": [
+    "mdm",
+    "keychain",
+    "launchctl"
+  ],
+  "macos/disk": [
+    "filevault",
+    "diskutil",
+    "hdiutil"
+  ],
+  "ai/gpu": [
+    "gpu-xid",
+    "nccl-hang",
+    "gpu-node-lifecycle"
+  ],
+  "ai/training": [
+    "training-loss-anomaly",
+    "checkpoint-corruption",
+    "distributed-training-hang"
+  ],
+  "tutorial/lab": [
+    "lab-k8s-upgrade",
+    "lab-db-failover",
+    "lab-regional-failure"
+  ],
+  "guide/runbook": [
+    "runbook-k8s-upgrade",
+    "runbook-db-failover",
+    "runbook-redis-failover"
+  ],
+  "guide/case-study": [
+    "public-postmortem-index",
+    "public-postmortem-cloudflare-2020",
+    "public-postmortem-github-2018"
+  ],
+  "guide/scenario": [
+    "technology-selection-map",
+    "scenario-cpu-high",
+    "scenario-disk-full"
+  ]
 }

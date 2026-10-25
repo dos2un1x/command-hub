@@ -1,33 +1,203 @@
 {
-  "kubectl": ["k8s", "kubernetes"],
-  "k9s": ["kubernetes ui"],
-  "krew": ["kubectl plugin"],
-  "kubectx": ["kubens", "context switch"],
-  "python": ["python3", "py"],
-  "pip": ["pip3"],
-  "rg": ["ripgrep"],
-  "fd": ["fdfind"],
-  "bat": ["batcat"],
-  "systemctl": ["systemd"],
-  "journalctl": ["systemd-journald"],
-  "postgresql": ["postgres", "pg"],
-  "psql": ["postgres", "pg"],
-  "elasticsearch": ["es"],
-  "opensearch": ["os"],
-  "redis-cli": ["redis"],
-  "kafka-topics": ["kafka"],
-  "terraform": ["tofu", "opentofu"],
-  "vllm": ["llm inference"],
-  "sglang": ["llm inference"],
-  "ollama": ["llm"],
-  "nvidia-smi": ["gpu"],
-  "prometheus": ["promql"],
-  "loki": ["logql"],
-  "grafana": ["dashboards"],
-  "helm": ["helmfile"],
-  "docker": ["docker-compose"],
-  "curl": ["httpie"],
-  "ssh": ["sshd"],
-  "scp": ["sftp"],
-  "rsync": ["sync"]
+  "kubectl": [
+    "k8s",
+    "kubernetes"
+  ],
+  "k9s": [
+    "kubernetes ui"
+  ],
+  "krew": [
+    "kubectl plugin"
+  ],
+  "kubectx": [
+    "kubens",
+    "context switch"
+  ],
+  "python": [
+    "python3",
+    "py"
+  ],
+  "pip": [
+    "pip3"
+  ],
+  "rg": [
+    "ripgrep"
+  ],
+  "fd": [
+    "fdfind"
+  ],
+  "bat": [
+    "batcat"
+  ],
+  "systemctl": [
+    "systemd"
+  ],
+  "journalctl": [
+    "systemd-journald"
+  ],
+  "postgresql": [
+    "postgres",
+    "pg"
+  ],
+  "psql": [
+    "postgres",
+    "pg"
+  ],
+  "elasticsearch": [
+    "es"
+  ],
+  "opensearch": [
+    "os"
+  ],
+  "redis-cli": [
+    "redis"
+  ],
+  "kafka-topics": [
+    "kafka"
+  ],
+  "terraform": [
+    "tofu",
+    "opentofu"
+  ],
+  "vllm": [
+    "llm inference"
+  ],
+  "sglang": [
+    "llm inference"
+  ],
+  "ollama": [
+    "llm"
+  ],
+  "nvidia-smi": [
+    "gpu"
+  ],
+  "prometheus": [
+    "promql"
+  ],
+  "loki": [
+    "logql"
+  ],
+  "grafana": [
+    "dashboards"
+  ],
+  "helm": [
+    "helmfile"
+  ],
+  "docker": [
+    "docker-compose"
+  ],
+  "curl": [
+    "httpie"
+  ],
+  "ssh": [
+    "sshd"
+  ],
+  "scp": [
+    "sftp"
+  ],
+  "rsync": [
+    "sync"
+  ],
+  "winrm": [
+    "powershell remoting",
+    "wsman"
+  ],
+  "gpo-diagnostics": [
+    "group policy",
+    "gpresult",
+    "gpo"
+  ],
+  "ad-replication": [
+    "active directory",
+    "repadmin",
+    "dcdiag"
+  ],
+  "defender-intune": [
+    "defender",
+    "intune",
+    "asr"
+  ],
+  "mdm": [
+    "mobile device management",
+    "dep",
+    "ade"
+  ],
+  "filevault": [
+    "fdesetup",
+    "disk encryption"
+  ],
+  "keychain": [
+    "security command",
+    "certificates"
+  ],
+  "gpu-xid": [
+    "xid",
+    "gpu error",
+    "ecc"
+  ],
+  "nccl-hang": [
+    "nccl",
+    "collective hang",
+    "slow rank"
+  ],
+  "vllm-oom": [
+    "vllm",
+    "kv cache",
+    "oom"
+  ],
+  "model-load-failed": [
+    "model load",
+    "safetensors",
+    "trust remote code"
+  ],
+  "inference-latency": [
+    "ttft",
+    "tpot",
+    "latency"
+  ],
+  "ray-scheduling": [
+    "ray",
+    "pending",
+    "gpu scheduling"
+  ],
+  "training-loss-anomaly": [
+    "loss nan",
+    "loss spike",
+    "training divergence"
+  ],
+  "checkpoint-corruption": [
+    "checkpoint",
+    "resume training"
+  ],
+  "distributed-training-hang": [
+    "distributed training",
+    "hang",
+    "nccl timeout"
+  ],
+  "gpu-node-lifecycle": [
+    "gpu node",
+    "device plugin",
+    "mig"
+  ],
+  "runbook-redis-failover": [
+    "redis failover",
+    "sentinel",
+    "cluster failover"
+  ],
+  "runbook-kafka-broker-replace": [
+    "kafka broker",
+    "broker replacement"
+  ],
+  "runbook-dns-failover": [
+    "dns failover",
+    "nameserver migration"
+  ],
+  "runbook-backup-restore-verification": [
+    "backup verification",
+    "restore drill"
+  ],
+  "lab-regional-failure": [
+    "game day",
+    "regional failure"
+  ]
 }
