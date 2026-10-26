@@ -1,5 +1,5 @@
 /**
- * 多分支命令站构建管线
+ * 多分支命令栈构建管线
  *
  * 输入:command/<branch>/<slug>.md + branches.json + template/ + assets/
  * 输出:build/  (根页面、<branch>/ 页面、js/css/data/images)
