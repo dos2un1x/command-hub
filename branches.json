@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "dos2unix 速查站",
+    "name": "dos2unix 速查栈",
     "baseUrl": "https://www.dos2unix.cn",
     "slogan": "命令、排障、教程与工程实践的速查手册，覆盖 Linux、Windows、macOS、Kubernetes、DevOps、中间件、AI/MLOps、Vim 与快捷键。",
     "keywords": "Linux,Windows,macOS,命令速查,CMD,PowerShell,WSL,Kubernetes,K8s,DevOps,故障排查,运维,中间件,AI,MLOps,GPU,大模型,推理,训练,CI/CD,工具对比,教程,迁移,搭建,Vim,快捷键,键盘快捷键",

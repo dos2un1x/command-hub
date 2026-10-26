@@ -1,6 +1,6 @@
-# 命令速查站(多分支)
+# 命令速查栈(多分支)
 
-Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps 多分支速查站。支持多分支切换,新增分支不需要改代码。
+Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps 多分支速查栈。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
