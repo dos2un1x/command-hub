@@ -452,9 +452,11 @@ await FS.mkdir(OUT_DIR, { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'css'), path.join(OUT_DIR, 'css'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'js'), path.join(OUT_DIR, 'js'), { recursive: true });
 await FS.cp(path.join(ASSETS_DIR, 'data'), path.join(OUT_DIR, 'data'), { recursive: true });
-// 浏览器标签图标以 images/favicon.ico 为准，复制到产物根目录的 images/。
+// 浏览器标签图标与页脚小程序码以 images/ 为准，复制到产物根目录的 images/。
 await FS.mkdir(path.join(OUT_DIR, 'images'), { recursive: true });
-await FS.copyFile(path.join(ROOT, 'images', 'favicon.ico'), path.join(OUT_DIR, 'images', 'favicon.ico'));
+for (const name of ['favicon.ico', 'command-hub.png']) {
+  await FS.copyFile(path.join(ROOT, 'images', name), path.join(OUT_DIR, 'images', name));
+}
 
 // index.js 压缩
 {

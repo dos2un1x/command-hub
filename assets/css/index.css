@@ -361,6 +361,24 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
   .error-page h1{font-size:21px}
 }
 
+/* ===== 右下角小程序悬浮入口 ===== */
+.miniapp-fab{--mini-panel:clamp(158px,12vw + 40px,180px);--mini-pad:clamp(10px,1vw,13px);position:fixed;right:clamp(12px,1.4vw,18px);bottom:calc(clamp(12px,1.4vw,18px) + env(safe-area-inset-bottom,0px));z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:clamp(8px,.8vw,10px);pointer-events:none}
+.miniapp-toggle{display:flex;align-items:center;gap:7px;padding:clamp(8px,.8vw,10px) clamp(11px,1.1vw,14px);border:0;border-radius:999px;background:#07c160;color:#fff;font:inherit;font-size:clamp(12px,.95vw,13px);font-weight:600;line-height:1;cursor:pointer;pointer-events:auto;box-shadow:0 6px 18px rgba(7,193,96,.34);transition:transform .16s ease,background .16s ease,box-shadow .16s ease}
+.miniapp-toggle svg{display:block;flex:0 0 auto;width:18px;height:18px;fill:currentColor}
+.miniapp-toggle:hover{background:#06ad56;transform:translateY(-1px);box-shadow:0 8px 22px rgba(7,193,96,.42)}
+.miniapp-toggle:focus-visible{outline:2px solid #07c160;outline-offset:3px}
+.miniapp-panel{position:relative;width:var(--mini-panel);padding:var(--mini-pad) var(--mini-pad) calc(var(--mini-pad) + 2px);border:1px solid rgba(0,0,0,.06);border-radius:14px;background:#fff;color:#1f2328;text-align:center;box-shadow:0 12px 36px rgba(0,0,0,.18);opacity:0;visibility:hidden;transform:translateY(8px) scale(.98);transform-origin:bottom right;transition:opacity .16s ease,transform .16s ease,visibility .16s;pointer-events:none}
+.miniapp-fab.open .miniapp-panel{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.miniapp-qr{display:block;width:100%;height:auto;border-radius:8px;background:#fff}
+.miniapp-title{margin:9px 0 0;font-size:clamp(12px,1vw,13px);font-weight:600;line-height:1.4}
+.miniapp-desc{margin:2px 0 0;font-size:clamp(11px,.9vw,12px);line-height:1.5;color:#646a73}
+.miniapp-close{position:absolute;top:4px;right:4px;display:flex;align-items:center;justify-content:center;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#646a73;font-size:18px;line-height:1;cursor:pointer}
+.miniapp-close:hover{background:#f0f0f0;color:#1f2328}
+.miniapp-close:focus-visible{outline:2px solid #07c160;outline-offset:2px}
+@media (prefers-reduced-motion: reduce){
+  .miniapp-toggle,.miniapp-panel{transition:none}
+}
+
 /* ===== 页脚备案号 ===== */
 .footer .footer-meta{margin-top:8px}
 .footer .footer-meta a{opacity:.72}
