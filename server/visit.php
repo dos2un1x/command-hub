@@ -19,8 +19,9 @@ declare(strict_types=1);
  *   ];
  *
  * 口径：
+ *   - 所有部署（GitHub Pages、任意域名）统一请求 https://www.dos2unix.cn/api/visit.php
  *   - GET /api/visit.php?stats=1 只读返回统计，不计数（DNT 访客用）
- *   - 只统计页面脚本主动上报的访问（爬虫 UA、空 UA、跨站 Origin 不计）
+ *   - 只统计页面脚本主动上报的访问（爬虫 UA、空 UA 不计）
  *   - PV = 上报次数；UV = 当日去重访客（优先 client id，回退 IP 哈希）
  *   - 不存原始 IP / UA / URL，只存按天加盐的 SHA-256
  */
@@ -33,8 +34,9 @@ ini_set('log_errors', '1');
 
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store, max-age=0');
+// 所有部署（GitHub Pages、任意域名）统一请求主站；公开聚合数据，无 Cookie/凭证。
+header('Access-Control-Allow-Origin: *');
 
-const ALLOWED_ORIGIN_HOSTS = ['www.dos2unix.cn', 'dos2unix.cn'];
 const BOT_PATTERN = '/bot\b|crawler|spider|slurp|scraper|baiduspider|yisouspider|bytespider|petalbot|sogou|360spider|yandex|semrush|ahrefs|mj12bot|dotbot|facebookexternalhit|twitterbot|telegrambot|discordbot|whatsapp|headlesschrome|lighthouse|pagespeed|pingdom|statuscake|uptime|zabbix|nagios|curl\/|wget\/|python-requests|go-http-client|okhttp|java\/|libwww|axios\/|node-fetch|undici|^node$/i';
 
 function respond(int $status, ?array $body = null): void
@@ -185,6 +187,13 @@ if (!preg_match('#/api/visit(?:\.php)?$#', $path)) {
     respond(404);
 }
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
+if ($method === 'OPTIONS') {
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Max-Age: 86400');
+    respond(204);
+}
+
 $readOnly = $method === 'GET' && ($_GET['stats'] ?? '') === '1';
 if (!$readOnly && $method !== 'POST') {
     respond(405);
@@ -195,18 +204,6 @@ $ip = '';
 $uvKey = null;
 
 if (!$readOnly) {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-    if ($origin !== '') {
-        $originHost = parse_url($origin, PHP_URL_HOST);
-        $requestHost = (string) preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? '');
-        $allowed = $originHost !== null
-            && (in_array(strtolower($originHost), ALLOWED_ORIGIN_HOSTS, true)
-                || strcasecmp($originHost, $requestHost) === 0);
-        if (!$allowed) {
-            respond(204);
-        }
-    }
-
     $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
     if ($ua === '' || preg_match(BOT_PATTERN, $ua) === 1) {
         respond(204);

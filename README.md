@@ -298,7 +298,8 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 - `assets/js/visits.js` 在页面加载时 POST 到本站 `/api/visit.php`;首页把返回的今日 PV/UV 和近 7 天数据渲染成迷你柱状图。
 - `server/visit.php` 是单文件 PHP 接口,支持 SQLite(默认)和 MySQL 5.7+;虚拟主机用 MySQL,独立服务器可用 SQLite。
 - 只存聚合计数和按天加盐的访客哈希,不存原始 IP、UA、URL;不使用 Cookie。
-- 已知爬虫 UA、空 UA、跨站 Origin 不计;DNT=1 的访客不计数,但仍通过 `GET /api/visit.php?stats=1` 只读显示聚合数据;预渲染页在激活后再决定上报或只读。
+- 已知爬虫 UA、空 UA 不计;DNT=1 的访客不计数,但仍通过 `GET /api/visit.php?stats=1` 只读显示聚合数据;预渲染页在激活后再决定上报或只读。
+- 所有部署(GitHub Pages、任意域名)统一请求主站 `https://www.dos2unix.cn/api/visit.php`;接口返回 `Access-Control-Allow-Origin: *`,跨域可读写。
 - PV = 页面加载次数;UV = 当日去重访客(优先 localStorage 随机 ID,存不下时回退 IP 哈希)。UV 明细约保留 180 天(低频清理),PV 长期保留。
 - 接口内置 PHP 限流(默认每 IP 每分钟 120 次,`rate_limit` 可调/关闭),不需要 nginx `limit_req` 也能防基本刷量。
 
@@ -375,6 +376,15 @@ location = /api/visit.php {
 
 ```bash
 curl 'https://www.dos2unix.cn/api/visit.php?stats=1'
+```
+
+跨域预检(GitHub Pages 等,应返回 204 且带 `Access-Control-Allow-Origin: *`):
+
+```bash
+curl -i -X OPTIONS https://www.dos2unix.cn/api/visit.php \
+  -H 'Origin: https://dos2un1x.github.io' \
+  -H 'Access-Control-Request-Method: POST' \
+  -H 'Access-Control-Request-Headers: content-type'
 ```
 
 ### 测试

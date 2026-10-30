@@ -26,7 +26,7 @@ function shanghaiToday() {
 }
 
 test(
-  'visit.php: PV/UV、7 天窗口、405/400/204',
+  'visit.php: PV/UV、7 天窗口、只读、CORS、405/400',
   { skip: !RUN && 'set VISITS_API_TEST=1 to run Docker integration test' },
   async (t) => {
     execFileSync(
@@ -109,6 +109,7 @@ test(
     // 只读请求返回同样的数据，但不计数（DNT 访客用）
     const readOnly = await fetch(`${base}?stats=1`, { method: 'GET' });
     assert.equal(readOnly.status, 200);
+    assert.equal(readOnly.headers.get('access-control-allow-origin'), '*');
     assert.deepEqual((await readOnly.json()).today, { pv: 3, uv: 2 });
 
     const badJson = await post('{');
@@ -117,21 +118,36 @@ test(
     const get = await fetch(base, { method: 'GET' });
     assert.equal(get.status, 405);
 
+    // GitHub Pages 等跨域 POST 的预检
+    const preflight = await fetch(base, {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://dos2un1x.github.io',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'content-type',
+      },
+    });
+    assert.equal(preflight.status, 204);
+    assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
+    assert.match(preflight.headers.get('access-control-allow-methods') || '', /POST/);
+
     const bot = await post({ vid: vidA }, { 'User-Agent': 'Mozilla/5.0 Baiduspider/2.0' });
     assert.equal(bot.status, 204);
 
     const noUa = await post({ vid: vidA }, { 'User-Agent': '' });
     assert.equal(noUa.status, 204);
 
-    const crossSite = await post({ vid: vidA }, { Origin: 'https://evil.example' });
-    assert.equal(crossSite.status, 204);
+    // 跨域来源正常计数（GitHub Pages / 任意域名统一到主站）
+    const otherOrigin = await post({ vid: vidA }, { Origin: 'https://dos2un1x.github.io' });
+    assert.equal(otherOrigin.status, 200);
+    assert.equal(otherOrigin.headers.get('access-control-allow-origin'), '*');
+    assert.deepEqual((await otherOrigin.json()).today, { pv: 4, uv: 2 });
 
     // 被拒绝的请求不应计数
     const fourth = await post({ vid: vidB });
-    assert.deepEqual((await fourth.json()).today, { pv: 4, uv: 2 });
+    assert.deepEqual((await fourth.json()).today, { pv: 5, uv: 2 });
 
-    // 同站 Origin 正常计数
     const sameSite = await post({ vid: vidA }, { Origin: 'https://www.dos2unix.cn' });
-    assert.deepEqual((await sameSite.json()).today, { pv: 5, uv: 2 });
+    assert.deepEqual((await sameSite.json()).today, { pv: 6, uv: 2 });
   }
 );

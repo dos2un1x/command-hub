@@ -7,8 +7,9 @@
 import { fillDays, buildBars, formatNumber, shortDate } from './visits-core.js';
 
 const VID_KEY = 'dos2unix.vid';
-const API = new URL('../api/visit.php', import.meta.url);
-const READ_API = new URL('../api/visit.php?stats=1', import.meta.url);
+// GitHub Pages / 任意域名都统一请求主站；接口返回 CORS 头。
+const API = new URL('https://www.dos2unix.cn/api/visit.php');
+const READ_API = new URL('https://www.dos2unix.cn/api/visit.php?stats=1');
 const block = document.getElementById('site-visits');
 
 function start() {
