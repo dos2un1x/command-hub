@@ -219,6 +219,69 @@ body,html,ul,li,p{margin:0;padding:0}body,html{font-size:12px;font-family:'HanHe
 .home-page .hot-commands a:focus-visible,.home-more:focus-visible{outline:2px solid #2196f3;outline-offset:3px}
 .warpper.home-page .footer{max-width:820px;width:100%;margin:0 auto;padding-top:18px;padding-bottom:56px;border-top:1px solid var(--color-header-border)}
 
+/* ===== 首页访问统计 ===== */
+.home-visits{
+  --visits-bar:rgba(33,150,243,.38);
+  --visits-bar-hover:#2196f3;
+  --visits-bar-today:linear-gradient(180deg,#2196f3,#6366f1);
+  max-width:820px;
+  margin:26px auto 0;
+  padding:18px 22px 16px;
+  border-top:1px solid var(--color-header-border);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(240px,320px);
+  grid-template-areas:"head chart" "note note";
+  align-items:center;
+  gap:6px 30px;
+  text-align:left
+}
+.home-visits[hidden]{display:none}
+[data-color-mode*='dark'] .home-visits{
+  --visits-bar:rgba(96,165,250,.32);
+  --visits-bar-hover:#60a5fa;
+  --visits-bar-today:linear-gradient(180deg,#60a5fa,#a78bfa);
+}
+.home-visits-head{grid-area:head;min-width:0}
+.home-visits-title{margin:0 0 7px;font-size:11px;line-height:1;font-weight:600;letter-spacing:.12em;color:#999}
+[data-color-mode*='dark'] .home-visits-title{color:#8b8b8b}
+.home-visits-today{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 5px;margin:0;color:#1f2937;font-size:13px;line-height:1.2}
+[data-color-mode*='dark'] .home-visits-today{color:#f3f4f6}
+.home-visits-today strong{font-size:24px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.home-visits-label,.home-visits-unit,.home-visits-dot{font-size:12px;color:#888;font-weight:400}
+[data-color-mode*='dark'] .home-visits-label,[data-color-mode*='dark'] .home-visits-unit,[data-color-mode*='dark'] .home-visits-dot{color:#aaa}
+.home-visits-label{margin-right:2px}
+.home-visits-dot{margin:0 3px}
+.home-visits-chart{grid-area:chart;min-width:0;align-self:end}
+.home-visits-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;align-items:end;margin:0;padding:0;height:58px;list-style:none}
+.home-visits-day{display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0;list-style:none;position:relative}
+.home-visits-bar{position:relative;display:flex;align-items:flex-end;height:43px;outline:none;border-radius:4px 4px 0 0}
+.home-visits-bar-fill{display:block;width:100%;min-height:0;border-radius:4px 4px 0 0;background:var(--visits-bar);transform-origin:bottom;transition:background .15s ease,filter .15s ease}
+.home-visits-day.is-today .home-visits-bar-fill{background:var(--visits-bar-today)}
+.home-visits-bar:hover .home-visits-bar-fill,.home-visits-bar:focus-visible .home-visits-bar-fill{background:var(--visits-bar-hover)}
+.home-visits-day.is-today .home-visits-bar:hover .home-visits-bar-fill,.home-visits-day.is-today .home-visits-bar:focus-visible .home-visits-bar-fill{background:var(--visits-bar-today);filter:brightness(1.07)}
+.home-visits-bar:focus-visible{outline:2px solid #2196f3;outline-offset:2px}
+.home-visits-date{display:block;margin-top:5px;font-size:9px;line-height:1;color:#999;text-align:center;letter-spacing:-.02em;white-space:nowrap}
+[data-color-mode*='dark'] .home-visits-date{color:#777}
+.home-visits-day.is-today .home-visits-date{color:#2196f3;font-weight:700}
+[data-color-mode*='dark'] .home-visits-day.is-today .home-visits-date{color:#60a5fa}
+.home-visits-note{grid-area:note;margin:2px 0 0;font-size:11px;line-height:1.5;color:#999;font-variant-numeric:tabular-nums}
+[data-color-mode*='dark'] .home-visits-note{color:#888}
+.home-visits.is-ready .home-visits-bar-fill{animation:visits-rise .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 35ms)}
+@keyframes visits-rise{from{transform:scaleY(0);opacity:.35}to{transform:scaleY(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.home-visits.is-ready .home-visits-bar-fill{animation:none}}
+@media screen and (max-width:840px){
+  .home-visits{padding-left:16px;padding-right:16px}
+  /* 小程序面板默认展开时，给页脚留出安全区，避免盖住统计条和页脚内容。
+     280px ≈ 面板(204) + 按钮(34) + 间距/缓冲；再叠加刘海屏安全区。
+     面板收起后规则自动失效；不支持 :has() 的浏览器只是退回原来的间距。 */
+  body:has(.miniapp-fab.open) .warpper.home-page .footer{padding-bottom:calc(280px + env(safe-area-inset-bottom,0px))}
+}
+@media screen and (max-width:640px){
+  .home-visits{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "chart" "note";gap:14px;margin-top:22px;padding:16px 2px 14px}
+  .home-visits-today strong{font-size:22px}
+  .home-visits-chart{width:100%}
+}
+
 @media (prefers-reduced-motion: reduce){
   .home-page .hot-commands a{transition:none}
 }

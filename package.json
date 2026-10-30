@@ -16,6 +16,7 @@
     "check-external": "node scripts/check-external-links.mjs",
     "category-map": "node scripts/render-category-map.mjs",
     "baidu:push": "node scripts/baidu-push.mjs",
+    "test:visits-api": "VISITS_API_TEST=1 node --test test/visits-api.test.mjs test/visits-api-mysql.test.mjs",
     "verify": "node scripts/validate.mjs && node scripts/build.mjs && node scripts/check-links.mjs",
     "package": "npm run verify && node scripts/package.mjs",
     "serve": "npm run build && npx --yes serve build"

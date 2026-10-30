@@ -85,6 +85,28 @@
     <% }); %>
     </ul>
   </section>
+  <section class="home-visits" id="site-visits" aria-labelledby="visits-title" hidden>
+    <div class="home-visits-head">
+      <h2 class="home-visits-title" id="visits-title">本站访问</h2>
+      <p class="home-visits-today">
+        <span class="home-visits-label">今日</span>
+        <strong data-visits-pv>—</strong><span class="home-visits-unit">次访问</span>
+        <span class="home-visits-dot" aria-hidden="true">·</span>
+        <strong data-visits-uv>—</strong><span class="home-visits-unit">位访客</span>
+      </p>
+    </div>
+    <div class="home-visits-chart">
+      <ol class="home-visits-bars" data-visits-bars aria-label="近 7 天访问量"></ol>
+    </div>
+    <p class="home-visits-note"><span data-visits-readout>数据来自本站服务器 · 每日 00:00 重置</span><span data-visits-updated hidden></span></p>
+    <table class="sr-only">
+      <caption>近 7 天访问量（访问次数 / 访客数）</caption>
+      <thead>
+        <tr><th scope="col">日期</th><th scope="col">访问</th><th scope="col">访客</th></tr>
+      </thead>
+      <tbody data-visits-table></tbody>
+    </table>
+  </section>
 </main>
 <%- include('partials/sitefooter') %>
 </div>

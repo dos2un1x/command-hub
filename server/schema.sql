@@ -1,0 +1,20 @@
+-- 访问统计 MySQL 5.7+ 表结构。
+-- 接口首次请求会自动建表；只有数据库用户没有 CREATE 权限时才需要手动导入。
+
+CREATE TABLE IF NOT EXISTS daily_pv (
+  day DATE NOT NULL PRIMARY KEY,
+  pv INT UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS daily_uv (
+  day DATE NOT NULL,
+  vid_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  PRIMARY KEY (day, vid_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS visit_rate (
+  ip_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  minute INT UNSIGNED NOT NULL,
+  hits INT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (ip_hash, minute)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

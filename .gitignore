@@ -12,6 +12,11 @@ build/
 # 百度推送 token,只保存在本机
 /.baidu-token
 
+# 访问统计的本地 SQLite(线上数据库在 webroot 外)
+/server/data/
+# 访问统计的数据库密码,只保存在服务器上
+/server/config.php
+
 # 本机每日定时推送脚本(含站点配置),不对外发布
 /scripts/baidu-daily.sh
 

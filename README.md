@@ -56,7 +56,13 @@ assets/                    CSS / JS / 数据源
 assets/data/diagnose.json  诊断向导决策树数据
 assets/js/snake-core.js    贪吃蛇纯逻辑(可单测)
 assets/js/tetris-core.js   俄罗斯方块纯逻辑(可单测)
+assets/js/visits-core.js   访问统计纯逻辑(可单测)
+assets/js/visits.js        访问统计上报与首页渲染
+server/visit.php          访问统计接口(PHP + SQLite/MySQL,虚拟主机可用)
+server/config.sample.php  访问统计配置模板(复制为 config.php)
+server/schema.sql         访问统计 MySQL 表结构(可选)
 test/                      单测(node --test)
+test/php-mysql.Dockerfile  MySQL 集成测试用的 PHP 镜像
 scripts/                   构建与校验脚本(scripts/lib/ 为公共解析与 SEO 逻辑)
 build/                     构建产物(gitignore)
 deploy/                    本地部署状态与日志(gitignore)
@@ -284,6 +290,102 @@ npm run baidu:push -- --dry-run
 Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文件(gitignore)。
 已推送状态记录在 `deploy/baidu-pushed.json`,只有内容变化才会再次推送。
 **先部署新版本,再执行推送**——否则百度抓到的是旧页面。
+
+## 访问统计
+
+首页底部的「今日访问 / 近 7 天」数据完全自建,不接第三方:
+
+- `assets/js/visits.js` 在页面加载时 POST 到本站 `/api/visit.php`;首页把返回的今日 PV/UV 和近 7 天数据渲染成迷你柱状图。
+- `server/visit.php` 是单文件 PHP 接口,支持 SQLite(默认)和 MySQL 5.7+;虚拟主机用 MySQL,独立服务器可用 SQLite。
+- 只存聚合计数和按天加盐的访客哈希,不存原始 IP、UA、URL;不使用 Cookie。
+- 已知爬虫 UA、空 UA、跨站 Origin 不计;DNT=1 的访客不计数,但仍通过 `GET /api/visit.php?stats=1` 只读显示聚合数据;预渲染页在激活后再决定上报或只读。
+- PV = 页面加载次数;UV = 当日去重访客(优先 localStorage 随机 ID,存不下时回退 IP 哈希)。UV 明细约保留 180 天(低频清理),PV 长期保留。
+- 接口内置 PHP 限流(默认每 IP 每分钟 120 次,`rate_limit` 可调/关闭),不需要 nginx `limit_req` 也能防基本刷量。
+
+### 虚拟主机(MySQL)
+
+适用于只有 FTP/面板、没有 nginx 配置和 shell 的虚拟主机。要求 PHP 7.4+(推荐 8.x)、`pdo_mysql`、MySQL 5.7+。
+
+1. 上传接口和配置模板到网站根目录的 `api/`:
+
+   ```text
+   htdocs/api/visit.php          ← server/visit.php
+   htdocs/api/config.php         ← 由 server/config.sample.php 复制后填写
+   htdocs/api/schema.sql         ← 可选,数据库用户没有 CREATE 权限时导入
+   ```
+
+2. 在面板「数据库信息」里找到 MySQL 主机、库名、用户名、密码,填进 `config.php` 的 `dsn` / `user` / `pass`。密码只放在服务器上,不要提交到仓库。
+3. 数据库用户通常已有本库全部权限,接口首次请求会自动建表;如果只有增删改查权限,用 phpMyAdmin 导入 `schema.sql`。
+4. 不需要改 nginx,也不需要 cron。前端请求同源的 `/api/visit.php`。
+5. 验收:
+
+   ```bash
+   curl -X POST https://www.dos2unix.cn/api/visit.php \
+     -H 'Content-Type: application/json' \
+     -H 'User-Agent: Mozilla/5.0' \
+     -H 'Origin: https://www.dos2unix.cn' \
+     -d '{"vid":"manual-test-1234"}'
+   ```
+
+- 主机前面若有共享代理/WAF,所有访客可能共用出口 IP;如果发现限流误伤,把 `config.php` 的 `rate_limit` 调大或设为 0。
+
+### 独立服务器(SQLite)
+
+需要 PHP 8+、`pdo_sqlite` 和 PHP-FPM。接口放在 webroot 外,静态站发版不会覆盖它:
+
+```bash
+# 1. 建目录并上传接口(路径按实际面板调整)
+mkdir -p /www/wwwroot/dos2unix.cn-api/data
+scp server/visit.php root@<server>:/www/wwwroot/dos2unix.cn-api/visit.php
+chown -R www:www /www/wwwroot/dos2unix.cn-api
+chmod 750 /www/wwwroot/dos2unix.cn-api/data
+```
+
+```nginx
+# 2. http 块:按 IP 限流(可选;PHP 内置限流也会生效)
+limit_req_zone $binary_remote_addr zone=visits:10m rate=5r/s;
+
+# 3. 站点配置:把 /api/visit.php 映射到 webroot 外的 PHP 文件
+location = /api/visit.php {
+    limit_req zone=visits burst=10 nodelay;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME /www/wwwroot/dos2unix.cn-api/visit.php;
+    fastcgi_param SCRIPT_NAME /api/visit.php;
+    fastcgi_pass unix:/run/php/php8.2-fpm.sock;   # 按实际 socket 或 127.0.0.1:9000 改
+}
+```
+
+- 若面板启用了 `open_basedir`,把 `/www/wwwroot/dos2unix.cn-api/` 加进去;否则 PHP 读不到 webroot 外的文件。
+- SQLite 位置可用 `VISITS_DB` 环境变量覆盖;目录需要 PHP-FPM 用户可写。
+- 接口首次请求会自动建表;建议每天备份一次:
+
+  ```bash
+  sqlite3 /www/wwwroot/dos2unix.cn-api/data/visits.sqlite \
+    ".backup '/www/backup/visits-$(date +%F).sqlite'"
+  ```
+
+  保留最近 14 天即可。
+- 静态站按原流程发版;`server/visit.php` 有改动时单独上传,不会随 `npm run package` 走。
+
+### 验收
+
+虚拟主机和独立服务器都用同一个路径 `/api/visit.php`。上面的 curl 应返回 `{"today":{"pv":...,"uv":...},"days":[...],"updated":"HH:MM"}`。打开首页滚到底部,应看到统计条;接口失败时区块保持隐藏。
+
+只读接口(DNT 前端使用,不计数):
+
+```bash
+curl 'https://www.dos2unix.cn/api/visit.php?stats=1'
+```
+
+### 测试
+
+```bash
+npm test                     # 纯逻辑单测;接口集成测试默认跳过
+docker build -f test/php-mysql.Dockerfile -t command-hub-php-mysql:8.3 .
+npm run test:visits-api      # SQLite + MySQL 5.7 两套 Docker 集成测试
+```
+
+公开写接口无法彻底防刷,PHP 限流 / nginx `limit_req` 只能抬高成本。如果数字可信度要求很高,可以改用 nginx access.log 口径(直接从服务端日志聚合),代价是数据有 10 分钟延迟。
 
 ## 架构说明
 
