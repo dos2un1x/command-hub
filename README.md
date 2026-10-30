@@ -299,7 +299,8 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
 - `server/visit.php` 是单文件 PHP 接口,支持 SQLite(默认)和 MySQL 5.7+;虚拟主机用 MySQL,独立服务器可用 SQLite。
 - 只存聚合计数和按天加盐的访客哈希,不存原始 IP、UA、URL;不使用 Cookie。
 - 已知爬虫 UA、空 UA 不计;DNT=1 的访客不计数,但仍通过 `GET /api/visit.php?stats=1` 只读显示聚合数据;预渲染页在激活后再决定上报或只读。
-- 所有部署(GitHub Pages、任意域名)统一请求主站 `https://www.dos2unix.cn/api/visit.php`;接口返回 `Access-Control-Allow-Origin: *`,跨域可读写。
+- 所有部署(GitHub Pages、任意域名)统一请求主站 `https://www.dos2unix.cn/api/visit.php`;只读展示对所有域名开放(CORS `*`),写接口(POST)只允许 `config.php` 的 `allowed_origins` 白名单。
+- `config.php` 配置 `secret` 后,访客/IP 哈希改用 HMAC;数据库被拖走也无法直接枚举 IP。
 - PV = 页面加载次数;UV = 当日去重访客(优先 localStorage 随机 ID,存不下时回退 IP 哈希)。UV 明细约保留 180 天(低频清理),PV 长期保留。
 - 接口内置 PHP 限流(默认每 IP 每分钟 120 次,`rate_limit` 可调/关闭),不需要 nginx `limit_req` 也能防基本刷量。
 
@@ -315,9 +316,9 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
    htdocs/api/schema.sql         ← 可选,数据库用户没有 CREATE 权限时导入
    ```
 
-2. 在面板「数据库信息」里找到 MySQL 主机、库名、用户名、密码,填进 `config.php` 的 `dsn` / `user` / `pass`。密码只放在服务器上,不要提交到仓库。
+2. 在面板「数据库信息」里找到 MySQL 主机、库名、用户名、密码,填进 `config.php` 的 `dsn` / `user` / `pass`;再加一行 `secret`(用 `openssl rand -hex 32` 生成)。密码和 secret 只放服务器上,不要提交到仓库。
 3. 数据库用户通常已有本库全部权限,接口首次请求会自动建表;如果只有增删改查权限,用 phpMyAdmin 导入 `schema.sql`。
-4. 不需要改 nginx,也不需要 cron。前端请求同源的 `/api/visit.php`。
+4. 不需要改 nginx,也不需要 cron。前端统一请求 `https://www.dos2unix.cn/api/visit.php`;写接口只允许 `config.php` 的 `allowed_origins` 白名单,新增域名在配置里加一行即可,只读展示不受限制。
 5. 验收:
 
    ```bash
@@ -329,6 +330,7 @@ Token 读取顺序:`--token=` > `BAIDU_TOKEN` 环境变量 > `.baidu-token` 文�
    ```
 
 - 主机前面若有共享代理/WAF,所有访客可能共用出口 IP;如果发现限流误伤,把 `config.php` 的 `rate_limit` 调大或设为 0。
+- `allowed_origins` 默认包含 www、裸域和 GitHub Pages;新增域名在 `config.php` 里加一行。未列入的 Origin 写请求返回 403,但只读展示仍然可用。
 
 ### 独立服务器(SQLite)
 
@@ -378,11 +380,20 @@ location = /api/visit.php {
 curl 'https://www.dos2unix.cn/api/visit.php?stats=1'
 ```
 
-跨域预检(GitHub Pages 等,应返回 204 且带 `Access-Control-Allow-Origin: *`):
+跨域预检(GitHub Pages 在白名单内,应返回 204 且 `Access-Control-Allow-Origin` 回显该 Origin):
 
 ```bash
 curl -i -X OPTIONS https://www.dos2unix.cn/api/visit.php \
   -H 'Origin: https://dos2un1x.github.io' \
+  -H 'Access-Control-Request-Method: POST' \
+  -H 'Access-Control-Request-Headers: content-type'
+```
+
+非白名单 Origin 应返回 403,且不带 CORS 头:
+
+```bash
+curl -i -X OPTIONS https://www.dos2unix.cn/api/visit.php \
+  -H 'Origin: https://evil.example' \
   -H 'Access-Control-Request-Method: POST' \
   -H 'Access-Control-Request-Headers: content-type'
 ```
@@ -395,7 +406,7 @@ docker build -f test/php-mysql.Dockerfile -t command-hub-php-mysql:8.3 .
 npm run test:visits-api      # SQLite + MySQL 5.7 两套 Docker 集成测试
 ```
 
-公开写接口无法彻底防刷,PHP 限流 / nginx `limit_req` 只能抬高成本。如果数字可信度要求很高,可以改用 nginx access.log 口径(直接从服务端日志聚合),代价是数据有 10 分钟延迟。
+公开写接口无法彻底防刷,`allowed_origins` 只拦浏览器跨站写(curl/爬虫可伪造 Origin);PHP 限流 / nginx `limit_req` 仍是主要防线。如果数字可信度要求很高,可以改用 nginx access.log 口径(直接从服务端日志聚合),代价是数据有 10 分钟延迟。
 
 ## 架构说明
 

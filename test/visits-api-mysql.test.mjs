@@ -55,6 +55,7 @@ return [
     'user' => 'visits',
     'pass' => 'visits',
     'rate_limit' => 120,
+    'secret' => 'test-secret-for-hmac',
 ];
 `
     );
@@ -131,7 +132,12 @@ return [
     const post = (body, headers = {}) =>
       fetch(base, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'User-Agent': UA, ...headers },
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': UA,
+          Origin: 'https://www.dos2unix.cn',
+          ...headers,
+        },
         body: typeof body === 'string' ? body : JSON.stringify(body),
       });
 
@@ -180,7 +186,7 @@ return [
     const get = await fetch(base, { method: 'GET' });
     assert.equal(get.status, 405);
 
-    // GitHub Pages 等跨域 POST 的预检
+    // GitHub Pages 等白名单 POST 的预检
     const preflight = await fetch(base, {
       method: 'OPTIONS',
       headers: {
@@ -190,8 +196,20 @@ return [
       },
     });
     assert.equal(preflight.status, 204);
-    assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
+    assert.equal(preflight.headers.get('access-control-allow-origin'), 'https://dos2un1x.github.io');
     assert.match(preflight.headers.get('access-control-allow-methods') || '', /POST/);
+
+    // 非白名单预检被拒
+    const blockedPreflight = await fetch(base, {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://evil.example',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'content-type',
+      },
+    });
+    assert.equal(blockedPreflight.status, 403);
+    assert.equal(blockedPreflight.headers.get('access-control-allow-origin'), null);
 
     const bot = await post({ vid: vidA }, { 'User-Agent': 'Mozilla/5.0 Baiduspider/2.0' });
     assert.equal(bot.status, 204);
@@ -199,11 +217,16 @@ return [
     const noUa = await post({ vid: vidA }, { 'User-Agent': '' });
     assert.equal(noUa.status, 204);
 
-    // 跨域来源正常计数（GitHub Pages / 任意域名统一到主站）
+    // 白名单来源正常计数（GitHub Pages 默认在列表里）
     const otherOrigin = await post({ vid: vidA }, { Origin: 'https://dos2un1x.github.io' });
     assert.equal(otherOrigin.status, 200);
-    assert.equal(otherOrigin.headers.get('access-control-allow-origin'), '*');
+    assert.equal(otherOrigin.headers.get('access-control-allow-origin'), 'https://dos2un1x.github.io');
     assert.deepEqual((await otherOrigin.json()).today, { pv: 4, uv: 2 });
+
+    // 非白名单写入被拒且不计数
+    const blocked = await post({ vid: vidB }, { Origin: 'https://evil.example' });
+    assert.equal(blocked.status, 403);
+    assert.equal(blocked.headers.get('access-control-allow-origin'), null);
 
     // 被拒绝的请求不应计数
     const fourth = await post({ vid: vidB });

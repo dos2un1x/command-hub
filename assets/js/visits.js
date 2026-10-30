@@ -1,7 +1,8 @@
 /**
- * 首页访问统计:向本站 /api/visit.php 上报一次访问,并在首页渲染今日/近 7 天数据。
+ * 首页访问统计:向主站 /api/visit.php 上报一次访问,并在首页渲染今日/近 7 天数据。
  *
- * 只在接口成功时显示区块;失败、超时或被 DNT/预渲染跳过时保持 hidden。
+ * 展示走只读 GET(所有域名可用);计数走 POST(主站按 Origin 白名单限制)。
+ * DNT 访客只读展示不计数;读取失败时区块保持 hidden。
  */
 
 import { fillDays, buildBars, formatNumber, shortDate } from './visits-core.js';
@@ -13,12 +14,8 @@ const READ_API = new URL('https://www.dos2unix.cn/api/visit.php?stats=1');
 const block = document.getElementById('site-visits');
 
 function start() {
-  if (dntEnabled()) {
-    // DNT 访客不计数，但仍然读取并展示聚合数据。
-    if (block) void send(true);
-  } else {
-    void send(false);
-  }
+  if (block) void loadStats();
+  if (!dntEnabled()) void countVisit();
 }
 
 if (document.prerendering) {
@@ -73,26 +70,41 @@ function makeId() {
   return 'v' + Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
-async function send(readOnly) {
+async function loadStats() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 3000);
   try {
-    const init = {
-      method: readOnly ? 'GET' : 'POST',
+    const res = await fetch(READ_API, {
+      method: 'GET',
       credentials: 'same-origin',
       cache: 'no-store',
       keepalive: true,
       signal: controller.signal,
-    };
-    if (!readOnly) {
-      init.headers = { 'Content-Type': 'application/json' };
-      init.body = JSON.stringify({ vid: visitorId() });
-    }
-    const res = await fetch(readOnly ? READ_API : API, init);
-    if (!res.ok || res.status === 204 || !block) return;
+    });
+    if (!res.ok || res.status === 204) return;
     render(await res.json());
   } catch {
-    // 统计失败不影响页面;区块保持 hidden
+    // 读取失败时区块保持 hidden
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function countVisit() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 3000);
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vid: visitorId() }),
+      credentials: 'same-origin',
+      cache: 'no-store',
+      keepalive: true,
+      signal: controller.signal,
+    });
+  } catch {
+    // 计数失败不影响展示;写入是否成功由主站白名单/限流决定
   } finally {
     clearTimeout(timer);
   }

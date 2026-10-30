@@ -15,15 +15,18 @@ declare(strict_types=1);
  *     'user' => '...',
  *     'pass' => '...',
  *     'rate_limit' => 120,                       // 每分钟每 IP 上限；0 关闭
+ *     'secret' => '...',                         // HMAC 密钥；留空退回 SHA-256
+ *     'allowed_origins' => ['https://www.dos2unix.cn'], // 允许写入的 Origin
  *     'sqlite_path' => __DIR__ . '/data/visits.sqlite',
  *   ];
  *
  * 口径：
  *   - 所有部署（GitHub Pages、任意域名）统一请求 https://www.dos2unix.cn/api/visit.php
- *   - GET /api/visit.php?stats=1 只读返回统计，不计数（DNT 访客用）
+ *   - GET /api/visit.php?stats=1 只读返回统计，不计数（DNT 访客用），不限 Origin
+ *   - POST 写接口只接受 allowed_origins 白名单里的 Origin
  *   - 只统计页面脚本主动上报的访问（爬虫 UA、空 UA 不计）
  *   - PV = 上报次数；UV = 当日去重访客（优先 client id，回退 IP 哈希）
- *   - 不存原始 IP / UA / URL，只存按天加盐的 SHA-256
+ *   - 不存原始 IP / UA / URL，只存按天加盐/密钥的 SHA-256/HMAC
  */
 
 define('VISITS_APP', true);
@@ -34,10 +37,17 @@ ini_set('log_errors', '1');
 
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store, max-age=0');
-// 所有部署（GitHub Pages、任意域名）统一请求主站；公开聚合数据，无 Cookie/凭证。
-header('Access-Control-Allow-Origin: *');
 
 const BOT_PATTERN = '/bot\b|crawler|spider|slurp|scraper|baiduspider|yisouspider|bytespider|petalbot|sogou|360spider|yandex|semrush|ahrefs|mj12bot|dotbot|facebookexternalhit|twitterbot|telegrambot|discordbot|whatsapp|headlesschrome|lighthouse|pagespeed|pingdom|statuscake|uptime|zabbix|nagios|curl\/|wget\/|python-requests|go-http-client|okhttp|java\/|libwww|axios\/|node-fetch|undici|^node$/i';
+
+// 写接口（POST）默认只允许这些 Origin；新增域名改 config.php 的 allowed_origins。
+const DEFAULT_ALLOWED_ORIGINS = [
+    'https://www.dos2unix.cn',
+    'https://dos2unix.cn',
+    'http://www.dos2unix.cn',
+    'http://dos2unix.cn',
+    'https://dos2un1x.github.io',
+];
 
 function respond(int $status, ?array $body = null): void
 {
@@ -50,6 +60,17 @@ function respond(int $status, ?array $body = null): void
         echo json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
     exit;
+}
+
+function originAllowed(string $origin, array $allowed): bool
+{
+    return $origin !== '' && in_array($origin, $allowed, true);
+}
+
+/** secret 为空时退回普通 SHA-256；配置了 secret 则用 HMAC，拖库也无法枚举 IP。 */
+function keyHash(string $value, string $secret): string
+{
+    return $secret !== '' ? hash_hmac('sha256', $value, $secret) : hash('sha256', $value);
 }
 
 function loadConfig(): array
@@ -186,9 +207,39 @@ $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 if (!preg_match('#/api/visit(?:\.php)?$#', $path)) {
     respond(404);
 }
+
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+try {
+    $config = loadConfig();
+} catch (Throwable $e) {
+    error_log('visits config: ' . $e->getMessage());
+    respond(503, ['error' => 'unavailable']);
+}
+$allowedOrigins = $config['allowed_origins'] ?? DEFAULT_ALLOWED_ORIGINS;
+if (!is_array($allowedOrigins)) {
+    $allowedOrigins = DEFAULT_ALLOWED_ORIGINS;
+}
+$allowedOrigins = array_values(array_filter($allowedOrigins, 'is_string'));
+$secret = is_string($config['secret'] ?? null) ? $config['secret'] : '';
+
 if ($method === 'OPTIONS') {
-    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    $requested = strtoupper($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ?? '');
+    if ($requested === 'POST') {
+        if (!originAllowed($origin, $allowedOrigins)) {
+            header('Vary: Origin');
+            respond(403);
+        }
+        header('Access-Control-Allow-Origin: ' . $origin);
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Max-Age: 86400');
+        header('Vary: Origin');
+        respond(204);
+    }
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type');
     header('Access-Control-Max-Age: 86400');
     respond(204);
@@ -196,12 +247,25 @@ if ($method === 'OPTIONS') {
 
 $readOnly = $method === 'GET' && ($_GET['stats'] ?? '') === '1';
 if (!$readOnly && $method !== 'POST') {
+    header('Access-Control-Allow-Origin: *');
     respond(405);
 }
 
 $day = date('Y-m-d');
 $ip = '';
 $uvKey = null;
+
+if ($readOnly) {
+    // 只读展示对所有域名开放。
+    header('Access-Control-Allow-Origin: *');
+} elseif (!originAllowed($origin, $allowedOrigins)) {
+    // 写接口只接受白名单 Origin；浏览器预检会先被拦，直接请求也不会计数。
+    header('Vary: Origin');
+    respond(403);
+} else {
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Vary: Origin');
+}
 
 if (!$readOnly) {
     $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
@@ -225,19 +289,18 @@ if (!$readOnly) {
 
     $ip = $_SERVER['REMOTE_ADDR'] ?? '';
     $uvKey = $vid !== ''
-        ? hash('sha256', $day . '|id:' . $vid)
-        : ($ip !== '' ? hash('sha256', $day . '|ip:' . $ip) : null);
+        ? keyHash($day . '|id:' . $vid, $secret)
+        : ($ip !== '' ? keyHash($day . '|ip:' . $ip, $secret) : null);
 }
 
 try {
-    $config = loadConfig();
     $rateLimit = max(0, (int) ($config['rate_limit'] ?? 120));
     [$pdo, $driver] = connect($config);
     initSchema($pdo, $driver);
 
     if (!$readOnly) {
         if ($ip !== '') {
-            $ipHash = hash('sha256', 'rate|' . $ip);
+            $ipHash = keyHash('rate|' . $ip, $secret);
             if (rateLimited($pdo, $driver, $ipHash, $rateLimit)) {
                 respond(204);
             }
