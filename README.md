@@ -1,6 +1,6 @@
 # 命令速查栈(多分支)
 
-Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps 多分支速查栈。支持多分支切换,新增分支不需要改代码。
+Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps / Office 多分支速查栈。支持多分支切换,新增分支不需要改代码。
 
 ## 快速开始
 
@@ -71,9 +71,9 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 
 ## 首页
 
-`template/index.ejs` 渲染十分支入口,采用蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、十个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,各分支页顶部的学习路径入口由 `branches.json` 的 `learningPath` 字段注入。
+`template/index.ejs` 渲染十一分支入口,采用蓝紫渐变、圆角卡片与胶囊式分支标签,让首页到内页的过渡保持连续。页面包含品牌文字标识、分支切换、全局搜索、条目/分支/分类统计、按目的进入的“我想…”(查命令 / 学一个领域 / 排故障 / 上线服务 / 跟着向导查)五张场景卡与“每日复习”“故障诊断向导”入口、十一个分支索引卡(名称、描述、分类与条目数)、跨分支高频入口,以及首屏可见的“小彩蛋”游戏入口。样式集中在 `assets/css/index.css` 的首页段落;分支卡片与计数由构建参数 `branchCards` 注入,配置了 `learningPath` 的分支页顶部会注入学习路径入口。
 
-首页不按单一命令栈组织,而是把 Linux、Windows、macOS、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps 作为十个并列入口;页脚保留“全部条目”“故障诊断向导”“每日复习”、收藏提示、备案号与署名。
+首页不按单一命令栈组织,而是把 Linux、Windows、macOS、Kubernetes、DevOps、排障、指南、中间件、教程、AI 与 MLOps、Office 作为十一个并列入口;页脚保留“全部条目”“故障诊断向导”“每日复习”、收藏提示、备案号与署名。
 
 ## 学习层
 
@@ -86,11 +86,11 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - 故障复盘:排障分支的 15 篇匿名化合成案例(如 `incident-dns-ndots`、`incident-etcd-quorum`),按“现象 → 时间线 → 影响面 → 误导线索 → 根因 → 修复 → 预防”展开,用于练习从错误线索中收敛。
 - 恢复 Runbook:指南分支的 `runbook-etcd-restore`、`runbook-velero-restore`、`runbook-postgres-pitr`、`runbook-kafka-restore`、`runbook-es-restore`、`runbook-k8s-upgrade`、`runbook-cert-rotation`、`runbook-db-failover`、`runbook-redis-failover`、`runbook-kafka-broker-replace`、`runbook-dns-failover`、`runbook-backup-restore-verification`,按“前置检查 → 恢复步骤 → 验证 → 失败回滚”组织;新增页面均从事故响应手册、排障学习路径和灾难恢复页手工入链,其中升级、证书、切换、etcd 恢复和区域综合演练有对应的 `lab-*` 演练页。
 - 平台生命周期:`platform-lifecycle-matrix` 汇总操作系统、Kubernetes 与 DevOps 工具的支持窗口和升级节点;`version-eol-matrix` 继续维护 K8s/AI/中间件的版本与 EOL。
-- 速查与快捷键:`cheatsheet-index` 按系统、K8s、网络、数据库、DevOps、安全和 AI 汇总 42 张速查表;`shortcuts-overview` 汇总 Windows、macOS、Linux 桌面、终端、浏览器、VS Code 和 Office 七类快捷键。
+- 速查与快捷键:`cheatsheet-index` 按系统、K8s、网络、数据库、DevOps、安全和 AI 汇总 42 张速查表;`shortcuts-overview` 汇总 Windows、macOS、Linux 桌面、终端、浏览器、VS Code 和 Office 七类快捷键；指南分支保留三件套总表，Office 分支另有 Word、PowerPoint 与 Excel 的快捷键专题页。
 - 公开事故复盘:指南分支收录 AWS S3 2017、GitLab 2017、GitHub 2018、Cloudflare 2019/2020、CircleCI 2023、Slack 2021、Datadog 2023、Roblox 2021、Facebook 2021、Google Cloud 2019、AWS Kinesis 2020 共 12 篇摘要与检查清单,事实以原始报告为准;`public-postmortem-index` 按根因分组,把事故、教训和对应 Runbook 串起来。
 - 精确错误页:排障分支覆盖 `x509`、`connection reset`、`context deadline exceeded`、`i/o timeout`、`TLS handshake timeout` 等精确报错;Windows/macOS 排障单独成类。
 - 企业运维:Windows 侧新增 WinRM、GPO 诊断、AD 复制排障、Defender/Intune;macOS 侧新增 MDM、FileVault、钥匙串,覆盖注册、策略下发、复制健康和凭据管理。
-- 读完自测:全部 2,065 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,195 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
+- 读完自测:全部 2,100 个页面在页尾有 3 道自测题,答案折叠;`/review.html` 从全站 6,300 道题中抽题,支持按分支筛选、只练错题、连续答对两次移出随机池、每日一题和掌握进度。
 - 版本与生命周期:指南分支的 `version-eol-matrix` 集中记录 Kubernetes、AI 推理与中间件的当前版本、EOL/归档状态和迁移建议;`npm run freshness` 负责检查这些页面的最后核对日期。
 - `/diagnose.html`:6 棵可点击的故障决策树,覆盖 502/504、Pod Pending/CrashLoop、磁盘满/inode、DNS/网络、CPU/负载和数据库连接/慢查询;每步给出引导问题、验证命令和对应条目。
 
@@ -110,7 +110,7 @@ public/  public.zip        发布暂存与打包产物(gitignore,由 npm run pac
 - **Windows 分支**:CMD 文件/系统/网络命令、21 个 PowerShell 核心 cmdlet、WSL 与 `wslconfig`,以及 Windows Server/AD 的 `dcdiag`、`repadmin`、`dsquery`、`diskpart`、`wbadmin` 等;企业场景补充 `winrm`、`gpo-diagnostics`、`ad-replication`、`defender-intune`。系统操作、注册表、防火墙、计划任务、更新、磁盘、恢复、远程桌面和用户账户放在指南分支的「Windows 与 PowerShell」分类。
 - **macOS 分支**:BSD 文件命令、`launchctl`/`pmset`/`softwareupdate`/`tmutil`/`csrutil` 等系统命令、网络工具、Xcode 命令行工具与 Homebrew、`diskutil`/`hdiutil` 磁盘维护,以及 `mdm`、`filevault`、`keychain` 企业运维;指南分支提供 macOS 学习路径、心智模型与 Linux↔macOS 对照。
 - **Vim 系列**:`vim-basics`、`vim-advanced`、`vim-config-plugins`、`vim-vs-neovim`,并扩写了 `vim-cheatsheet` 与 `linux/vi`。
-- **快捷键**:Windows、macOS、Linux 桌面、终端、浏览器、VS Code、Office 七页,统一按场景表格组织,标注平台差异与容易误按的组合。
+- **快捷键**:Windows、macOS、Linux 桌面、终端、浏览器、VS Code 七页,加上指南分支的三件套总表和 Office 分支的 Word、PowerPoint、Excel 专题页,统一按场景表格组织,标注平台差异与容易误按的组合。
 
 所有新页都补了 3 道「读完自测」,并自动进入 `/review.html` 题库。
 
@@ -236,7 +236,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 构建会自动产出:
 
 - `robots.txt`:允许抓取,并指向 `https://www.dos2unix.cn/sitemap.xml`
-- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2,170 条)
+- `sitemap.xml`:首页、分支页、`hot.html`、`diagnose.html`、分类页与全部命令页(2,212 条)
 - 每页独立的 `<title>` / `meta description` / `canonical` / Open Graph
 - 详情页 JSON-LD:`BreadcrumbList` + `FAQPage`;Lab 页额外输出 `HowTo`
 - `404.html`:托管平台若默认读取根目录 404 页面,可直接生效(不需要 nginx)
@@ -244,16 +244,16 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 标题与描述的文本处理在 `scripts/lib/seo.mjs`,页面级参数在 `scripts/build.mjs` 的渲染段集中生成,不再使用模板拼接。
 `list.html`、`snake.html`、`tetris.html`、`404.html` 均为 `noindex,follow`。
 
-当前构建规模:2,175 个 HTML、2,065 个内容页、sitemap 2,170 条、站内链接 75,993 条(校验零 404)。
+当前构建规模:2,217 个 HTML、2,100 个内容页、sitemap 2,212 条、站内链接 86,262 条(校验零 404)。
 
-## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
+## 二级分类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps / Office)
 
 `command/<branch>/categories.json` 定义分支的二级分类:
 
 - `categories`: 分类 id、名称、顺序、短描述 `desc`、长描述 `longDesc`
 - `assignments`: 每个页面 slug → 分类 id
 
-当前有十份:
+当前有十一份:
 
 - `command/linux/categories.json`:16 个分类、862 条
 - `command/windows/categories.json`:6 个分类、93 条
@@ -265,6 +265,7 @@ npm run package        # verify + 暂存 public/ + 打包 public.zip(可直接�
 - `command/middleware/categories.json`:11 个分类、71 条
 - `command/tutorial/categories.json`:3 个分类、90 条
 - `command/ai/categories.json`:7 个分类、146 条
+- `command/office/categories.json`:6 个分类、35 条
 
 构建时会校验:
 
@@ -431,6 +432,7 @@ npm run test:visits-api      # SQLite + MySQL 5.7 两套 Docker 集成测试
 | 中间件 | 71 | Elasticsearch/OpenSearch/Logstash/Kibana/Filebeat/Vector、Kafka/ZooKeeper/Schema Registry/ksqlDB/RabbitMQ、Nginx/HAProxy/Keepalived/Keycloak、Nexus/JFrog、PostgreSQL/PgBouncer/ProxySQL/MySQL Router,以及 MQTT、Nacos/Apollo、Temporal/Airflow、Qdrant/Milvus、Valkey/KeyDB,以及 RocketMQ/Dubbo/ShardingSphere/Seata/Canal/Arthas 等 Java 生态中间件 |
 | 教程 | 90 | 迁移与升级(MySQL→PostgreSQL、Elasticsearch→OpenSearch、Prometheus→VictoriaMetrics、VM/Compose→Kubernetes 等)、搭建实战(Argo Workflows、Tekton、Flux、Gatekeeper、Falco、OpenBao、Temporal、Airflow、ClickHouse、StarRocks、MinIO、Ceph 等),以及 35 个本地故障演练(磁盘满/inode/CPU/网络/K8s/MySQL/PostgreSQL/Kafka/Redis/OOM/镜像/证书/Helm/etcd/K8s 升级/数据库切换/区域故障等) |
 | AI 与 MLOps | 146 | GPU 监控与容器运行时、CUDA/NCCL、Ollama/vLLM/SGLang/TGI/TensorRT-LLM 推理、torchrun/DeepSpeed/Ray/Megatron 训练、PEFT/TRL/Axolotl/Unsloth 微调、LangChain/LlamaIndex/RAGFlow/Dify 应用、MLflow/DVC/W&B/Langfuse 实验与可观测性,以及 Ragas/DeepEval/Guardrails/Llama Guard/promptfoo/Inspect AI/garak/LangSmith 评估与红队、LangGraph/CrewAI/AutoGen/MCP/DSPy/Pydantic AI/smolagents/OpenAI Agents SDK/A2A Agent、GraphRAG/reranker/Milvus 运维、推理调优/量化/投机解码、Weaviate/Chroma 运维、Triton/Ray Serve/Slurm/模型注册,以及 GPU Xid、NCCL 卡死、vLLM OOM、模型加载失败、推理延迟、Ray 调度、训练 loss 异常、checkpoint 损坏、分布式训练卡死、GPU 节点生命周期、RAG 召回质量、embedding 迁移、Agent 运行时观测和推理自动扩缩容等运行态排障 |
+| Office | 35 | Excel 快捷键、单元格与填充、排序筛选、条件格式、数据验证、冻结打印、图表;SUMIFS/IF/VLOOKUP/XLOOKUP/INDEX-MATCH/COUNTIFS/文本/日期函数;透视表、动态数组、Power Query;录制宏、VBA 语法、Range/Cells、循环、工作簿与错误处理;Word 快捷键、样式、目录、分节页眉、邮件合并、修订、域与通配符替换;PowerPoint 快捷键、母版与版式 |
 
 Kubernetes 分支按方向划分:
 
@@ -638,6 +640,25 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
              langfuse phoenix evidently clearml comet neptune model-registry
 ```
 
+Office 分支按方向划分:
+
+```
+Excel 基础    excel-basics excel-shortcuts excel-sort-filter
+              excel-conditional-formatting excel-data-validation
+              excel-freeze-print excel-charts
+Excel 函数    excel-functions excel-sumifs excel-if excel-vlookup
+              excel-xlookup excel-index-match excel-countifs
+              excel-text-functions excel-date-functions
+数据分析      excel-pivot-table excel-dynamic-arrays excel-power-query
+宏与 VBA      excel-macro-recording vba-basics vba-range-cells
+              vba-loops vba-workbook vba-error-handling
+Word          word-shortcuts word-styles word-toc word-page-setup
+              word-mail-merge word-track-changes word-fields word-find-replace
+PowerPoint    ppt-shortcuts ppt-master-slides
+```
+
+Office 页面按“适用场景 → 核心操作/语法 → 示例 → 易错点 → 相关条目 → 参考链接 → 读完自测”组织,并在涉及版本差异时标注 Excel 365/2021/2019、Word 与 PowerPoint 的桌面版/网页版边界。Excel 函数页统一说明错误值、引用方式和版本兼容;VBA 页默认使用 `.xlsm`,并强调宏安全、状态恢复与回滚。
+
 其中 **`ecosystem-status`** 是一页专门的生态状态汇总:已退役/已归档的项目(含时间点与替代方案)、发生重大变更的项目(如 kube-proxy 的 IPVS 模式废弃、containerd 2.x 配置格式变更)、以及已从 CNCF 毕业的项目。写内容时如引用第三方工具,建议先对照该页确认其是否仍在维护。
 
 2026-10 做过一次版本巡检,更新了 15 个高频页的版本号、安装清单和废弃声明(Kubernetes 1.37、Helm 3.22/4.3、Argo CD 3.5、KEDA 2.21、Karpenter 1.15、etcd 3.7、Kafka 4.x KRaft、RabbitMQ 4.x quorum 队列等),并在 `ecosystem-status` 增加了带日期的版本矩阵。版本会继续变化,升级前以官方 release notes 为准。
@@ -648,7 +669,7 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 
 本站内容（除另有标注外）采用 [LICENSE](LICENSE) 的 MIT 许可，Copyright © 2026 dos2un1x。
 
-全站 2065 页，按 10 个分支、92 个分类组织：
+全站 2100 页，按 11 个分支、98 个分类组织：
 
 - Linux：862 页
 - Windows：93 页
@@ -660,6 +681,7 @@ Agent 与编排 langgraph crewai autogen mcp dspy pydantic-ai
 - 中间件：71 页
 - 教程：90 页
 - AI 与 MLOps：146 页
+- Office：35 页
 
 引用第三方工具或文档时，页面内保留官方来源链接；正文、示例取舍与排错说明由本站组织。分发或复用内容时请保留 LICENSE。
 

@@ -162,5 +162,34 @@
     "langgraph",
     "mcp",
     "agent-runtime-observability"
+  ],
+  "office/excel-basics": [
+    "excel-basics",
+    "excel-shortcuts",
+    "excel-sort-filter"
+  ],
+  "office/excel-functions": [
+    "excel-functions",
+    "excel-vlookup",
+    "excel-sumifs"
+  ],
+  "office/excel-analysis": [
+    "excel-pivot-table",
+    "excel-dynamic-arrays",
+    "excel-power-query"
+  ],
+  "office/excel-vba": [
+    "excel-macro-recording",
+    "vba-basics",
+    "vba-range-cells"
+  ],
+  "office/word": [
+    "word-styles",
+    "word-toc",
+    "word-mail-merge"
+  ],
+  "office/powerpoint": [
+    "ppt-shortcuts",
+    "ppt-master-slides"
   ]
 }

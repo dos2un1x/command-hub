@@ -430,7 +430,7 @@ const hotCommands = HOT_COMMAND_NAMES.map((n) => byName.get(n))
     seenHot.add(it.n);
     return true;
   })
-  .slice(0, 52);
+  .slice(0, 60);
 
 const missingHot = missingHotCommands(HOT_COMMAND_NAMES, byName);
 if (missingHot.length) {

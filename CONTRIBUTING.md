@@ -192,20 +192,21 @@ AI 页面按“补充说明 → 常用示例 → 易错点与排错”组织,每
 
 页面可以在分支间迁移，更新 `categories.json` 与站内链接即可。
 
-## 新增页面必须归类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps)
+## 新增页面必须归类(Linux / Windows / macOS / Kubernetes / DevOps / 排障 / 指南 / 中间件 / 教程 / AI 与 MLOps / Office)
 
-十个分支都已接入二级分类,页面必须在对应文件里归类:
+十一个分支都已接入二级分类,页面必须在对应文件里归类:
 
 - `command/linux/categories.json`:16 个分类、862 条
-- `command/windows/categories.json`:6 个分类、89 条
-- `command/macos/categories.json`:5 个分类、58 条
+- `command/windows/categories.json`:6 个分类、93 条
+- `command/macos/categories.json`:5 个分类、61 条
 - `command/k8s/categories.json`:12 个分类、274 条
 - `command/devops/categories.json`:10 个分类、97 条
-- `command/troubleshoot/categories.json`:8 个分类、134 条
-- `command/guide/categories.json`:8 个分类、155 条
+- `command/troubleshoot/categories.json`:10 个分类、170 条
+- `command/guide/categories.json`:12 个分类、201 条
 - `command/middleware/categories.json`:11 个分类、71 条
-- `command/tutorial/categories.json`:3 个分类、77 条
-- `command/ai/categories.json`:7 个分类、84 条
+- `command/tutorial/categories.json`:3 个分类、90 条
+- `command/ai/categories.json`:7 个分类、146 条
+- `command/office/categories.json`:6 个分类、35 条
 
 漏归类、分类 id 不存在、映射了不存在的页面,`npm run build` 都会直接失败。
 新增分类时同时补 `categories` 数组(含 `desc` 与 `longDesc`)和该分类下的页面。
